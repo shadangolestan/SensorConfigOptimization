@@ -1,0 +1,403 @@
+fileFormatVersion: 2
+guid: 789cd7b0f9210ca469c7ae89698eb270
+timeCreated: 1534366259
+licenseType: Free
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Cage
+    100002: //RootNode
+    100004: Candle
+    100006: Candle 1
+    100008: Candle 2
+    100010: Candle 3
+    100012: Cap
+    100014: Chain
+    100016: Group_1
+    100018: Group_2
+    100020: ID104
+    100022: ID104 1
+    100024: ID104 10
+    100026: ID104 11
+    100028: ID104 12
+    100030: ID104 13
+    100032: ID104 14
+    100034: ID104 15
+    100036: ID104 2
+    100038: ID104 3
+    100040: ID104 4
+    100042: ID104 5
+    100044: ID104 6
+    100046: ID104 7
+    100048: ID104 8
+    100050: ID104 9
+    100052: ID135
+    100054: ID139
+    100056: ID143
+    100058: ID147
+    100060: ID15
+    100062: ID15 1
+    100064: ID15 2
+    100066: ID15 3
+    100068: ID151
+    100070: ID155
+    100072: ID159
+    100074: ID163
+    100076: ID167
+    100078: ID23
+    100080: ID23 1
+    100082: ID23 2
+    100084: ID23 3
+    100086: ID36
+    100088: ID36 1
+    100090: ID36 2
+    100092: ID36 3
+    100094: ID42
+    100096: ID42 1
+    100098: ID42 2
+    100100: ID42 3
+    100102: ID65
+    100104: ID73
+    100106: instance_0
+    100108: instance_1
+    100110: instance_10
+    100112: instance_11
+    100114: instance_12
+    100116: instance_13
+    100118: instance_14
+    100120: instance_15
+    100122: instance_16
+    100124: instance_17
+    100126: instance_18
+    100128: instance_19
+    100130: instance_2
+    100132: instance_20
+    100134: instance_21
+    100136: instance_22
+    100138: instance_23
+    100140: instance_24
+    100142: instance_3
+    100144: instance_4
+    100146: instance_5
+    100148: instance_6
+    100150: instance_7
+    100152: instance_8
+    100154: instance_9
+    100156: Link
+    100158: Link 1
+    100160: Link 10
+    100162: Link 11
+    100164: Link 12
+    100166: Link 13
+    100168: Link 14
+    100170: Link 15
+    100172: Link 2
+    100174: Link 3
+    100176: Link 4
+    100178: Link 5
+    100180: Link 6
+    100182: Link 7
+    100184: Link 8
+    100186: Link 9
+    100188: skp_camera_Last_Saved_SketchUp_View
+    400000: Cage
+    400002: //RootNode
+    400004: Candle
+    400006: Candle 1
+    400008: Candle 2
+    400010: Candle 3
+    400012: Cap
+    400014: Chain
+    400016: Group_1
+    400018: Group_2
+    400020: ID104
+    400022: ID104 1
+    400024: ID104 10
+    400026: ID104 11
+    400028: ID104 12
+    400030: ID104 13
+    400032: ID104 14
+    400034: ID104 15
+    400036: ID104 2
+    400038: ID104 3
+    400040: ID104 4
+    400042: ID104 5
+    400044: ID104 6
+    400046: ID104 7
+    400048: ID104 8
+    400050: ID104 9
+    400052: ID135
+    400054: ID139
+    400056: ID143
+    400058: ID147
+    400060: ID15
+    400062: ID15 1
+    400064: ID15 2
+    400066: ID15 3
+    400068: ID151
+    400070: ID155
+    400072: ID159
+    400074: ID163
+    400076: ID167
+    400078: ID23
+    400080: ID23 1
+    400082: ID23 2
+    400084: ID23 3
+    400086: ID36
+    400088: ID36 1
+    400090: ID36 2
+    400092: ID36 3
+    400094: ID42
+    400096: ID42 1
+    400098: ID42 2
+    400100: ID42 3
+    400102: ID65
+    400104: ID73
+    400106: instance_0
+    400108: instance_1
+    400110: instance_10
+    400112: instance_11
+    400114: instance_12
+    400116: instance_13
+    400118: instance_14
+    400120: instance_15
+    400122: instance_16
+    400124: instance_17
+    400126: instance_18
+    400128: instance_19
+    400130: instance_2
+    400132: instance_20
+    400134: instance_21
+    400136: instance_22
+    400138: instance_23
+    400140: instance_24
+    400142: instance_3
+    400144: instance_4
+    400146: instance_5
+    400148: instance_6
+    400150: instance_7
+    400152: instance_8
+    400154: instance_9
+    400156: Link
+    400158: Link 1
+    400160: Link 10
+    400162: Link 11
+    400164: Link 12
+    400166: Link 13
+    400168: Link 14
+    400170: Link 15
+    400172: Link 2
+    400174: Link 3
+    400176: Link 4
+    400178: Link 5
+    400180: Link 6
+    400182: Link 7
+    400184: Link 8
+    400186: Link 9
+    400188: skp_camera_Last_Saved_SketchUp_View
+    2000000: skp_camera_Last_Saved_SketchUp_View
+    2100000: Translucent_Glass_Gray
+    2100002: __Color_M01_1
+    2100004: Polished_Bronze
+    2100006: Polished_Bronze_0
+    2300000: Cage
+    2300002: Candle
+    2300004: Candle 1
+    2300006: Candle 2
+    2300008: Candle 3
+    2300010: Cap
+    2300012: ID104
+    2300014: ID104 1
+    2300016: ID104 10
+    2300018: ID104 11
+    2300020: ID104 12
+    2300022: ID104 13
+    2300024: ID104 14
+    2300026: ID104 15
+    2300028: ID104 2
+    2300030: ID104 3
+    2300032: ID104 4
+    2300034: ID104 5
+    2300036: ID104 6
+    2300038: ID104 7
+    2300040: ID104 8
+    2300042: ID104 9
+    2300044: ID15
+    2300046: ID15 1
+    2300048: ID15 2
+    2300050: ID15 3
+    2300052: ID23
+    2300054: ID23 1
+    2300056: ID23 2
+    2300058: ID23 3
+    2300060: ID36
+    2300062: ID36 1
+    2300064: ID36 2
+    2300066: ID36 3
+    2300068: ID42
+    2300070: ID42 1
+    2300072: ID42 2
+    2300074: ID42 3
+    2300076: ID65
+    2300078: Link
+    2300080: Link 1
+    2300082: Link 10
+    2300084: Link 11
+    2300086: Link 12
+    2300088: Link 13
+    2300090: Link 14
+    2300092: Link 15
+    2300094: Link 2
+    2300096: Link 3
+    2300098: Link 4
+    2300100: Link 5
+    2300102: Link 6
+    2300104: Link 7
+    2300106: Link 8
+    2300108: Link 9
+    3300000: Cage
+    3300002: Candle
+    3300004: Candle 1
+    3300006: Candle 2
+    3300008: Candle 3
+    3300010: Cap
+    3300012: ID104
+    3300014: ID104 1
+    3300016: ID104 10
+    3300018: ID104 11
+    3300020: ID104 12
+    3300022: ID104 13
+    3300024: ID104 14
+    3300026: ID104 15
+    3300028: ID104 2
+    3300030: ID104 3
+    3300032: ID104 4
+    3300034: ID104 5
+    3300036: ID104 6
+    3300038: ID104 7
+    3300040: ID104 8
+    3300042: ID104 9
+    3300044: ID15
+    3300046: ID15 1
+    3300048: ID15 2
+    3300050: ID15 3
+    3300052: ID23
+    3300054: ID23 1
+    3300056: ID23 2
+    3300058: ID23 3
+    3300060: ID36
+    3300062: ID36 1
+    3300064: ID36 2
+    3300066: ID36 3
+    3300068: ID42
+    3300070: ID42 1
+    3300072: ID42 2
+    3300074: ID42 3
+    3300076: ID65
+    3300078: Link
+    3300080: Link 1
+    3300082: Link 10
+    3300084: Link 11
+    3300086: Link 12
+    3300088: Link 13
+    3300090: Link 14
+    3300092: Link 15
+    3300094: Link 2
+    3300096: Link 3
+    3300098: Link 4
+    3300100: Link 5
+    3300102: Link 6
+    3300104: Link 7
+    3300106: Link 8
+    3300108: Link 9
+    4300000: Candle
+    4300002: ID15
+    4300004: ID23
+    4300006: ID36
+    4300008: ID42
+    4300010: Cage
+    4300012: ID65
+    4300014: Cap
+    4300016: Link
+    4300018: ID104
+    9500000: //RootNode
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

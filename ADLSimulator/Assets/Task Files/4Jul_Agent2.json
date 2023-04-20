@@ -1,0 +1,483 @@
+{
+  "Actions": {
+    "Prepare": {
+      "name": "Prepare",
+      "duration": 0.5,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": [],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+    "Start Session": {
+      "name": "Start Session",
+      "duration": 4.5,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["Prepare"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+	"Toilet": {
+      "name": "Toilet",
+      "duration": 1,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["Exercise"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+	"Sit": {
+      "name": "Sit",
+      "duration": 1.5,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["Toilet"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+	"Bath": {
+      "name": "Bath",
+      "duration": 2,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["Sit"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+	"wash": {
+      "name": "wash",
+      "duration": 0.5,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["Bath"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+	"Pick Up Tablet": {
+      "name": "Pick Up Tablet",
+      "duration": 0.08,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["Return Iron"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+	"Work with Tablet": {
+      "name": "Work with Tablet",
+      "duration": 30,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["Pick Up Tablet"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+	"Fill Kettle": {
+      "name": "Fill Kettle",
+      "duration": 0.25,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["wash"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+    "Boil Water": {
+      "name": "Boil Water",
+      "duration": 0.5,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["Fill Kettle"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+    "find ingredients": {
+      "name": "find ingredients",
+      "duration": 0.25,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["Boil Water"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+    "Make tea/coffee": {
+      "name": "Make tea/coffee",
+      "duration": 2.75,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["find ingredients"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+	"find eggs": {
+      "name": "find eggs",
+      "duration": 0.08,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["find frying pan"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+	"Cook eggs": {
+      "name": "Cook eggs",
+      "duration": 3,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["find eggs"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+	"find plate": {
+      "name": "find plate",
+      "duration": 0.25,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["Cook eggs"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+	"find bread": {
+      "name": "find bread",
+      "duration": 0.08,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["find plate"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+
+	"toast bread": {
+      "name": "toast bread",
+      "duration": 1.5,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["find bread"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+	"find fork and knife": {
+      "name": "find fork and knife",
+      "duration": 0.25,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["toast bread"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+	"setup table": {
+      "name": "setup table",
+      "duration": 0.17,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["find fork and knife"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+	"Eat": {
+      "name": "Eat",
+      "duration": 7,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["setup table"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+	"Take medicine": {
+      "name": "Take medicine",
+      "duration": 0.58,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["Eat"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+	"Rinse": {
+      "name": "Rinse",
+      "duration": 3,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["Take medicine"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+	"return ingredients": {
+      "name": "return ingredients",
+      "duration": 0.5,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["Rinse"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+	"Drain water": {
+      "name": "Drain water",
+      "duration": 0.17,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["return ingredients"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+
+	"Wipe": {
+      "name": "Wipe",
+      "duration": 0.58,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["Drain water"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+	"Get Broom": {
+      "name": "Get Broom",
+      "duration": 0.58,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["Wipe"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+	"Broom Kitchen": {
+      "name": "Broom Kitchen",
+      "duration": 1,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["Get Broom"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+
+	"Broom Diningroom": {
+      "name": "Broom Diningroom",
+      "duration": 1,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["Broom Kitchen"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+	"Empty dustpan": {
+      "name": "Empty dustpan",
+      "duration": 0.5,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["Broom Diningroom"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+	"Return broom": {
+      "name": "Return broom",
+      "duration": 0.17,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["Empty dustpan"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+    "Exercise": {
+      "name": "Exercise",
+      "duration": 30,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["Start Session"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },	
+	
+	"Laundry": {
+      "name": "Laundry",
+      "duration": 2,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["Return broom"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+	"Grab Iron": {
+      "name": "Grab Iron",
+      "duration": 0.25,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["Laundry"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+	"Iron": {
+      "name": "Iron",
+      "duration": 11,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["Grab Iron"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+	"Return Iron": {
+      "name": "Return Iron",
+      "duration": 0.5,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["Iron"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+	"Watch TV": {
+      "name": "Watch TV",
+      "duration": 5,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["Work with Tablet"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+	
+	"Finish session": {
+      "name": "Finish session",
+      "duration": 0.25,
+      "probability": 100,
+      "occurrence": 1,
+      "requires": ["Watch TV"],
+      "post": [],
+      "times": [
+        [ 0, 2 ]
+      ],
+      "aliases": []
+    },
+}

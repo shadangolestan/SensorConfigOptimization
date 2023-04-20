@@ -1,0 +1,11 @@
+{
+    "QLearning": {
+        "MAX_EPISODES": 1,
+        "MAX_TRY": 1000000,
+        "rl_epsilon": 1,
+        "epsilon_decay": 0.995,
+        "learning_rate": 0.4,
+        "gamma": 0.6,
+        "alpha": 0.2
+    }
+}

@@ -1,0 +1,596 @@
+fileFormatVersion: 2
+guid: 845fcef06d0d1eb40a6c9817a78dae10
+timeCreated: 1534366260
+licenseType: Free
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Back_Leg
+    100002: Back_Leg 1
+    100004: Back_Leg 2
+    100006: Back_Leg 3
+    100008: Back_Leg 4
+    100010: Back_Leg 5
+    100012: Back_Leg 6
+    100014: Back_Leg 7
+    100016: Back_Rest_1
+    100018: Back_Rest_1 1
+    100020: Back_Rest_1 2
+    100022: Back_Rest_1 3
+    100024: Bar-Height-Chair
+    100026: Bar-Height-Chair 1
+    100028: Bar-Height-Chair 2
+    100030: Bar-Height-Chair 3
+    100032: //RootNode
+    100034: Base
+    100036: Cushion
+    100038: Cushion 1
+    100040: Cushion 2
+    100042: Cushion 3
+    100044: Front_Leg
+    100046: Front_Leg 1
+    100048: Front_Leg 2
+    100050: Front_Leg 3
+    100052: Front_Leg 4
+    100054: Front_Leg 5
+    100056: Front_Leg 6
+    100058: Front_Leg 7
+    100060: group_0
+    100062: group_0 1
+    100064: group_0 2
+    100066: group_0 3
+    100068: Group_1
+    100070: group_1
+    100072: group_1 1
+    100074: group_1 2
+    100076: group_1 3
+    100078: Group_2
+    100080: ID162
+    100082: ID162 1
+    100084: ID162 2
+    100086: ID162 3
+    100088: ID168
+    100090: ID168 1
+    100092: ID168 2
+    100094: ID168 3
+    100096: ID17
+    100098: ID174
+    100100: ID174 1
+    100102: ID174 2
+    100104: ID174 3
+    100106: ID180
+    100108: ID180 1
+    100110: ID180 2
+    100112: ID180 3
+    100114: ID186
+    100116: ID186 1
+    100118: ID186 2
+    100120: ID186 3
+    100122: ID192
+    100124: ID192 1
+    100126: ID192 2
+    100128: ID192 3
+    100130: ID198
+    100132: ID198 1
+    100134: ID198 2
+    100136: ID198 3
+    100138: ID204
+    100140: ID204 1
+    100142: ID204 2
+    100144: ID204 3
+    100146: ID210
+    100148: ID210 1
+    100150: ID210 2
+    100152: ID210 3
+    100154: ID216
+    100156: ID216 1
+    100158: ID216 2
+    100160: ID216 3
+    100162: ID23
+    100164: ID235
+    100166: ID241
+    100168: ID247
+    100170: ID253
+    100172: ID259
+    100174: ID265
+    100176: ID271
+    100178: ID277
+    100180: ID283
+    100182: ID287
+    100184: ID291
+    100186: ID295
+    100188: ID42
+    100190: ID55
+    100192: ID63
+    100194: instance_0
+    100196: instance_1
+    100198: instance_10
+    100200: instance_10 1
+    100202: instance_10 2
+    100204: instance_10 3
+    100206: instance_11
+    100208: instance_11 1
+    100210: instance_11 2
+    100212: instance_11 3
+    100214: instance_12
+    100216: instance_13
+    100218: instance_14
+    100220: instance_15
+    100222: instance_2
+    100224: instance_3
+    100226: instance_4
+    100228: instance_5
+    100230: instance_5 1
+    100232: instance_5 2
+    100234: instance_5 3
+    100236: instance_6
+    100238: instance_6 1
+    100240: instance_6 2
+    100242: instance_6 3
+    100244: instance_7
+    100246: instance_7 1
+    100248: instance_7 2
+    100250: instance_7 3
+    100252: instance_8
+    100254: instance_8 1
+    100256: instance_8 2
+    100258: instance_8 3
+    100260: instance_9
+    100262: instance_9 1
+    100264: instance_9 2
+    100266: instance_9 3
+    100268: Seat_Base
+    100270: Seat_Base 1
+    100272: Seat_Base 2
+    100274: Seat_Base 3
+    100276: skp_camera_Last_Saved_SketchUp_View
+    100278: Table
+    100280: Top
+    400000: Back_Leg
+    400002: Back_Leg 1
+    400004: Back_Leg 2
+    400006: Back_Leg 3
+    400008: Back_Leg 4
+    400010: Back_Leg 5
+    400012: Back_Leg 6
+    400014: Back_Leg 7
+    400016: Back_Rest_1
+    400018: Back_Rest_1 1
+    400020: Back_Rest_1 2
+    400022: Back_Rest_1 3
+    400024: Bar-Height-Chair
+    400026: Bar-Height-Chair 1
+    400028: Bar-Height-Chair 2
+    400030: Bar-Height-Chair 3
+    400032: //RootNode
+    400034: Base
+    400036: Cushion
+    400038: Cushion 1
+    400040: Cushion 2
+    400042: Cushion 3
+    400044: Front_Leg
+    400046: Front_Leg 1
+    400048: Front_Leg 2
+    400050: Front_Leg 3
+    400052: Front_Leg 4
+    400054: Front_Leg 5
+    400056: Front_Leg 6
+    400058: Front_Leg 7
+    400060: group_0
+    400062: group_0 1
+    400064: group_0 2
+    400066: group_0 3
+    400068: Group_1
+    400070: group_1
+    400072: group_1 1
+    400074: group_1 2
+    400076: group_1 3
+    400078: Group_2
+    400080: ID162
+    400082: ID162 1
+    400084: ID162 2
+    400086: ID162 3
+    400088: ID168
+    400090: ID168 1
+    400092: ID168 2
+    400094: ID168 3
+    400096: ID17
+    400098: ID174
+    400100: ID174 1
+    400102: ID174 2
+    400104: ID174 3
+    400106: ID180
+    400108: ID180 1
+    400110: ID180 2
+    400112: ID180 3
+    400114: ID186
+    400116: ID186 1
+    400118: ID186 2
+    400120: ID186 3
+    400122: ID192
+    400124: ID192 1
+    400126: ID192 2
+    400128: ID192 3
+    400130: ID198
+    400132: ID198 1
+    400134: ID198 2
+    400136: ID198 3
+    400138: ID204
+    400140: ID204 1
+    400142: ID204 2
+    400144: ID204 3
+    400146: ID210
+    400148: ID210 1
+    400150: ID210 2
+    400152: ID210 3
+    400154: ID216
+    400156: ID216 1
+    400158: ID216 2
+    400160: ID216 3
+    400162: ID23
+    400164: ID235
+    400166: ID241
+    400168: ID247
+    400170: ID253
+    400172: ID259
+    400174: ID265
+    400176: ID271
+    400178: ID277
+    400180: ID283
+    400182: ID287
+    400184: ID291
+    400186: ID295
+    400188: ID42
+    400190: ID55
+    400192: ID63
+    400194: instance_0
+    400196: instance_1
+    400198: instance_10
+    400200: instance_10 1
+    400202: instance_10 2
+    400204: instance_10 3
+    400206: instance_11
+    400208: instance_11 1
+    400210: instance_11 2
+    400212: instance_11 3
+    400214: instance_12
+    400216: instance_13
+    400218: instance_14
+    400220: instance_15
+    400222: instance_2
+    400224: instance_3
+    400226: instance_4
+    400228: instance_5
+    400230: instance_5 1
+    400232: instance_5 2
+    400234: instance_5 3
+    400236: instance_6
+    400238: instance_6 1
+    400240: instance_6 2
+    400242: instance_6 3
+    400244: instance_7
+    400246: instance_7 1
+    400248: instance_7 2
+    400250: instance_7 3
+    400252: instance_8
+    400254: instance_8 1
+    400256: instance_8 2
+    400258: instance_8 3
+    400260: instance_9
+    400262: instance_9 1
+    400264: instance_9 2
+    400266: instance_9 3
+    400268: Seat_Base
+    400270: Seat_Base 1
+    400272: Seat_Base 2
+    400274: Seat_Base 3
+    400276: skp_camera_Last_Saved_SketchUp_View
+    400278: Table
+    400280: Top
+    2000000: skp_camera_Last_Saved_SketchUp_View
+    2100000: Color_M08
+    2100002: Wood_Veneer_01
+    2100004: Wood_Veneer_01_0
+    2100006: Component_2
+    2100008: Formica_Graystone
+    2100010: material
+    2300000: Back_Leg
+    2300002: Back_Leg 1
+    2300004: Back_Leg 2
+    2300006: Back_Leg 3
+    2300008: Back_Leg 4
+    2300010: Back_Leg 5
+    2300012: Back_Leg 6
+    2300014: Back_Leg 7
+    2300016: Back_Rest_1
+    2300018: Back_Rest_1 1
+    2300020: Back_Rest_1 2
+    2300022: Back_Rest_1 3
+    2300024: Bar-Height-Chair
+    2300026: Bar-Height-Chair 1
+    2300028: Bar-Height-Chair 2
+    2300030: Bar-Height-Chair 3
+    2300032: Base
+    2300034: Cushion
+    2300036: Cushion 1
+    2300038: Cushion 2
+    2300040: Cushion 3
+    2300042: Front_Leg
+    2300044: Front_Leg 1
+    2300046: Front_Leg 2
+    2300048: Front_Leg 3
+    2300050: Front_Leg 4
+    2300052: Front_Leg 5
+    2300054: Front_Leg 6
+    2300056: Front_Leg 7
+    2300058: group_0
+    2300060: group_0 1
+    2300062: group_0 2
+    2300064: group_0 3
+    2300066: group_1
+    2300068: group_1 1
+    2300070: group_1 2
+    2300072: group_1 3
+    2300074: Group_2
+    2300076: ID162
+    2300078: ID162 1
+    2300080: ID162 2
+    2300082: ID162 3
+    2300084: ID168
+    2300086: ID168 1
+    2300088: ID168 2
+    2300090: ID168 3
+    2300092: ID174
+    2300094: ID174 1
+    2300096: ID174 2
+    2300098: ID174 3
+    2300100: ID180
+    2300102: ID180 1
+    2300104: ID180 2
+    2300106: ID180 3
+    2300108: ID186
+    2300110: ID186 1
+    2300112: ID186 2
+    2300114: ID186 3
+    2300116: ID192
+    2300118: ID192 1
+    2300120: ID192 2
+    2300122: ID192 3
+    2300124: ID198
+    2300126: ID198 1
+    2300128: ID198 2
+    2300130: ID198 3
+    2300132: ID204
+    2300134: ID204 1
+    2300136: ID204 2
+    2300138: ID204 3
+    2300140: ID210
+    2300142: ID210 1
+    2300144: ID210 2
+    2300146: ID210 3
+    2300148: ID216
+    2300150: ID216 1
+    2300152: ID216 2
+    2300154: ID216 3
+    2300156: ID235
+    2300158: ID241
+    2300160: ID247
+    2300162: ID253
+    2300164: ID259
+    2300166: ID265
+    2300168: ID271
+    2300170: ID42
+    2300172: ID55
+    2300174: ID63
+    2300176: Seat_Base
+    2300178: Seat_Base 1
+    2300180: Seat_Base 2
+    2300182: Seat_Base 3
+    2300184: Top
+    3300000: Back_Leg
+    3300002: Back_Leg 1
+    3300004: Back_Leg 2
+    3300006: Back_Leg 3
+    3300008: Back_Leg 4
+    3300010: Back_Leg 5
+    3300012: Back_Leg 6
+    3300014: Back_Leg 7
+    3300016: Back_Rest_1
+    3300018: Back_Rest_1 1
+    3300020: Back_Rest_1 2
+    3300022: Back_Rest_1 3
+    3300024: Bar-Height-Chair
+    3300026: Bar-Height-Chair 1
+    3300028: Bar-Height-Chair 2
+    3300030: Bar-Height-Chair 3
+    3300032: Base
+    3300034: Cushion
+    3300036: Cushion 1
+    3300038: Cushion 2
+    3300040: Cushion 3
+    3300042: Front_Leg
+    3300044: Front_Leg 1
+    3300046: Front_Leg 2
+    3300048: Front_Leg 3
+    3300050: Front_Leg 4
+    3300052: Front_Leg 5
+    3300054: Front_Leg 6
+    3300056: Front_Leg 7
+    3300058: group_0
+    3300060: group_0 1
+    3300062: group_0 2
+    3300064: group_0 3
+    3300066: group_1
+    3300068: group_1 1
+    3300070: group_1 2
+    3300072: group_1 3
+    3300074: Group_2
+    3300076: ID162
+    3300078: ID162 1
+    3300080: ID162 2
+    3300082: ID162 3
+    3300084: ID168
+    3300086: ID168 1
+    3300088: ID168 2
+    3300090: ID168 3
+    3300092: ID174
+    3300094: ID174 1
+    3300096: ID174 2
+    3300098: ID174 3
+    3300100: ID180
+    3300102: ID180 1
+    3300104: ID180 2
+    3300106: ID180 3
+    3300108: ID186
+    3300110: ID186 1
+    3300112: ID186 2
+    3300114: ID186 3
+    3300116: ID192
+    3300118: ID192 1
+    3300120: ID192 2
+    3300122: ID192 3
+    3300124: ID198
+    3300126: ID198 1
+    3300128: ID198 2
+    3300130: ID198 3
+    3300132: ID204
+    3300134: ID204 1
+    3300136: ID204 2
+    3300138: ID204 3
+    3300140: ID210
+    3300142: ID210 1
+    3300144: ID210 2
+    3300146: ID210 3
+    3300148: ID216
+    3300150: ID216 1
+    3300152: ID216 2
+    3300154: ID216 3
+    3300156: ID235
+    3300158: ID241
+    3300160: ID247
+    3300162: ID253
+    3300164: ID259
+    3300166: ID265
+    3300168: ID271
+    3300170: ID42
+    3300172: ID55
+    3300174: ID63
+    3300176: Seat_Base
+    3300178: Seat_Base 1
+    3300180: Seat_Base 2
+    3300182: Seat_Base 3
+    3300184: Top
+    4300000: Base
+    4300002: Top
+    4300004: ID42
+    4300006: ID55
+    4300008: ID63
+    4300010: Bar-Height-Chair
+    4300012: ID162
+    4300014: ID168
+    4300016: ID174
+    4300018: ID180
+    4300020: ID186
+    4300022: ID192
+    4300024: ID198
+    4300026: ID204
+    4300028: ID210
+    4300030: ID216
+    4300032: Front_Leg
+    4300034: Back_Leg
+    4300036: Cushion
+    4300038: group_0
+    4300040: group_1
+    4300042: Back_Rest_1
+    4300044: Front_Leg
+    4300046: Seat_Base
+    4300048: Back_Leg
+    4300050: Group_2
+    4300052: ID235
+    4300054: ID241
+    4300056: ID247
+    4300058: ID253
+    4300060: ID259
+    4300062: ID265
+    4300064: ID271
+    9500000: //RootNode
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

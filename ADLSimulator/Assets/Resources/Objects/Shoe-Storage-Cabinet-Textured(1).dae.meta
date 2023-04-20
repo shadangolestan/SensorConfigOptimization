@@ -1,0 +1,188 @@
+fileFormatVersion: 2
+guid: 47c4f62561ccd1b4c86ed53341c3a7ca
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Cabinet
+    100002: Door
+    100004: Door 1
+    100006: group_0
+    100008: Group_2
+    100010: Group_3
+    100012: ID113
+    100014: ID129
+    100016: ID133
+    100018: ID137
+    100020: ID61
+    100022: ID71
+    100024: ID89
+    100026: ID97
+    100028: instance_0
+    100030: instance_1
+    100032: instance_2
+    100034: instance_3
+    100036: instance_4
+    100038: instance_5
+    100040: instance_6
+    100042: instance_7
+    100044: instance_8
+    100046: Leg
+    100048: Leg 1
+    100050: Leg 2
+    100052: Leg 3
+    100054: //RootNode
+    100056: skp_camera_Last_Saved_SketchUp_View
+    400000: Cabinet
+    400002: Door
+    400004: Door 1
+    400006: group_0
+    400008: Group_2
+    400010: Group_3
+    400012: ID113
+    400014: ID129
+    400016: ID133
+    400018: ID137
+    400020: ID61
+    400022: ID71
+    400024: ID89
+    400026: ID97
+    400028: instance_0
+    400030: instance_1
+    400032: instance_2
+    400034: instance_3
+    400036: instance_4
+    400038: instance_5
+    400040: instance_6
+    400042: instance_7
+    400044: instance_8
+    400046: Leg
+    400048: Leg 1
+    400050: Leg 2
+    400052: Leg 3
+    400054: //RootNode
+    400056: skp_camera_Last_Saved_SketchUp_View
+    2000000: skp_camera_Last_Saved_SketchUp_View
+    2100000: Wood_Veneer_01
+    2100002: Component_1
+    2300000: Cabinet
+    2300002: Door
+    2300004: Door 1
+    2300006: group_0
+    2300008: Group_2
+    2300010: ID113
+    2300012: ID61
+    2300014: ID71
+    2300016: ID89
+    2300018: ID97
+    2300020: Leg
+    2300022: Leg 1
+    2300024: Leg 2
+    2300026: Leg 3
+    3300000: Cabinet
+    3300002: Door
+    3300004: Door 1
+    3300006: group_0
+    3300008: Group_2
+    3300010: ID113
+    3300012: ID61
+    3300014: ID71
+    3300016: ID89
+    3300018: ID97
+    3300020: Leg
+    3300022: Leg 1
+    3300024: Leg 2
+    3300026: Leg 3
+    4300000: Group_2
+    4300002: ID113
+    4300004: Cabinet
+    4300006: group_0
+    4300008: Leg
+    4300010: Leg
+    4300012: Door
+    4300014: ID61
+    4300016: ID71
+    4300018: Door
+    4300020: ID89
+    4300022: ID97
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

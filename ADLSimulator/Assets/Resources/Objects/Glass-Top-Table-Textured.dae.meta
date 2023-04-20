@@ -1,0 +1,515 @@
+fileFormatVersion: 2
+guid: b180f6aef690eb745995afb8b7c9a989
+timeCreated: 1534366265
+licenseType: Free
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Back_Cushion
+    100002: Back_Cushion 1
+    100004: Back_Cushion 2
+    100006: Back_Cushion 3
+    100008: Chair
+    100010: Chair 1
+    100012: Chair 2
+    100014: Chair 3
+    100016: //RootNode
+    100018: Glass_Top
+    100020: group_0
+    100022: group_0 1
+    100024: group_0 2
+    100026: group_0 3
+    100028: group_1
+    100030: group_1 1
+    100032: group_1 2
+    100034: group_1 3
+    100036: Group_2
+    100038: group_2
+    100040: group_2 1
+    100042: group_2 2
+    100044: group_2 3
+    100046: group_3
+    100048: group_3 1
+    100050: group_3 2
+    100052: group_3 3
+    100054: Group_4
+    100056: group_4
+    100058: group_4 1
+    100060: group_4 2
+    100062: group_4 3
+    100064: ID108
+    100066: ID108 1
+    100068: ID108 2
+    100070: ID108 3
+    100072: ID124
+    100074: ID124 1
+    100076: ID124 2
+    100078: ID124 3
+    100080: ID130
+    100082: ID130 1
+    100084: ID130 2
+    100086: ID130 3
+    100088: ID146
+    100090: ID146 1
+    100092: ID176
+    100094: ID176 1
+    100096: ID200
+    100098: ID208
+    100100: ID216
+    100102: ID234
+    100104: ID240
+    100106: ID246
+    100108: ID252
+    100110: ID258
+    100112: ID264
+    100114: ID270
+    100116: ID276
+    100118: ID282
+    100120: ID286
+    100122: ID290
+    100124: ID294
+    100126: ID298
+    100128: ID302
+    100130: ID306
+    100132: ID310
+    100134: ID314
+    100136: ID318
+    100138: ID322
+    100140: ID326
+    100142: ID330
+    100144: ID334
+    100146: ID338
+    100148: ID342
+    100150: ID346
+    100152: ID350
+    100154: ID354
+    100156: ID358
+    100158: ID362
+    100160: ID366
+    100162: ID370
+    100164: ID45
+    100166: ID45 1
+    100168: ID45 2
+    100170: ID45 3
+    100172: ID63
+    100174: ID63 1
+    100176: ID63 2
+    100178: ID63 3
+    100180: instance_0
+    100182: instance_1
+    100184: instance_10
+    100186: instance_11
+    100188: instance_12
+    100190: instance_13
+    100192: instance_2
+    100194: instance_2 1
+    100196: instance_2 2
+    100198: instance_2 3
+    100200: instance_3
+    100202: instance_3 1
+    100204: instance_3 2
+    100206: instance_3 3
+    100208: instance_4
+    100210: instance_4 1
+    100212: instance_4 2
+    100214: instance_4 3
+    100216: instance_5
+    100218: instance_6
+    100220: instance_7
+    100222: instance_8
+    100224: instance_9
+    100226: Leg
+    100228: Leg 1
+    100230: Leg 2
+    100232: Leg 3
+    100234: Legs
+    100236: Legs 1
+    100238: Legs 2
+    100240: Legs 3
+    100242: Legs 4
+    100244: Legs 5
+    100246: Legs 6
+    100248: Legs 7
+    100250: skp_camera_Last_Saved_SketchUp_View
+    400000: Back_Cushion
+    400002: Back_Cushion 1
+    400004: Back_Cushion 2
+    400006: Back_Cushion 3
+    400008: Chair
+    400010: Chair 1
+    400012: Chair 2
+    400014: Chair 3
+    400016: //RootNode
+    400018: Glass_Top
+    400020: group_0
+    400022: group_0 1
+    400024: group_0 2
+    400026: group_0 3
+    400028: group_1
+    400030: group_1 1
+    400032: group_1 2
+    400034: group_1 3
+    400036: Group_2
+    400038: group_2
+    400040: group_2 1
+    400042: group_2 2
+    400044: group_2 3
+    400046: group_3
+    400048: group_3 1
+    400050: group_3 2
+    400052: group_3 3
+    400054: Group_4
+    400056: group_4
+    400058: group_4 1
+    400060: group_4 2
+    400062: group_4 3
+    400064: ID108
+    400066: ID108 1
+    400068: ID108 2
+    400070: ID108 3
+    400072: ID124
+    400074: ID124 1
+    400076: ID124 2
+    400078: ID124 3
+    400080: ID130
+    400082: ID130 1
+    400084: ID130 2
+    400086: ID130 3
+    400088: ID146
+    400090: ID146 1
+    400092: ID176
+    400094: ID176 1
+    400096: ID200
+    400098: ID208
+    400100: ID216
+    400102: ID234
+    400104: ID240
+    400106: ID246
+    400108: ID252
+    400110: ID258
+    400112: ID264
+    400114: ID270
+    400116: ID276
+    400118: ID282
+    400120: ID286
+    400122: ID290
+    400124: ID294
+    400126: ID298
+    400128: ID302
+    400130: ID306
+    400132: ID310
+    400134: ID314
+    400136: ID318
+    400138: ID322
+    400140: ID326
+    400142: ID330
+    400144: ID334
+    400146: ID338
+    400148: ID342
+    400150: ID346
+    400152: ID350
+    400154: ID354
+    400156: ID358
+    400158: ID362
+    400160: ID366
+    400162: ID370
+    400164: ID45
+    400166: ID45 1
+    400168: ID45 2
+    400170: ID45 3
+    400172: ID63
+    400174: ID63 1
+    400176: ID63 2
+    400178: ID63 3
+    400180: instance_0
+    400182: instance_1
+    400184: instance_10
+    400186: instance_11
+    400188: instance_12
+    400190: instance_13
+    400192: instance_2
+    400194: instance_2 1
+    400196: instance_2 2
+    400198: instance_2 3
+    400200: instance_3
+    400202: instance_3 1
+    400204: instance_3 2
+    400206: instance_3 3
+    400208: instance_4
+    400210: instance_4 1
+    400212: instance_4 2
+    400214: instance_4 3
+    400216: instance_5
+    400218: instance_6
+    400220: instance_7
+    400222: instance_8
+    400224: instance_9
+    400226: Leg
+    400228: Leg 1
+    400230: Leg 2
+    400232: Leg 3
+    400234: Legs
+    400236: Legs 1
+    400238: Legs 2
+    400240: Legs 3
+    400242: Legs 4
+    400244: Legs 5
+    400246: Legs 6
+    400248: Legs 7
+    400250: skp_camera_Last_Saved_SketchUp_View
+    2000000: skp_camera_Last_Saved_SketchUp_View
+    2100000: Wood_Veneer_01_0
+    2100002: Component_1
+    2100004: Formica_Graystone
+    2100006: Wood_Veneer_01
+    2100008: Color_M08
+    2100010: Translucent_Glass_Gray
+    2100012: material
+    2300000: Back_Cushion
+    2300002: Back_Cushion 1
+    2300004: Back_Cushion 2
+    2300006: Back_Cushion 3
+    2300008: Chair
+    2300010: Chair 1
+    2300012: Chair 2
+    2300014: Chair 3
+    2300016: Glass_Top
+    2300018: group_0
+    2300020: group_0 1
+    2300022: group_0 2
+    2300024: group_0 3
+    2300026: group_1
+    2300028: group_1 1
+    2300030: group_1 2
+    2300032: group_1 3
+    2300034: Group_2
+    2300036: group_2
+    2300038: group_2 1
+    2300040: group_2 2
+    2300042: group_2 3
+    2300044: group_3
+    2300046: group_3 1
+    2300048: group_3 2
+    2300050: group_3 3
+    2300052: Group_4
+    2300054: group_4
+    2300056: group_4 1
+    2300058: group_4 2
+    2300060: group_4 3
+    2300062: ID108
+    2300064: ID108 1
+    2300066: ID108 2
+    2300068: ID108 3
+    2300070: ID146
+    2300072: ID146 1
+    2300074: ID176
+    2300076: ID176 1
+    2300078: ID200
+    2300080: ID208
+    2300082: ID216
+    2300084: ID234
+    2300086: ID240
+    2300088: ID246
+    2300090: ID252
+    2300092: ID258
+    2300094: ID264
+    2300096: ID270
+    2300098: ID45
+    2300100: ID45 1
+    2300102: ID45 2
+    2300104: ID45 3
+    2300106: ID63
+    2300108: ID63 1
+    2300110: ID63 2
+    2300112: ID63 3
+    2300114: Leg
+    2300116: Leg 1
+    2300118: Leg 2
+    2300120: Leg 3
+    2300122: Legs
+    2300124: Legs 1
+    2300126: Legs 2
+    2300128: Legs 3
+    2300130: Legs 4
+    2300132: Legs 5
+    2300134: Legs 6
+    2300136: Legs 7
+    3300000: Back_Cushion
+    3300002: Back_Cushion 1
+    3300004: Back_Cushion 2
+    3300006: Back_Cushion 3
+    3300008: Chair
+    3300010: Chair 1
+    3300012: Chair 2
+    3300014: Chair 3
+    3300016: Glass_Top
+    3300018: group_0
+    3300020: group_0 1
+    3300022: group_0 2
+    3300024: group_0 3
+    3300026: group_1
+    3300028: group_1 1
+    3300030: group_1 2
+    3300032: group_1 3
+    3300034: Group_2
+    3300036: group_2
+    3300038: group_2 1
+    3300040: group_2 2
+    3300042: group_2 3
+    3300044: group_3
+    3300046: group_3 1
+    3300048: group_3 2
+    3300050: group_3 3
+    3300052: Group_4
+    3300054: group_4
+    3300056: group_4 1
+    3300058: group_4 2
+    3300060: group_4 3
+    3300062: ID108
+    3300064: ID108 1
+    3300066: ID108 2
+    3300068: ID108 3
+    3300070: ID146
+    3300072: ID146 1
+    3300074: ID176
+    3300076: ID176 1
+    3300078: ID200
+    3300080: ID208
+    3300082: ID216
+    3300084: ID234
+    3300086: ID240
+    3300088: ID246
+    3300090: ID252
+    3300092: ID258
+    3300094: ID264
+    3300096: ID270
+    3300098: ID45
+    3300100: ID45 1
+    3300102: ID45 2
+    3300104: ID45 3
+    3300106: ID63
+    3300108: ID63 1
+    3300110: ID63 2
+    3300112: ID63 3
+    3300114: Leg
+    3300116: Leg 1
+    3300118: Leg 2
+    3300120: Leg 3
+    3300122: Legs
+    3300124: Legs 1
+    3300126: Legs 2
+    3300128: Legs 3
+    3300130: Legs 4
+    3300132: Legs 5
+    3300134: Legs 6
+    3300136: Legs 7
+    4300000: Group_2
+    4300002: ID200
+    4300004: ID208
+    4300006: ID216
+    4300008: Chair
+    4300010: group_0
+    4300012: group_1
+    4300014: Legs
+    4300016: ID45
+    4300018: Legs
+    4300020: ID63
+    4300022: Back_Cushion
+    4300024: ID108
+    4300026: group_2
+    4300028: group_3
+    4300030: group_4
+    4300032: Leg
+    4300034: ID146
+    4300036: Glass_Top
+    4300038: Leg
+    4300040: ID176
+    4300042: Group_4
+    4300044: ID234
+    4300046: ID240
+    4300048: ID246
+    4300050: ID252
+    4300052: ID258
+    4300054: ID264
+    4300056: ID270
+    9500000: //RootNode
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
