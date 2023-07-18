@@ -661,7 +661,7 @@ class BayesianOptimization:
         self.space = sp.Space()
         self.RLBO = RLBO
 
-        if cf.acquisition_function == 'kg':
+        if cf.acquisition_function == 'dg':
             cf.info_matrix = self.create_pivots_matrix()
         
         else:
