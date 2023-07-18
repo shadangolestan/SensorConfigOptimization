@@ -14,14 +14,14 @@ if __name__ == "__main__":
     else:
         import SensorOptimizers.RealWorld_BayesianOptimization as bo
 
-    cf.testbed = sys.argv[1].split('=')[-1] + '/'
+    cf.testbed = (sys.argv[1].split('=')[-1] + '/').replace(' ', '')
     cf.acquisition_function = sys.argv[2].split('=')[-1]
     cf.LSsensorsNum = int(sys.argv[3].split('=')[-1])
     
 
 
     print('----- Running BO with: \n \t - epsilon (not effective for aruba): ', cf.epsilon, 
-        '\n \t - testbed: ', cf.testbed,
+        '\n \t - testbed:', cf.testbed,
         '\n \t - LS sensors #: ', cf.LSsensorsNum, 
         '\n \t - IS sensors #: ', cf.ISsensorsNum, 
         '\n \t - initial state: ', cf.initial_state,
@@ -44,7 +44,7 @@ if __name__ == "__main__":
 
         history = BO.run()
 
-        with open('Results_BO/history(LS' + str(cf.LSsensorsNum) +  'IS' + str(cf.ISsensorsNum) + ')_' + str(i), 'wb') as handle:
+        with open('Results_BO/history(' + 'Method_' + cf.acquisition_function + '_LS' + str(cf.LSsensorsNum) + ')_' + str(i), 'wb') as handle:
             pickle.dump(history, handle, protocol=pickle.HIGHEST_PROTOCOL)
                 
         print(history)

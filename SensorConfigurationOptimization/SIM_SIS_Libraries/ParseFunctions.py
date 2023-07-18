@@ -47,4 +47,26 @@ def ParseWorld(simworldname):
     '''Gets a sensor configuration space in XML and parses it. The output is (space dimensions, rooms dimensions)'''
     #TODO: Space and Rooms needs to be read from a file
         
+    if cf.testbed == 'Testbed1/':
+        cf.space = [(0.0, 0.0), (0.0, 8.0), (8.0, 8.0), (8.0, 0.0)]
+        cf.rooms = {'bedroom': [(3.9, 0.0), (8.0, 4.4)],
+                'livingroom': [(0.0, 1.9), (6.3, 6.7)],
+                'diningroom': [(0.0, 3.0), (2.9, 8.0)],
+                'kitchen': [(0.0, 3.0), (2.9, 8.0)],
+                'bathroom': [(6.1, 3.2), (8.0, 6.7)],
+                'storage': [(2.8, 6.4), (8.0, 8.0)]} 
+        cf.objects = ['0.5, 2.7', '3.5, 2.7', '6.7, 1.4', '4.2, 3.2', '1.7, 6.0', '6.0, 3.6', '7.4, 3.6', '1.0, 5.5', '6.8, 5.5', '0.5, 7.1', '2.2, 7.1', '7.1, 6.8']
+
+    if cf.testbed == 'Testbed2/':
+        cf.space = [(0.0, 0.0), (0.0, 8.0), (5.3, 8.0), (5.3, 0.0)]
+        cf.rooms = {'bedroom': [(0.0, 1.9), (3.0, 4.7)],
+                'livingroom': [(1.6, 0.0), (5.3, 3.3)],
+                'diningroom': [(3.1, 2.0), (5.3, 3.3)],
+                'kitchen': [(3.0, 3.3), (5.3, 6.0)],
+                'bathroom': [(0.0, 4.9), (2.4, 6.9)],
+                'entryway': [(2.4, 6.0), (5.3, 8.0)]}
+        cf.objects = ['0.5, 2.7', '3.5, 2.7', '6.7, 1.4', '4.2, 3.2', '1.7, 6.0', '6.0, 3.6', '7.4, 3.6', '1.0, 5.5', '6.8, 5.5', '0.5, 7.1', '2.2, 7.1', '7.1, 6.8']
+
+
+
     return cf.space, cf.rooms, cf.objects

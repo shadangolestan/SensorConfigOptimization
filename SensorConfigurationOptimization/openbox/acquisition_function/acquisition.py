@@ -153,49 +153,10 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
         np.ndarray(N, 1)
             acquisition values for X
         """
-        
-        '''
-        def calculate_information_gain(sensor_locations, configuration_star):
-            print(sensor_locations)
-            print(configuration_star)
-            print(cf.info_matrix)
-            
-            inf_x = 0
-            for sensor in sensor_locations:
-                loc = eval(sensor)
-                inf_x += cf.info_matrix[0][1]
-                
-            inf_x_star
-            for sensor in configuration_star:
-                loc = eval(sensor)
-                inf_x_star += cf.info_matrix[0][1]
-                
-                
-        '''
 
         import numpy as np
         if self.long_name == 'Distribution Guided':
             total_costs = []
-            # pivots_location = list(cf.greedy_pivots.keys())
-
-            # for config in configurations:
-            #     sensors_locations = []
-            #     for k, v in config.items():
-            #         if isinstance(v, str):
-            #             sensors_locations.append(v)
-                  
-                # distance_matrix = self.calculate_distance_matrix(X1[0: min(len(X2), len(X1))], X2[0: min(len(X2), len(X1))])
-                # distance_matrix = self.calculate_distance_matrix(pivots_location, sensors_locations)
-                # total_costs.append(self.solve_assignment(distance_matrix))
-                
-                
-            # self.total_costs = total_costs
-            # self.total_costs = np.array(self.total_costs)
-            
-
-            # calculate_information_gain(sensors_locations, cf.configuration_star)
-
-# THIS IS SHIT
             
             def dictionary_to_matrix(dictionary):
                 max_row = int(np.ceil(cf.space[2][0]) / cf.pivots_granularity)
@@ -226,60 +187,8 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
                         
                 return Is
             
-                
-            def calcualte_I_minus(location, c):
-                Is = []
-                for key in c.keys():
-                    if key.startswith('ls') and not key.startswith('ls_t'):
-                        if not c[key] == location:
-                            if c[key] in self.expected_contribution.keys():
-                                Is.append(self.expected_contribution[c[key]])
-                            else:
-                                Is.append(cf.info_matrix[c[key]])
-                                
-                if len(Is) == 0:
-                    Is.append(cf.info_matrix[location])
-                        
-                return Is
-                
-                
-            
-#             def save_len_heatmap(heatmap_dict, name):
-#                 import numpy as np
-#                 import matplotlib.pyplot as plt
-#                 x_values = []
-#                 y_values = []
-#                 for key in heatmap_dict.keys():
-#                     x, y = eval(key)[0], eval(key)[1]
-#                     x_values.append(x)
-#                     y_values.append(y)
-
-#                 # Determine the size of the heat map
-#                 x_size = max(x_values) + 1
-#                 y_size = max(y_values) + 1
-
-#                 # Create a matrix of zeros to represent the heat map
-#                 heatmap_matrix = np.zeros((x_size, y_size))
-
-#                 # Fill the matrix with the lengths of the lists from the dictionary
-#                 for key, value in heatmap_dict.items():
-#                     x, y = eval(key)[0], eval(key)[1]
-#                     heatmap_matrix[x, y] = len(value)
-
-#                 # Plot the heat map
-#                 plt.imshow(heatmap_matrix, cmap='hot', interpolation='nearest')
-
-#                 heatmap_matrix = np.array(heatmap_matrix)
-#                 for i in range(heatmap_matrix.shape[0]):
-#                     for j in range(heatmap_matrix.shape[1]):
-#                         plt.text(j, i, '{:.2f}'.format(heatmap_matrix[i, j]), ha='center', va='center', color='blue')
-                
-#                 plt.colorbar()
-#                 plt.savefig(name)
-#                 plt.clf()
             
             self.S = []
-            
             for index, c in enumerate(cf.config_advisor.history_container.configurations[len(self.all_configurations):], start=len(self.all_configurations)):
                 c = c.get_dictionary()
                 self.all_configurations.append(c)
@@ -310,86 +219,6 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
                             # inf = (100 - cf.config_advisor.history_container.perfs[index]) * (sensor_initial / 100)
                             self.info_map_plus.update({c[key]: [inf]})
                             # self.present_configurations_map.update({c[key]: [c]})
-
-            
-            
-
-            # for key in self.info_map_plus.keys():
-            #     mu_plus = np.mean(self.info_map_plus[key])
-            #     var_plus = np.var(self.info_map_plus[key])
-                
-
-                
-                
-                # std_plus = np.sqrt(var_plus)
-
-                
-                # z_plus = calculate_z_i(mu_plus, mu_minus, var_plus, var_minus)
-                # W = (mu_plus - z_plus) / std_plus
-                # self.info_map_contributions.update({key: (mu_plus - z_plus) * norm.cdf(W) + std_plus * norm.pdf(W)})
-                
-#                 if not key in self.flag.keys():
-#                         self.flag[key] = 0
-                
-#                 if self.info_map_contributions[key] == 0:
-#                     if self.flag[key] == 1:
-#                         self.flag[key] = 2
-                        
-#                 else:
-#                     if self.flag[key] == 0:
-#                         if self.info_map_contributions[key] > 0:
-#                             self.flag[key] = 1
-            
-#                 if not key in self.log.keys():
-#                         self.log[key] = []
-                        
-#                 key_log ={}
-#                 key_log['iteration'] = len(cf.config_advisor.history_container.perfs)
-#                 key_log['key']=str(key)
-#                 key_log['mu_plus - z_plus']= mu_plus - z_plus
-#                 key_log['W'] =W
-#                 key_log['norm.cdf(W)'] =norm.cdf(W)
-#                 key_log['norm.pdf(W)'] =norm.pdf(W)
-#                 key_log['mu_plus'] =mu_plus
-#                 key_log['mu_minus'] =mu_minus
-#                 key_log['var_plus'] =var_plus
-#                 key_log['var_minus'] =var_minus
-#                 key_log['self.info_map_plus[key]'] = self.info_map_plus[key]
-#                 try:
-#                     key_log['self.info_map_minus[key]'] = self.info_map_minus[key]
-#                 except:
-#                     key_log['self.info_map_minus[key]'] = []
-                
-#                 self.log[key].append(key_log)
-                
-                
-           
-                            
-            ''' 
-            #------------- ATHAR'S SUGGESTION:
-            self.S = []
-            for index, c in enumerate(configurations):
-                c = c.get_dictionary()
-                S_sensors = []
-                
-                for key in c.keys():
-                    if key.startswith('ls') and not key.startswith('ls_t'):
-                        sensor_location = c[key]
-                
-                        if sensor_location in self.info_map_plus.keys():
-                            performance = np.mean(self.info_map_plus[sensor_location]) / cf.LSsensorsNum
-                            performance += cf.info_matrix[sensor_location]
-                            self.athar[sensor_location] = performance
-                            S_sensors.append(performance)
-                
-                        else:
-                            S_sensors.append(cf.info_matrix[sensor_location])
-                            self.athar[sensor_location] = cf.info_matrix[sensor_location]
-                
-            
-            self.S.append(np.mean(S_sensors) * cf.LSsensorsNum)
-            self.expected_contribution = self.athar
-            '''    
                 
             for index, c in enumerate(configurations):
                 seen_locations = []
@@ -415,7 +244,6 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
                                 var_plus = np.var(normalized_info)      
                                 std_plus = np.sqrt(var_plus)
                                 Is = calculate_g_star()
-                                # Is = calcualte_I_minus(sensor_location, c)
                                 G_star = np.mean(Is)
 
 
@@ -458,8 +286,6 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
                 plt.clf()  
                 
             '''
-
-        # THIS SHIT IS FINISHED
             
             
         if convert:

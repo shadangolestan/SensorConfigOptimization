@@ -140,7 +140,6 @@ class BOVariables:
 
     def ModelsInitializations(self, ROS):
         #----- Space and agent models -----: 
-        # simworldname = self.Data_path + '/Configuration Files/simulationWorld2.xml'
         simworldname = ''
         agentTraces = []
         
@@ -215,7 +214,7 @@ class BayesianOptimization:
         self.LSsensorTypesNum = sum(1 for condition in list(input_sensor_types.values())[0:2] if condition)
         self.ISsensorTypesNum = sum(1 for condition in list(input_sensor_types.values())[2:5] if condition)
 
-        testbed
+        
         base_path = '../SensorConfigurationOptimization/'
         sys.path.append('..')
 
@@ -244,6 +243,7 @@ class BayesianOptimization:
                                 self.CONSTANTS['radius'],
                                 self.CONSTANTS['initial_samples'],
                                 ROS = True)
+
 
         self.CONSTANTS['width'] = self.BOV.space[0]
         self.CONSTANTS['height'] = self.BOV.space[1]
@@ -585,7 +585,6 @@ class BayesianOptimization:
 
         Xs = self.frange(cf.pivots_granularity, np.ceil(self.BOV.space[0]) - cf.pivots_granularity, cf.pivots_granularity)
         Ys = self.frange(cf.pivots_granularity, np.ceil(self.BOV.space[1]) - cf.pivots_granularity, cf.pivots_granularity)
-        
         
         for x in Xs:
             for y in Ys:
