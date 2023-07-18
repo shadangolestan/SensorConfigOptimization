@@ -3,7 +3,7 @@
 import os
 import abc
 import numpy as np
-
+import Config as cf
 from openbox.utils.util_funcs import check_random_state
 from openbox.utils.logging_utils import get_logger
 from openbox.utils.history_container import HistoryContainer, MOHistoryContainer, \
@@ -66,6 +66,9 @@ class Advisor(object, metaclass=abc.ABCMeta):
         self.acq_optimizer_type = acq_optimizer_type
         self.init_num = initial_trials
         self.config_space = config_space
+
+        cf.config_space = self.config_space
+
         self.config_space_seed = self.rng.randint(MAXINT)
         self.config_space.seed(self.config_space_seed)
         self.ref_point = ref_point
@@ -202,7 +205,7 @@ class Advisor(object, metaclass=abc.ABCMeta):
         # single objective
         if self.num_objs == 1:
             if self.num_constraints == 0:
-                assert self.acq_type in ['ei', 'eips', 'logei', 'pi', 'lcb', 'lpei', 'kg', ]
+                assert self.acq_type in ['ei', 'eips', 'logei', 'pi', 'lcb', 'lpei', 'dg', 'rlaf' ]
             else:  # with constraints
                 assert self.acq_type in ['eic', ]
                 if self.constraint_surrogate_type is None:
@@ -243,14 +246,6 @@ class Advisor(object, metaclass=abc.ABCMeta):
         -------
         An optimizer object.
         """
-        
-        # print('-' * 50)
-        # print('self.acq_type ', self.acq_type)
-        # print('acq_optimizer_type ', self.acq_optimizer_type)
-        # print('self.num_objs ', self.num_objs)
-        # print('self.surrogate_model ', self.surrogate_type)
-        # print('self.num_constraints ', self.num_constraints)
-        # print('-' * 50)
         
         
         if self.num_objs == 1 or self.acq_type == 'parego':
@@ -346,6 +341,15 @@ class Advisor(object, metaclass=abc.ABCMeta):
 
         return initial_configs
 
+    def get_current_best_configuration(self, history_container):
+        result = []
+        for key, value in history_container.get_incumbents()[0][0].items():
+            if key.startswith('ls') and not key.startswith('ls_t'):
+                result.append(value)
+                
+        cf.configuration_star = result
+
+    
     def get_suggestion(self, history_container=None, return_list=False, rl_action = None, RLBO = False):
         """
         Generate a configuration (suggestion) for this query.
@@ -402,6 +406,7 @@ class Advisor(object, metaclass=abc.ABCMeta):
 
             # update acquisition function
             if self.num_objs == 1:
+                self.get_current_best_configuration(history_container)
                 self.incumbent_value = history_container.get_incumbents()[0][1]
                 self.acquisition_function.update(model=self.surrogate_model,
                                                  constraint_models=self.constraint_models,
@@ -445,10 +450,14 @@ class Advisor(object, metaclass=abc.ABCMeta):
             for config in challengers.challengers:
                 
                 if config not in history_container.configurations:
+                #     cf.std_list[config] = []
+                #     cf.std_list[config] = self.acquisition_function.get_neighbors_info(challengers.challengers.index(config))
+                #     print('Variance of the next query point is: ', cf.std_list[config])
                     return config
                     
             self.logger.warning('Cannot get non duplicate configuration from BO candidates (len=%d). '
                                 'Sample random config.' % (len(challengers.challengers), ))
+            
             return self.sample_random_configs(1, history_container)[0]
         else:
             raise ValueError('Unknown optimization strategy: %s.' % self.optimization_strategy)
@@ -492,6 +501,7 @@ class Advisor(object, metaclass=abc.ABCMeta):
         max_sample_cnt = 1000
         while len(configs) < num_configs:
             config = self.config_space.sample_configuration()
+
             sample_cnt += 1
             if config not in (history_container.configurations + configs) and config not in excluded_configs:
                 configs.append(config)
@@ -501,6 +511,15 @@ class Advisor(object, metaclass=abc.ABCMeta):
                 self.logger.warning('Cannot sample non duplicate configuration after %d iterations.' % max_sample_cnt)
                 configs.append(config)
                 sample_cnt = 0
+
+
+        # for c in configs:
+        #     cf.std_list[c] = []
+        #     try:
+        #         cf.std_list[c] = self.acquisition_function.plug_in_config(c)
+        #     except:
+        #         pass
+
         return configs
 
     def get_history(self):

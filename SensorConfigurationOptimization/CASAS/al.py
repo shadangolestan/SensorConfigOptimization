@@ -90,13 +90,17 @@ def read_data(datafile):
 
     # datafile = open(cf.data_filename, "r")
     
+
+
+
     count = 0
-    
-    #print('data file size is:::::', len(datafile))
+
     for line in datafile:
         words = line.split()  # Split line into words separated by spaces
         date = words[0]
+        # date = '2001-01-01'
         stime = words[1]
+        # stime = "00:00:00.00000"
         sensorid = words[2]
         newsensorid = words[3]
         sensorstatus = words[4]
@@ -397,6 +401,7 @@ def report_results(xtest, ytest):
     """
     numright = total = 0
     newlabels = cf.clf.predict(xtest)
+    '''
     if cf.filter_other:  # do not count other in total
         matrix = np.zeros((cf.num_activities, cf.num_activities), dtype=int)
         for i in range(len(ytest)):
@@ -421,6 +426,7 @@ def report_results(xtest, ytest):
             total = len(ytest)
     
     accuracy = float(numright) / float(total)
+    '''
 
     return f1_score(ytest, newlabels, average = 'macro') #macro is the alternative
 
@@ -462,6 +468,40 @@ def get_confusion_matrix(files, sensors):
         
     return confusion_matrices, cf.activitynames
 
+def one_occupant_model(train_data, test_data, sensors):
+    # sensors = ['M00' + str(i) if i < 10 else 'M0' + str(i) for i in range(32)]
+    cf.set_parameters(sensors)
+    cf.num_features = cf.num_set_features + (2 * cf.num_sensors)
+
+    train_data2 = []
+
+    # for row in train_data:
+    #     if not 'M000' in row:
+    #         train_data2.append(row)
+
+    cf.data = []
+    cf.labels = []
+
+    read_data(train_data)
+    xtrain = cf.data
+    ytrain = cf.labels
+ 
+
+    # print('len(xtrain):', len(xtrain))
+
+    # print(np.unique(ytrain))
+
+    cf.data = []
+    cf.labels = []
+    read_data(test_data)
+    xtest = cf.data
+    ytest = cf.labels
+    # print(np.unique(ytest))
+    # print('len(xtest):', len(xtest))
+
+    cf.clf.fit(xtrain, ytrain)
+
+    return report_results(xtest, ytest)
 
 def leave_one_out(files, sensors):
     """ Perform leave-one-subject-out testing. Assume each subject is represented
@@ -569,15 +609,7 @@ def Test(cf_input, files, sensors):
     cf.add_pca = cf_input.add_pca 
     cf.weightinc = cf_input.weightinc
     cf.windata = cf_input.windata
-    cf.clf = cf_input.clf
-
-
-    
-    
-    
-    
-    
-    
+    cf.clf = cf_input.clf    
     cf.dstype = cf_input.dstype
     
     

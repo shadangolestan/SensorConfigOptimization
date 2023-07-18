@@ -168,6 +168,9 @@ class HistoryContainer(object):
 
     def get_incumbents(self):
         return self.incumbents
+    
+    def get_best_config(self):
+        return self.get_incumbents()[0][0]
 
     def get_str(self):
         from terminaltables import AsciiTable

@@ -129,6 +129,7 @@ class AcquisitionFunctionMaximizer(object, metaclass=abc.ABCMeta):
         """
 
         # HERE
+        
         acq_values = self.acquisition_function(configs)
 
         # From here
@@ -193,7 +194,9 @@ class CMAESOptimizer(AcquisitionFunctionMaximizer):
                 for index in const_idx:
                     _X[i] = np.insert(_X[i], index, 0)
             _X = np.asarray(_X)
+
             values = self.acquisition_function._compute(_X)
+
             values = np.reshape(values, (-1,))
             es.tell(X, values)
             next_configs_by_acq_value.extend([(values[i], _X[i]) for i in range(es.popsize)])
@@ -323,6 +326,7 @@ class LocalSearch(AcquisitionFunctionMaximizer):
         incumbent = start_point
         # Compute the acquisition value of the incumbent
         # HERE
+        
         acq_val_incumbent = self.acquisition_function([incumbent], **kwargs)[0]
 
         local_search_steps = 0
@@ -349,6 +353,7 @@ class LocalSearch(AcquisitionFunctionMaximizer):
             for neighbor in all_neighbors:
                 s_time = time.time()
                 # HERE
+                
                 acq_val = self.acquisition_function([neighbor], **kwargs)
                 neighbors_looked_at += 1
                 time_n.append(time.time() - s_time)
@@ -604,6 +609,7 @@ class ScipyOptimizer(AcquisitionFunctionMaximizer):
         def negative_acquisition(x):
             # shape of x = (d,)
             x = np.clip(x, 0.0, 1.0)    # fix numerical problem in L-BFGS-B
+            
             return -self.acquisition_function(x, convert=False)[0]  # shape=(1,)
 
         if initial_config is None:
@@ -622,6 +628,7 @@ class ScipyOptimizer(AcquisitionFunctionMaximizer):
         try:
             x = np.clip(result.x, 0.0, 1.0)  # fix numerical problem in L-BFGS-B
             config = Configuration(self.config_space, vector=x)
+            
             acq = self.acquisition_function(x, convert=False)
             acq_configs.append((acq, config))
         except Exception:
@@ -687,10 +694,15 @@ class RandomScipyOptimizer(AcquisitionFunctionMaximizer):
             num_trials=10,
             **kwargs
     ) -> List[Tuple[float, Configuration]]:
+        
+        
+
         assert num_trials >= 3
         acq_configs = []
 
+        
         initial_configs = self.random_search.maximize(runhistory, num_points, **kwargs).challengers
+        
         
         initial_acqs = self.acquisition_function(initial_configs)
         acq_configs.extend(zip(initial_acqs, initial_configs))
@@ -701,6 +713,7 @@ class RandomScipyOptimizer(AcquisitionFunctionMaximizer):
             scipy_configs = self.scipy_optimizer.maximize(runhistory, initial_config=config).challengers
             if not scipy_configs:   # empty
                 continue
+            
             
             scipy_acqs = self.acquisition_function(scipy_configs)
             acq_configs.extend(zip(scipy_acqs, scipy_configs))
@@ -768,6 +781,7 @@ class ScipyGlobalOptimizer(AcquisitionFunctionMaximizer):
         def negative_acquisition(x):
             # shape of x = (d,)
             
+
             return -self.acquisition_function(x, convert=False)[0]  # shape=(1,)
 
         acq_configs = []
@@ -777,6 +791,7 @@ class ScipyGlobalOptimizer(AcquisitionFunctionMaximizer):
             self.logger.debug('Scipy differential evolution optimizer failed. Info:\n%s' % (result,))
         try:
             config = Configuration(self.config_space, vector=result.x)
+            
             
             acq = self.acquisition_function(result.x, convert=False)
             acq_configs.append((acq, config))
@@ -855,6 +870,7 @@ class StagedBatchScipyOptimizer(AcquisitionFunctionMaximizer):
         # todo other strategy
         random_points = self.rng.uniform(self.bound[0], self.bound[1], size=(raw_samples, self.dim))
         
+        
         acq_random = self.acquisition_function(random_points, convert=False).reshape(-1)
         idx = np.argsort(acq_random)[::-1][:num_restarts]
         return random_points[idx]
@@ -866,6 +882,7 @@ class StagedBatchScipyOptimizer(AcquisitionFunctionMaximizer):
             # count += 1
             X = X_flattened.reshape(shapeX)
             
+        
             joint_acq = -self.acquisition_function(X, convert=False).sum().item()
             return joint_acq
 
@@ -905,6 +922,7 @@ class StagedBatchScipyOptimizer(AcquisitionFunctionMaximizer):
         # random points
         random_points = self.rng.uniform(self.bound[0], self.bound[1], size=(self.num_random, self.dim))
         
+        
         acq_random = self.acquisition_function(random_points, convert=False)
         for i in range(random_points.shape[0]):
             # convert array to Configuration
@@ -922,6 +940,7 @@ class StagedBatchScipyOptimizer(AcquisitionFunctionMaximizer):
             if scipy_points is None:
                 continue
             
+        
             acq_scipy = self.acquisition_function(scipy_points, convert=False)
             for i in range(scipy_points.shape[0]):
                 # convert array to Configuration
@@ -1013,7 +1032,6 @@ class MESMO_Optimizer(AcquisitionFunctionMaximizer):
 
         def inverse_acquisition(x):
             # shape of x = (d,)
-            
             return -self.acquisition_function(x, convert=False)[0]  # shape=(1,)
 
         d = len(self.config_space.get_hyperparameters())
@@ -1023,6 +1041,7 @@ class MESMO_Optimizer(AcquisitionFunctionMaximizer):
 
         # MC
         x_tries = self.rng.uniform(bound[0], bound[1], size=(self.num_mc, d))
+        
         
         acq_tries = self.acquisition_function(x_tries, convert=False)
         for i in range(x_tries.shape[0]):
@@ -1042,6 +1061,7 @@ class MESMO_Optimizer(AcquisitionFunctionMaximizer):
             config = Configuration(self.config_space, vector=result.x)
             config.origin = 'Scipy'
             
+        
             acq_val = self.acquisition_function(result.x, convert=False)  # [0]
             acq_configs.append((acq_val, config))
 
@@ -1220,6 +1240,7 @@ class batchMCOptimizer(AcquisitionFunctionMaximizer):
                                          lower_bounds, upper_bounds,
                                          random_state=self.rng.randint(0, int(1e8)))
             _configs = sobol_sampler.generate(return_config=True)
+            
             
             _acq_values = self.acquisition_function(_configs, seed=weight_seed)
             config_acq.extend([(_configs[idx], _acq_values[idx]) for idx in range(len(_configs))])

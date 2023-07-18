@@ -1,4 +1,4 @@
-#----- RL Parameters:
+#--------------------------------------------------------------------- RL Parameters:
 window_size = 10
 buffer_size = 1
 step_size = 1
@@ -6,20 +6,22 @@ step_size = 1
 performance = []
 
 
-#----- Experiment Parameters:
+#--------------------------------------------------------------------- Experiment Parameters:
 import pybenchfunction.function as benchmarks
 D = 10
 function = benchmarks.Powell(D)
+gradient_fantacy = True
+std_list = dict()
 
 domain = {
     'lower_bound': 0,
-    'upper_bound': 6
+    'upper_bound': 1
 }
 
 # [5.582, 0.786, 4.595, 2.815, 1.068, 0.851, 3.076, 2.796, 0.860, 5.623]
 
 
-testbed = 'Testbed1/'
+testbed = 'Testbed2/'
 radius = 1
 epsilon = 1
 
@@ -27,9 +29,9 @@ epsilon = 1
 sensor_types = {
     'model_motion_sensor': True,
     'model_beacon_sensor': False,
-    'model_pressure_sensor': True,
-    'model_accelerometer': True,
-    'model_electricity_sensor': True
+    'model_pressure_sensor': False,
+    'model_accelerometer': False,
+    'model_electricity_sensor': False
 }
 
 '''
@@ -65,30 +67,38 @@ if testbed == 'Testbed2/':
     objects = ['0.5, 2.7', '3.5, 2.7', '6.7, 1.4', '4.2, 3.2', '1.7, 6.0', '6.0, 3.6', '7.4, 3.6', '1.0, 5.5', '6.8, 5.5', '0.5, 7.1', '2.2, 7.1', '7.1, 6.8']
 
 
-#----- GA Parameters:
+#--------------------------------------------------------------------- GA Parameters:
 iteration = 100
 population = 10
 initSensorNum = 7
-maxSensorNum = 15
+maxSensorNum = 10
 mutation_rate = 0.005
 crossover = 2
 survival_rate = 0.1
 reproduction_rate = 0.2
 
-#----- BO Parameters:
+#--------------------------------------------------------------------- BO Parameters:
 acquisition_function = 'kg'
+# acquisition_function = 'lcb'
 acq_optimizer_type = 'auto'
 surrogate_model = 'prf'
 ROS = True
 error = 0.0
 multi_objective = False
-LSsensorsNum = 9
-ISsensorsNum = 10
+LSsensorsNum = 10
+ISsensorsNum = 0
 initial_state = 'random'
 bo_iteration = 1000
 RLBO = True
-
-#----- CASAS Parameters:
+info_matrix = None
+pivots_granularity = 1
+pivots_granularity = epsilon
+cutoff_treshold = 70
+configuration_star = None
+config_advisor = None
+config_space = None
+iteration_id = 0
+#--------------------------------------------------------------------- CASAS Parameters:
 from sklearn.ensemble import RandomForestClassifier
 
 clf = RandomForestClassifier(n_estimators=80,

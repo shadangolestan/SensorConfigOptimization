@@ -58,52 +58,6 @@ class Chromosome:
             else:
                 self.grid = grid
             
-    '''
-    def __init__(self, *args, new = False, sensorTypesNum = 1, greedy = False, counter = 1):
-        if greedy:
-            print(greedy)
-            self.sensorTypesNum = sensorTypesNum
-            self.radius = 1
-            self.epsilon = args[3]
-            self.initSensorNum = args[2]
-            self.mode = args[0]
-            self.space = args[1]
-            self.placeHolders = []
-            self.fitness = -1
-            self.SensorPlaceHolderSetup()
-            self.GreedySensorConfigurationSetup(counter)
-
-        else:
-            self.sensorTypesNum = sensorTypesNum
-            self.radius = 1
-            if new:
-                print(greedy, ' new')
-                self.epsilon = args[3]
-                self.initSensorNum = args[2]
-                self.mode = args[0]
-                self.space = args[1]
-                self.placeHolders = []
-                self.fitness = -1
-                self.SensorPlaceHolderSetup()
-                self.SensorConfigurationSetup()
-
-            elif new == False:
-                print(greedy, ' old')
-                self.epsilon = args[3]
-                self.placeHolders = []
-                self.fitness = -1
-                self.grid = args[0]
-                self.mode = args[1]
-                self.space = args[2]
-                self.SensorPlaceHolderSetup()
-                
-                print('Grid:', self.grid)
-                print('mode:', self.mode)
-                print('space:', self.space)
-                print('epsilon:', self.epsilon)
-                print('sensorTypesNum:', self.sensorTypesNum)
-                print('radius:', self.radius)            
-    '''
         
     def frange(self, start, stop, step):
         steps = []

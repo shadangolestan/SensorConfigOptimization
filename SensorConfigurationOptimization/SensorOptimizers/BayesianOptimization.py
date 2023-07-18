@@ -18,11 +18,13 @@ from openbox import Optimizer
 import CASAS.al as al
 import pickle
 from openbox import sp
+import Config as cf
 
 class Data:
     def __init__(self, sensorPositions, sensorTypes, space, epsilon):
         self.radius = 1
         self.placeHolders = sensorPositions
+
         self.sensorTypes = sensorTypes
         self.epsilon = epsilon
         self.space = space
@@ -93,7 +95,6 @@ class Data:
         sensor_config = [[configurationSummary, [tuple(configurationDetails)]], self.radius]
         return sensor_config
 
-
     def GetSensorLocations(self):
         sensorLocations = []
         for index, sensorIndicator in enumerate(self.placeHolders):
@@ -136,8 +137,6 @@ class BOVariables:
         for w in W:
             for h in H:
                 self.grid.append([w, h])
-
-        
 
     def ModelsInitializations(self, ROS):
         #----- Space and agent models -----: 
@@ -255,7 +254,7 @@ class BayesianOptimization:
                                             width = self.CONSTANTS['width'], 
                                             MaxLSSensors = self.CONSTANTS['max_LS_sensors']
                                            )
-    
+        
     def black_box_function(self, sample, simulateMotionSensors = True, simulateEstimotes = False, simulateIS = False, Plotting = False):       
         files = []
         all_sensors = set([])
@@ -292,26 +291,12 @@ class BayesianOptimization:
 
         return steps
 
-    def MakeSensorCombinations(self, start, end, epsilon, sensorType, room):
-        a1, b1 = self.makeBoundaries(epsilon, start[0], end[0])
-        a2, b2 = self.makeBoundaries(epsilon, start[1], end[1])    
-        Xs = self.frange(a1, b1, epsilon)
-        Ys = self.frange(a2, b2, epsilon)
-
-        points = list(itertools.product(list(itertools.product(Xs, Ys)), [room], [sensorType[0]])) 
-        C = itertools.combinations(points, distribution[room][types.index(sensorType)])
-
-        return C
-
-    
-    #returns the name of the sensor
     def Name(self, number, typeSensor):
         if number < 10:
           return typeSensor + str(0) + str(number)
         else:
           return typeSensor + str(number)
 
-    
     def PreProcessor(self, df):
         df['motion sensors'] = df['motion sensors'].apply(lambda s: list(map(int, s)))
         try:
@@ -441,8 +426,6 @@ class BayesianOptimization:
 
         return output_file, list(sensors)
     
-    
-    #converts epoch time to human readable
     def convertTime(self, posix_timestamp):
         tz = pytz.timezone('MST')
         dt = datetime.fromtimestamp(posix_timestamp, tz)
@@ -479,7 +462,6 @@ class BayesianOptimization:
                 
             return Ns
 
-    
     def function_to_be_optimized(self, config):
         sensorPositions = []
         sensorTypes = []
@@ -507,7 +489,6 @@ class BayesianOptimization:
                                                            self.sensor_types['model_accelerometer'] and
                                                            self.sensor_types['model_electricity_sensor']))
 
-    
     def MakeDataBoundaries(self, height = 10.5, width = 6.6, MaxLSSensors = 15):
         from collections import defaultdict, OrderedDict
 
@@ -518,89 +499,184 @@ class BayesianOptimization:
                 d['y' + str(idx)] = (0.5, height - 0.5)
 
         return d
+         
+    def filter_pivots(self, matrix):
+        # print(matrix)
+        bound = 1
+        rows = len(matrix)
+        cols = len(matrix[0])
+        selected = {}
+        blacklist = set()
+        threshold_reached = False
+
+        while not threshold_reached:
+            min_item = None
+            min_value = float('inf')
+
+            # Iterate through the matrix to find the maximum item
+            for i in range(rows):
+                for j in range(cols):
+                    if (matrix[i][j] <= min_value and
+                        ((i, j) not in blacklist) and 
+                        ((i, j) not in selected)):
+                        
+                        min_value = matrix[i][j]
+                        min_item = (i, j)
+
+            # If no more items found, restart the process from the blacklist
+            if min_item is None:
+                print('using blacklist items now...')
+                blacklist = set()
+            
+            else:
+                # Add the max_item to the selected items list
+                if min_value >= cf.cutoff_treshold:
+                    print('---- threshold_reached ----')
+                    threshold_reached = True
+                    continue
+                
+                selected[min_item] = 0
+                selected[min_item] = matrix[min_item[0]][min_item[1]]
+
+                
+                
+                # North neighbor
+                # if min_item[0] > 0:
+                #     blacklist.add((min_item[0] - 1, min_item[1]))
+
+                # South neighbor
+                # if min_item[0] < rows - 1:
+                #     blacklist.add((min_item[0] + 1, min_item[1]))
+
+                # West neighbor
+                # if min_item[1] > 0:
+                #     blacklist.add((min_item[0], min_item[1] - 1))
+
+                # East neighbor
+                # if min_item[1] < cols - 1:
+                #     blacklist.add((min_item[0], min_item[1] + 1))
+                
+                
+                # Add neighbors of max_item to the blacklist
+                for i in range(min_item[0] - bound, min_item[0] + bound + 1):
+                    for j in range(min_item[1] - bound, min_item[1] + bound + 1):
+                        if 0 <= i < rows and 0 <= j < cols:
+                            blacklist.add((i, j))
+
+        return selected
         
-    def single_function_evaluation(self, config_x, config_y):
-        sensorPositions = []
-        sensorTypes = []
-        sensor_xy = []
-        excluded = []
+    def dictionary_to_matrix(self, dictionary):
+        # Find the dimensions of the matrix
+        max_row = int(max(eval(col)[0] for col in dictionary.keys()) / cf.pivots_granularity)
+        max_col = int(max(eval(col)[1] for col in dictionary.keys()) / cf.pivots_granularity)
 
+        # Initialize the matrix with zeros
+        matrix = [[100] * (max_col + 1) for _ in range(max_row + 1)]
 
-        for i in range(len(config_x)):
-            sensor_xy.append(config_x[i] * self.CONSTANTS['epsilon'])
-            sensor_xy.append(config_y[i] * self.CONSTANTS['epsilon'])
-            sensorTypes.append(1)
-            sensorPositions.append(sensor_xy)
-            sensor_xy = []
+        # Fill in the values from the dictionary into the matrix
+        for key, value in dictionary.items():
+            col, row = eval(key)
+            matrix[int(row / cf.pivots_granularity)][int(col / cf.pivots_granularity)] = value
 
+        return matrix
+
+    def create_pivots_matrix(self):
+        self.greedy_map = dict()
+
+        Xs = self.frange(cf.pivots_granularity, np.ceil(self.BOV.space[0]) - cf.pivots_granularity, cf.pivots_granularity)
+        Ys = self.frange(cf.pivots_granularity, np.ceil(self.BOV.space[1]) - cf.pivots_granularity, cf.pivots_granularity)
         
+        
+        for x in Xs:
+            for y in Ys:
+                if (x < 2 and y < 2) and cf.testbed == 'Testbed2/':
+                    continue
 
-        data = Data(sensorPositions, sensorTypes, self.BOV.space, self.CONSTANTS['epsilon'])
+                else:
+                    sensorTypes = []
+                    sensorPosition = []
+                    sensorTypes.append(1)
+                    sensorPosition.append([x, y])
+                    data = Data(sensorPosition, sensorTypes, self.BOV.space, 1)
+                    self.greedy_map[str(sensorPosition[0])] = 0
+                    self.greedy_map[str(sensorPosition[0])] = self.black_box_function(
+                        data, 
+                        simulateMotionSensors=self.sensor_types['model_motion_sensor'], 
+                        simulateEstimotes = self.sensor_types['model_beacon_sensor'], 
+                        simulateIS = (self.sensor_types['model_pressure_sensor'] and
+                                      self.sensor_types['model_accelerometer'] and 
+                                      self.sensor_types['model_electricity_sensor']))
 
-
-        # print(sensorTypes)
-
-        return 100 - self.black_box_function(data, 
-                                             simulateMotionSensors = self.sensor_types['model_motion_sensor'],
-                                             simulateEstimotes = self.sensor_types['model_beacon_sensor'],
-                                             simulateIS = (self.sensor_types['model_pressure_sensor'] and
-                                                           self.sensor_types['model_accelerometer'] and
-                                                           self.sensor_types['model_electricity_sensor']))
-
+        return self.greedy_map
 
     def is_valid(self, sensor_placeholder):
         # This is for checking locations where placing sensors are not allowed. 
-        # TODO: the restricted area needs to be read from a config file.
 
-        if sensor_placeholder[0] <= 2 and sensor_placeholder[1] <= 2:
+        if cf.testbed == 'Testbed2/' and sensor_placeholder[0] <= 2 and sensor_placeholder[1] <= 2:
             return False
         else:
             return True
 
 
-    def BuildConfigurationSearchSpace(self, initial_state):
-        list_of_variables = []
-        if (self.LSsensorTypesNum > 0):
-            ls = []
-            for sensor_placeholder in self.BOV.grid:
-                if self.is_valid(sensor_placeholder):
-                    ls.append(str(sensor_placeholder))
+    def BuildConfigurationSearchSpace(self, initial_state, map_points_count = None, create_map = False):
+        if create_map == False:
+            list_of_variables = []
+            if (self.LSsensorTypesNum > 0):
+                ls = []
+                for sensor_placeholder in self.BOV.grid:
+                    if self.is_valid(sensor_placeholder):
+                        ls.append(str(sensor_placeholder))
 
-            for i in range(1, self.CONSTANTS['max_LS_sensors'] + 1):                
-                list_of_variables.append(sp.Categorical("ls" + str(i), ls, default_value= random.choice(ls)))
-                if self.LSsensorTypesNum > 1:
-                        list_of_variables.append(sp.Int("ls_t" + str(i), 1, self.LSsensorTypesNum, default_value=random.randint(1, self.LSsensorTypesNum)))
+                for i in range(1, self.CONSTANTS['max_LS_sensors'] + 1):                
+                    list_of_variables.append(sp.Categorical("ls" + str(i), ls, default_value= random.choice(ls)))
+                    if self.LSsensorTypesNum > 1:
+                            list_of_variables.append(sp.Int("ls_t" + str(i), 1, self.LSsensorTypesNum, default_value=random.randint(1, self.LSsensorTypesNum)))
 
-                else:
-                    list_of_variables.append(sp.Constant("ls_t" + str(i), 1))
+                    else:
+                        list_of_variables.append(sp.Constant("ls_t" + str(i), 1))
 
 
-        if (self.ISsensorTypesNum > 0):
-            for i in range(1, self.CONSTANTS['max_IS_sensors'] + 1):
-                list_of_variables.append(sp.Categorical('is' + str(i), choices = self.BOV.objects, default_value = random.choice(self.BOV.objects)))
-                if self.ISsensorTypesNum > 1:
-                    list_of_variables.append(sp.Categorical("is_t" + str(i), choices = self.is_sensor_types, default_value = random.choice(self.is_sensor_types)))
-                else:
-                    list_of_variables.append(sp.Constant("is_t" + str(i), self.is_sensor_types[0]))
+            if (self.ISsensorTypesNum > 0):
+                for i in range(1, self.CONSTANTS['max_IS_sensors'] + 1):
+                    list_of_variables.append(sp.Categorical('is' + str(i), choices = self.BOV.objects, default_value = random.choice(self.BOV.objects)))
+                    if self.ISsensorTypesNum > 1:
+                        list_of_variables.append(sp.Categorical("is_t" + str(i), choices = self.is_sensor_types, default_value = random.choice(self.is_sensor_types)))
+                    else:
+                        list_of_variables.append(sp.Constant("is_t" + str(i), self.is_sensor_types[0]))
 
-        return list_of_variables
+            return list_of_variables
+
+        elif create_map == True:
+            # print('self.sorted_greedy_map: ', self.sorted_greedy_map)
+            list_of_variables = []
+
+            for i, key in enumerate(list(self.sorted_greedy_map.keys())):
+                list_of_variables.append(sp.Categorical(str(i), list(self.sorted_greedy_map.keys()), default_value = key))
+                # list_of_variables.append(sp.Constant("ls_t" + str(i), 1))
+
+            return list_of_variables
 
     def run(self, RLBO = False):
-
         # Define Search Space
         self.space = sp.Space()
         self.RLBO = RLBO
 
+        if cf.acquisition_function == 'kg':
+            cf.info_matrix = self.create_pivots_matrix()
         
-        list_of_variables = self.BuildConfigurationSearchSpace(self.initial_state)
+        else:
+            cf.info_matrix = []
+
+        list_of_variables = self.BuildConfigurationSearchSpace(self.initial_state, map_points_count = None, create_map = False)
 
         self.space.add_variables(list_of_variables)
         history_list = []
-
+        
+        
         opt = Optimizer(
             self.function_to_be_optimized,
             self.space,
-            max_runs = self.CONSTANTS['iterations'],
+            max_runs = self.CONSTANTS['iterations'] - len(cf.info_matrix),
             acq_optimizer_type = self.acq_optimizer_type,
             acq_type = self.acquisition_function,
             surrogate_type = self.surrogate_model,

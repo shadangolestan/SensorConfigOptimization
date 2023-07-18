@@ -2,7 +2,8 @@
 
 from openbox.acquisition_function.acquisition import (
     AbstractAcquisitionFunction,
-    KG,
+    RLAF,
+    DG,
     EI,
     EIC,
     EIPS,
@@ -36,7 +37,8 @@ from openbox.acquisition_function.mc_multi_objective_acquisition import (
 
 __all__ = [
     'AbstractAcquisitionFunction',
-    'KG',
+    'RLAF',
+    'DG',
     'EI',
     'EIC',
     'EIPS',

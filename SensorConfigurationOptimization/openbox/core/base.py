@@ -5,12 +5,11 @@ from openbox.utils.constants import MAXINT, SUCCESS
 from openbox.acquisition_function import *
 from openbox.utils.util_funcs import get_types
 
-# KG('ei')
-
 
 acq_dict = {
     'ei': EI,
-    'kg': KG,
+    'dg': DG,
+    'rlaf': RLAF,
     'eips': EIPS,
     'logei': LogEI,
     'pi': PI,
@@ -59,7 +58,7 @@ def build_acq_func(func_str='ei', model=None, constraint_models=None, epsilon = 
     if acq_func is None:
         raise ValueError('Invalid string %s for acquisition function!' % func_str)
     if constraint_models is None:
-        if (func_str == 'kg'):
+        if (func_str == 'dg'):
             return acq_func(model=model, epsilon = epsilon, error = error, **kwargs)
         
         else:

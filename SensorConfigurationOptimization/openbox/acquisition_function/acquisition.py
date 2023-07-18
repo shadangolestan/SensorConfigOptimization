@@ -18,7 +18,13 @@ from openbox.utils.config_space import Configuration
 from openbox.utils.config_space.util import convert_configurations_to_array
 from openbox.surrogate.base.base_model import AbstractModel
 from openbox.surrogate.base.gp import GaussianProcess
+import Config as cf
+import numpy as np
+import ConfigSpace as CS
+from scipy.optimize import linear_sum_assignment
+import math
 
+import time
 
 
 
@@ -45,6 +51,29 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
         self.model = model
         self.logger = logging.getLogger(
             self.__module__ + "." + self.__class__.__name__)
+        
+        
+        
+        if cf.acquisition_function == 'dg':
+            self.info_map_plus = dict()
+            for key in cf.info_matrix.keys():
+                if '[' in key:
+                    loc = eval(key)
+                    self.info_map_plus[str([loc[0] - 1, loc[1] - 1])] = [cf.info_matrix[key] / 100]       
+                else:
+                    self.info_map_plus[key] = [cf.info_matrix[key] / 100]
+
+            self.present_configurations_map = dict()
+            self.absent_configurations_map = dict()
+            self.all_configurations = []
+            self.info_map_minus = dict()
+            self.info_map_contributions = dict()
+            self.limit1 = -1
+            self.limit2 = -1
+            self.flag = dict()
+            self.log = {}
+            self.expected_contribution = {}
+            self.athar = {}
 
     def update(self, **kwargs):
         """Update the acquisition functions values.
@@ -65,6 +94,50 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
         for key in kwargs:
             setattr(self, key, kwargs[key])
 
+    '''
+    def calculate_distance_matrix(self, pivots, sensors):
+        matrix = []
+        for sensor in sensors:
+            row = []
+            for pivot in pivots:
+                row.append(self.euclidean_distance(pivot, sensor))
+            matrix.append(row)
+        return matrix
+    '''
+    '''
+    def euclidean_distance(self, point1, point2):
+        x1, y1 = point1
+        x2, y2 = eval(point2)
+        x2 = x2 * cf.pivots_granularity
+        y2 = y2 * cf.pivots_granularity
+        
+        return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
+    
+    '''
+    '''
+    def solve_assignment(self, matrix):
+
+        min_distances = []
+        for row in matrix:
+            min_distances.append(min(row))
+
+        total_cost = sum(min_distances) / len(min_distances)
+            
+        #----- MORE GREEDY APPROACH:
+        # row_indices, col_indices = linear_sum_assignment(matrix)
+        # total_cost = 0
+        # for i in range(len(row_indices)):
+        #     # calculate weight based on column index
+        #     # weight = 1 / (col_indices[i] + 1)
+        #     weight = 1
+        #     total_cost += weight * matrix[row_indices[i]][col_indices[i]]
+            
+        # total_cost = total_cost / len(row_indices)
+        
+        
+        return total_cost
+    '''
+
     def __call__(self, configurations: Union[List[Configuration], np.ndarray], convert=True, **kwargs):
         """Computes the acquisition value for a given X
 
@@ -80,13 +153,322 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
         np.ndarray(N, 1)
             acquisition values for X
         """
+        
+        '''
+        def calculate_information_gain(sensor_locations, configuration_star):
+            print(sensor_locations)
+            print(configuration_star)
+            print(cf.info_matrix)
+            
+            inf_x = 0
+            for sensor in sensor_locations:
+                loc = eval(sensor)
+                inf_x += cf.info_matrix[0][1]
+                
+            inf_x_star
+            for sensor in configuration_star:
+                loc = eval(sensor)
+                inf_x_star += cf.info_matrix[0][1]
+                
+                
+        '''
 
+        import numpy as np
+        if self.long_name == 'Distribution Guided':
+            total_costs = []
+            # pivots_location = list(cf.greedy_pivots.keys())
+
+            # for config in configurations:
+            #     sensors_locations = []
+            #     for k, v in config.items():
+            #         if isinstance(v, str):
+            #             sensors_locations.append(v)
+                  
+                # distance_matrix = self.calculate_distance_matrix(X1[0: min(len(X2), len(X1))], X2[0: min(len(X2), len(X1))])
+                # distance_matrix = self.calculate_distance_matrix(pivots_location, sensors_locations)
+                # total_costs.append(self.solve_assignment(distance_matrix))
+                
+                
+            # self.total_costs = total_costs
+            # self.total_costs = np.array(self.total_costs)
+            
+
+            # calculate_information_gain(sensors_locations, cf.configuration_star)
+
+# THIS IS SHIT
+            
+            def dictionary_to_matrix(dictionary):
+                max_row = int(np.ceil(cf.space[2][0]) / cf.pivots_granularity)
+                max_col = int(np.ceil(cf.space[2][1]) / cf.pivots_granularity)
+                
+                
+                matrix = [[-1] * (max_row) for _ in range(max_col)]
+                
+                
+                for key, value in dictionary.items():
+                    col, row = eval(key)
+                    matrix[int(row / cf.pivots_granularity) - 1][int(col / cf.pivots_granularity) - 1] = np.mean(value)
+
+                return matrix
+
+            def calculate_z_i(mu_plus, mu_minus, var_plus, var_minus):
+                d = (mu_plus - mu_minus)**2 + (var_minus - var_plus) * np.log(var_minus/var_plus)
+                z_plus = (mu_plus*var_minus + np.sqrt(var_plus)*np.sqrt(var_minus) * np.sqrt(d)) / (var_minus - var_plus)
+                return z_plus
+                
+            def calculate_g_star():
+                Is = []
+                for location in cf.configuration_star:
+                    if c[key] in self.expected_contribution.keys():
+                        Is.append(self.expected_contribution[c[key]])
+                    else:
+                        Is.append(cf.info_matrix[c[key]])
+                        
+                return Is
+            
+                
+            def calcualte_I_minus(location, c):
+                Is = []
+                for key in c.keys():
+                    if key.startswith('ls') and not key.startswith('ls_t'):
+                        if not c[key] == location:
+                            if c[key] in self.expected_contribution.keys():
+                                Is.append(self.expected_contribution[c[key]])
+                            else:
+                                Is.append(cf.info_matrix[c[key]])
+                                
+                if len(Is) == 0:
+                    Is.append(cf.info_matrix[location])
+                        
+                return Is
+                
+                
+            
+#             def save_len_heatmap(heatmap_dict, name):
+#                 import numpy as np
+#                 import matplotlib.pyplot as plt
+#                 x_values = []
+#                 y_values = []
+#                 for key in heatmap_dict.keys():
+#                     x, y = eval(key)[0], eval(key)[1]
+#                     x_values.append(x)
+#                     y_values.append(y)
+
+#                 # Determine the size of the heat map
+#                 x_size = max(x_values) + 1
+#                 y_size = max(y_values) + 1
+
+#                 # Create a matrix of zeros to represent the heat map
+#                 heatmap_matrix = np.zeros((x_size, y_size))
+
+#                 # Fill the matrix with the lengths of the lists from the dictionary
+#                 for key, value in heatmap_dict.items():
+#                     x, y = eval(key)[0], eval(key)[1]
+#                     heatmap_matrix[x, y] = len(value)
+
+#                 # Plot the heat map
+#                 plt.imshow(heatmap_matrix, cmap='hot', interpolation='nearest')
+
+#                 heatmap_matrix = np.array(heatmap_matrix)
+#                 for i in range(heatmap_matrix.shape[0]):
+#                     for j in range(heatmap_matrix.shape[1]):
+#                         plt.text(j, i, '{:.2f}'.format(heatmap_matrix[i, j]), ha='center', va='center', color='blue')
+                
+#                 plt.colorbar()
+#                 plt.savefig(name)
+#                 plt.clf()
+            
+            self.S = []
+            
+            for index, c in enumerate(cf.config_advisor.history_container.configurations[len(self.all_configurations):], start=len(self.all_configurations)):
+                c = c.get_dictionary()
+                self.all_configurations.append(c)
+                    
+                for key in c.keys():
+                    if key.startswith('ls') and not key.startswith('ls_t'):
+                        if c[key] in self.info_map_plus.keys():
+                            sensor_location = c[key]
+                            sensor_initial = cf.info_matrix[sensor_location]
+                            others_locations = [value for other_key, value in c.items() if other_key != key and other_key.startswith('ls') and not other_key.startswith('ls_t')]
+                            others_initials = [cf.info_matrix[location] for location in others_locations]    
+                            coeff = sensor_initial / (sum(others_initials) + sensor_initial)
+                            inf = (100 - cf.config_advisor.history_container.perfs[index]) * coeff
+                            # 3rd 4th and 5th tabs
+                            # inf = (100 - cf.config_advisor.history_container.perfs[index]) * (sensor_initial / 100)
+                            self.info_map_plus[sensor_location].append(inf)
+                            # self.present_configurations_map[sensor_location].append(c)
+                            
+
+                        else:
+                            sensor_location = c[key]
+                            sensor_initial = cf.info_matrix[sensor_location]
+                            others_locations = [value for other_key, value in c.items() if other_key != key and other_key.startswith('ls') and not other_key.startswith('ls_t')]
+                            others_initials = [cf.info_matrix[location] for location in others_locations]    
+                            coeff = sensor_initial / (sum(others_initials) + sensor_initial)
+                            inf = (100 - cf.config_advisor.history_container.perfs[index]) * coeff
+                            # 3rd 4th and 5th tabs
+                            # inf = (100 - cf.config_advisor.history_container.perfs[index]) * (sensor_initial / 100)
+                            self.info_map_plus.update({c[key]: [inf]})
+                            # self.present_configurations_map.update({c[key]: [c]})
+
+            
+            
+
+            # for key in self.info_map_plus.keys():
+            #     mu_plus = np.mean(self.info_map_plus[key])
+            #     var_plus = np.var(self.info_map_plus[key])
+                
+
+                
+                
+                # std_plus = np.sqrt(var_plus)
+
+                
+                # z_plus = calculate_z_i(mu_plus, mu_minus, var_plus, var_minus)
+                # W = (mu_plus - z_plus) / std_plus
+                # self.info_map_contributions.update({key: (mu_plus - z_plus) * norm.cdf(W) + std_plus * norm.pdf(W)})
+                
+#                 if not key in self.flag.keys():
+#                         self.flag[key] = 0
+                
+#                 if self.info_map_contributions[key] == 0:
+#                     if self.flag[key] == 1:
+#                         self.flag[key] = 2
+                        
+#                 else:
+#                     if self.flag[key] == 0:
+#                         if self.info_map_contributions[key] > 0:
+#                             self.flag[key] = 1
+            
+#                 if not key in self.log.keys():
+#                         self.log[key] = []
+                        
+#                 key_log ={}
+#                 key_log['iteration'] = len(cf.config_advisor.history_container.perfs)
+#                 key_log['key']=str(key)
+#                 key_log['mu_plus - z_plus']= mu_plus - z_plus
+#                 key_log['W'] =W
+#                 key_log['norm.cdf(W)'] =norm.cdf(W)
+#                 key_log['norm.pdf(W)'] =norm.pdf(W)
+#                 key_log['mu_plus'] =mu_plus
+#                 key_log['mu_minus'] =mu_minus
+#                 key_log['var_plus'] =var_plus
+#                 key_log['var_minus'] =var_minus
+#                 key_log['self.info_map_plus[key]'] = self.info_map_plus[key]
+#                 try:
+#                     key_log['self.info_map_minus[key]'] = self.info_map_minus[key]
+#                 except:
+#                     key_log['self.info_map_minus[key]'] = []
+                
+#                 self.log[key].append(key_log)
+                
+                
+           
+                            
+            ''' 
+            #------------- ATHAR'S SUGGESTION:
+            self.S = []
+            for index, c in enumerate(configurations):
+                c = c.get_dictionary()
+                S_sensors = []
+                
+                for key in c.keys():
+                    if key.startswith('ls') and not key.startswith('ls_t'):
+                        sensor_location = c[key]
+                
+                        if sensor_location in self.info_map_plus.keys():
+                            performance = np.mean(self.info_map_plus[sensor_location]) / cf.LSsensorsNum
+                            performance += cf.info_matrix[sensor_location]
+                            self.athar[sensor_location] = performance
+                            S_sensors.append(performance)
+                
+                        else:
+                            S_sensors.append(cf.info_matrix[sensor_location])
+                            self.athar[sensor_location] = cf.info_matrix[sensor_location]
+                
+            
+            self.S.append(np.mean(S_sensors) * cf.LSsensorsNum)
+            self.expected_contribution = self.athar
+            '''    
+                
+            for index, c in enumerate(configurations):
+                seen_locations = []
+                S_sensors = []
+                c = c.get_dictionary()
+
+                for key in c.keys():
+                    if key.startswith('ls') and not key.startswith('ls_t'):
+                        sensor_location = c[key]
+                        
+                        if sensor_location in seen_locations:
+                            S_sensors.append(0)
+                            continue
+                            
+                        seen_locations.append(sensor_location)
+                        
+                        if sensor_location in self.info_map_plus.keys():
+                            if len(np.unique(self.info_map_plus[sensor_location])) > 1:
+                                
+                                normalized_info = self.info_map_plus[sensor_location]
+                                
+                                mu_plus = np.mean(normalized_info)
+                                var_plus = np.var(normalized_info)      
+                                std_plus = np.sqrt(var_plus)
+                                Is = calculate_g_star()
+                                # Is = calcualte_I_minus(sensor_location, c)
+                                G_star = np.mean(Is)
+
+
+                                W = (mu_plus - G_star) / std_plus
+                                sensor_contribution = (mu_plus - G_star) * norm.cdf(W) + std_plus * norm.pdf(W)
+
+                                self.expected_contribution[sensor_location] = sensor_contribution
+                                S_sensors.append(sensor_contribution)
+
+                            else:
+                                S_sensors.append(cf.info_matrix[sensor_location])
+
+                        else:
+                            S_sensors.append(cf.info_matrix[sensor_location])
+
+                self.S.append(np.mean(S_sensors) / 100)
+                
+            self.S = np.array(self.S).reshape(-1, 1)
+            
+
+            
+            '''
+            M = dictionary_to_matrix(self.expected_contribution)
+
+            import os.path
+            file_name = str(len(cf.config_advisor.history_container.configurations)) + '.png'
+
+            if not os.path.isfile(file_name):
+                import numpy as np
+                import matplotlib.pyplot as plt
+
+                plt.imshow(M, cmap='hot', interpolation='nearest')
+                M = np.array(M)
+                for i in range(M.shape[0]):
+                    for j in range(M.shape[1]):
+                        plt.text(j, i, '{:.2f}'.format(M[i, j]), ha='center', va='center', color='blue')
+
+                plt.colorbar()
+                plt.savefig(file_name)
+                plt.clf()  
+                
+            '''
+
+        # THIS SHIT IS FINISHED
+            
+            
         if convert:
             X = convert_configurations_to_array(configurations)
         else:
             X = configurations  # to be compatible with multi-objective acq to call single acq
         if len(X.shape) == 1:
             X = X[np.newaxis, :]
+
 
         acq = self._compute(X, **kwargs)
         if np.any(np.isnan(acq)):
@@ -115,7 +497,7 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
         raise NotImplementedError()
 
 
-class KG(AbstractAcquisitionFunction):
+class RLAF(AbstractAcquisitionFunction):
     r"""Computes for a given x the expected improvement as
     acquisition value.
 
@@ -148,8 +530,8 @@ class KG(AbstractAcquisitionFunction):
                     "Must specify `num_fantasies`."
                 )
         
-        super(KG, self).__init__(model)
-        self.long_name = 'Knowledge Gradient'
+        super(RLAF, self).__init__(model)
+        self.long_name = 'Reinforcement Learning-assisted Acquisition Function'
         self.par = par
         self.num_fantasies = num_fantasies
         self.eta = None
@@ -247,9 +629,72 @@ class KG(AbstractAcquisitionFunction):
         return f
 
 
+class DG(AbstractAcquisitionFunction):
+    r"""Computes for a given x the expected improvement as
+    acquisition value.
+
+    :math:`EI(X) := \mathbb{E}\left[ \max\{0, f(\mathbf{X^+}) - f_{t+1}(\mathbf{X}) - \xi \} \right]`,
+    with :math:`f(X^+)` as the incumbent.
+    """
+
+    def __init__(self,
+                 model: AbstractModel,
+                 par: float = 0.0,
+                 num_fantasies: int = 64,
+                 epsilon = 1,
+                 error = 0.25,
+                 **kwargs):
+        
+        """Constructor
+
+        Parameters
+        ----------
+        model : AbstractEPM
+            A surrogate that implements at least
+                 - predict_marginalized_over_instances(X)
+        par : float, default=0.0
+            Controls the balance between exploration and exploitation of the
+            acquisition function.
+        """
+        
+        if num_fantasies is None:
+                raise ValueError(
+                    "Must specify `num_fantasies`."
+                )
+        
+        super(DG, self).__init__(model)
+        self.long_name = 'Distribution Guided'
+        self.par = par
+        self.num_fantasies = num_fantasies
+        self.eta = None
+        self.epsilon = epsilon
+        self.error = error
+        self.iteration = 0
+        self.rl_action = None
+        self.d = 0.5
+        # Generate K random points within a hypercube of side length 2d centered at X
+        self.K = 1000
+        self.n_features = 10
+        self.guide = 1
+
+        # TODO:        
+        # config = CS.Configuration(cf.config_space, values = cf.sorted_greedy_map.keys())
+        
+
+        # X = convert_configurations_to_array(cf.sorted_greedy_map)
+
+    def get_variance(self):
+        return self.s
     
-    # KNOWLEDGE GRADIENT AQCUISITION FUNCTION FUNCTIONS:
-    '''
+    def get_means(self):
+        return self.m
+
+    def get_incumbent_value(self):
+        return self.eta
+
+    def set_rl_action(self, action):
+        self.rl_action = action
+
     def sigma_neighbours(self, x):    
         import ast    
         num_sensors = int(len(x))
@@ -295,9 +740,87 @@ class KG(AbstractAcquisitionFunction):
             
         return steps
     
+    def find_neighbors(self, X, d, k, candidates):
+        """
+        Finds k-nearest neighbors of a query point X whose distances are less than or equal to d.
+        
+        Args:
+            X (numpy.ndarray): Query point of shape (n_features,)
+            d (float): Maximum distance threshold
+            k (int): Number of nearest neighbors to return
+            candidates (numpy.ndarray): Candidate neighbors of shape (n_samples, n_features)
+            
+        Returns:
+            numpy.ndarray: Indices of the k-nearest neighbors whose distances are less than or equal to d
+        """
+        # Compute pairwise Euclidean distances between query point and candidate neighbors
+        from scipy.spatial.distance import cdist
 
+        # print('the query point is:', X)
+        # print('The candidates are:', candidates)
+
+        dists = cdist(X.reshape(1, -1), candidates, metric='euclidean')
+        
+        # print('d: ', d)
+        # print('len dists are: ', len(dists))
+        
+
+        # Get indices of neighbors whose distances are less than or equal to d
+        neighbors = np.where(dists <= d)[1]
+
+        # print('len neighbors: ', len(neighbors))
+        
+        # Sort neighbors by distance and return the k-nearest neighbors
+        
+        neighbors_indices_sorted = neighbors[np.argsort(dists[0, neighbors])][:k]
+        dist_of_neighbors = dists[0][neighbors_indices_sorted]
+        weights = np.exp(-dist_of_neighbors / d)
+        # weights /= np.sum(weights)  # Normalize weights to sum to 1
+
+        return candidates[neighbors_indices_sorted], weights
+
+    def get_neighbors_info(self, index):
+        return self.neighbors_info[index]
+    
+    def plug_in_config(self, configurations: Union[List[Configuration], np.ndarray], convert=True, **kwargs):
+        """Computes the DG acquisition value for a given X
+
+        Parameters
+        ----------
+        configurations : list
+            The configurations where the acquisition function
+            should be evaluated.
+        convert : bool
+
+        Returns
+        -------
+        np.ndarray(N, 1)
+            DG acquisition values for X
+        """
+
+        if convert:
+            X = convert_configurations_to_array(configurations)
+        else:
+            X = configurations  # to be compatible with multi-objective acq to call single acq
+        if len(X.shape) == 1:
+            X = X[np.newaxis, :]
+
+        
+
+        acq = self._compute(X, **kwargs)
+        if np.any(np.isnan(acq)):
+            idx = np.where(np.isnan(acq))[0]
+            acq[idx, :] = -np.finfo(np.float).max
+        return acq
+
+    def attention_function(self, time, cut_off = 100):        
+        if time <= cut_off:
+            return np.exp((time / cut_off) * np.log(2)) - 1  # Exponential growth phase
+        else:
+            return np.exp(-(time - cut_off) / 100)  # Exponential decay phase
+    
     def _compute(self, X: np.ndarray, **kwargs):
-        """Computes the KG value and its derivatives.
+        """Computes the DG value and its derivatives.
 
         Parameters
         ----------
@@ -311,64 +834,99 @@ class KG(AbstractAcquisitionFunction):
         np.ndarray(N, 1)
             Expected Improvement of X
         """
-
-        # TODO: New acquisition function definition:
-        self.placeHolders = []
-        Xs = self.frange(self.epsilon, 8, self.epsilon)
-        Ys = self.frange(self.epsilon, 8, self.epsilon)
         
-        for x in Xs:
-          for y in Ys:
-            self.placeHolders.append([x, y])
-
         if len(X.shape) == 1:
             X = X[:, np.newaxis]
+
         
-        error = self.error
-
-        def gradient_analysis(x):
-            Ns = self.sigma_neighbours(x)
-            m_ngbrs, v_ngbrs = self.model.predict_marginalized_over_instances(np.asarray(Ns))
-            s_ngbrs = np.sqrt(v_ngbrs)
-            m_c, v_c = self.model.predict_marginalized_over_instances(np.asarray([x]))
-            s_c = np.sqrt(v_c)
-            sigma = 0 
-
-            for ind, f_i in enumerate(m_ngbrs):
-                sigma += np.abs(f_i - m_c[0])
-                # s_c += s_ngbrs[ind]
-                
-            neighbors_performance = sigma / len(m_ngbrs)
-            # s_c = s_c / (len(m_ngbrs) + 1)
-
-            # M = m_c / (1 + neighbors_performance)
-            # f.append(list(norm.cdf((self.eta - M - self.par) / s_c)[0]))
+        def greedy_map_analysis(X):
+            import numpy as np
+            m, v = self.model.predict_marginalized_over_instances(X)
+            s = np.sqrt(v)
             
-            
-            lmda = self.lmda / 1000
+            E_I_plus = self.S
+            EI = calculate_distance_alpha(m, s, E_I_plus)
 
-            alpha_c = calculate_alpha(m_c, s_c) / (lmda * neighbors_performance + 1)
+            self.guide = self.attention_function(cf.iteration_id)
+
+            # third tab
+            # alpha_c = self.guide * E_I_plus   +   (1 - self.guide) * EI
+            
+            # four-th tab
+            # alpha_c = EI
+            
+            # fifth tab
+            alpha_c = self.guide * E_I_plus   +   (1 - self.guide) * EI
+
             return alpha_c
 
+        '''
+        def gradient_analysis(x, n, w):
+            m_ngbrs, v_ngbrs = self.model.predict_marginalized_over_instances(np.asarray(n))
+            s_ngbrs = np.sqrt(v_ngbrs)
+            neighbors_performance = w.reshape(-1, 1) * s_ngbrs
+
+            m_c, v_c = self.model.predict_marginalized_over_instances(np.asarray([x]))
+            s_c = np.sqrt(v_c)
+
+
+            neighbors_performance = np.std(neighbors_performance)
+            self.neighbors_info.append(neighbors_performance)
+
+
+            if cf.gradient_fantacy:
+                alpha_c = calculate_alpha(m_c, s_c) / self.total_costs
+
+            else:
+                alpha_c = calculate_alpha(m_c, s_c)
+
+            return alpha_c
+        '''
+        
+        def calculate_distance_alpha(MUs, STDs, E_I_plus):            
+            m = MUs
+            s = STDs
+            z = (self.eta - m - self.par) / s
+            # third tab
+            # result = (self.eta - m - self.par)*norm.cdf(z) + s*norm.pdf(z)
+            
+            # four-th and fifth tab
+            result = (self.eta - m - self.par)*E_I_plus* norm.cdf(z) + s *E_I_plus* norm.pdf(z)
+            return result
+        
         def calculate_alpha(MUs, STDs):
             m = MUs
             s = STDs
             z = (self.eta - m - self.par) / s
             result = (self.eta - m - self.par) * norm.cdf(z) + s * norm.pdf(z)
-            return result[0]
+            return result
+
+        # neighbors = []
+        # weights = []
         
-        f = list(map(gradient_analysis, X))
+        # for x in X:
+        #     self.n_features = x.shape[0]
+        #     candidates = x.reshape(1, -1) + (np.random.rand(self.K, self.n_features) - 0.5) * self.d
+        #     x_neighbors, x_weights = self.find_neighbors(x, self.d + 1, self.K, candidates)
+        #     neighbors.append(x_neighbors)
+        #     weights.append(x_weights)
+
+        # self.neighbors_info = []
+        # f = map(gradient_analysis, X, neighbors, weights)
+
+        f = greedy_map_analysis(X)
+
+        # f = list(f)
 
         if (np.asarray(f) < 0).any():
             raise ValueError(
                 "Expected Improvement is smaller than 0 for at least one "
                 "sample.")
 
-        f = np.asarray(f)
+        # f = np.asarray(f)
 
         return f
-    '''
-        
+       
         
 class EI(AbstractAcquisitionFunction):
     r"""Computes for a given x the expected improvement as
@@ -429,7 +987,6 @@ class EI(AbstractAcquisitionFunction):
                              'about the current best value.')
 
         def calculate_f():
-            
             z = (self.eta - m - self.par) / s
             return (self.eta - m - self.par) * norm.cdf(z) + s * norm.pdf(z)
 

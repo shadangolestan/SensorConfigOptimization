@@ -172,10 +172,6 @@ def update_observation(request):
 
             config_advisor.save_history()
 
-            print('-' * 21)
-            print('Update observation')
-            print(observation)
-            print('-' * 21)
             return JsonResponse({'code': 1, 'msg': 'SUCCESS'})
         else:
             return JsonResponse({'code': 0, 'msg': 'Empty post data'})

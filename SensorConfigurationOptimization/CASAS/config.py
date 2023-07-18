@@ -57,14 +57,22 @@ class Config:
                                
         '''
         
+        # self.activitynames = []
+        # REAL WORLD EXPERIMENT
+        # self.activitynames = ['Walking', 'Meal_Preparation', 'Bed_to_Toilet', 'Relax', 'Eating', 'Wash_Dishes', 'Sleeping', 'Housekeeping', 'Work']
         self.activitynames = []
-        
+
         #['Phone', 'Wash_hands', 'Cook', 'Eat', 'Clean']
         self.current_seconds_of_day = 0
         self.current_timestamp = 0
         self.day_of_week = 0
         self.dominant = 0
-        self.sensornames = ['M09', 'M04', 'M12', 'M01', 'M03', 'M10', 'M06', 'M00', 'M07', 'M05', 'M11', 'M02', 'M08'] 
+
+        self.sensornames = []
+        # self.sensornames = ['M09', 'M04', 'M12', 'M01', 'M03', 'M10', 'M06', 'M00', 'M07', 'M05', 'M11', 'M02', 'M08'] 
+        # REAL WORLD EXPERIMENT
+        
+
         #['M00', 'M01', 'M02', 'M03', 'M04', 'M05', 'M06', 'M07', 'M08', 'M09', 'M10', 'M11', 'M12', 'M13',
                             #'B00', 'B01', 'B02', 'B03', 'B04', 'B05', 'B06', 'B07', 'B08', 'B09', 'B10', 'B11', 'B12', 'B13']
 

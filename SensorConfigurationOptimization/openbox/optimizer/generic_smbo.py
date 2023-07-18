@@ -38,7 +38,7 @@ class SMBO(BOBase):
         Objective function to optimize.
     config_space : openbox.space.Space
         Configuration space.
-    num_constraints : int
+    # num_constraints : int
         Number of constraints in objective function.
     num_objs : int
         Number of objectives in objective function.
@@ -408,6 +408,7 @@ class SMBO(BOBase):
             
             runtime = time.time() - start_time
             self.budget_left -= runtime
+            
     
             states.append(state)
             rewards.append(reward)
@@ -423,6 +424,7 @@ class SMBO(BOBase):
         from csv import writer
 
         for _ in tqdm(range(self.iteration_id, self.max_iterations)):
+            cf.iteration_id = self.iteration_id
             if self.budget_left < 0:
                 self.logger.info('Time %f elapsed!' % self.runtime_limit)
                 break
@@ -432,11 +434,17 @@ class SMBO(BOBase):
 
             runtime = time.time() - start_time
             self.budget_left -= runtime
+            
+            
+            
         return self.get_history()
 
     def iterate(self, budget_left=None, RLBO = False, rl_action = None):
         # get configuration suggestion from advisor
 
+        
+        cf.config_advisor = self.config_advisor
+        
         # TODO: HERE I SHOULD ADD RL ACTIONS
         if not rl_action == None:
             # self.env.s = self.config_advisor.get_variance()
@@ -482,6 +490,9 @@ class SMBO(BOBase):
                 config=config, objs=objs, constraints=constraints,
                 trial_state=trial_state, elapsed_time=elapsed_time,
             )
+
+            
+
             if _time_limit_per_trial != self.time_limit_per_trial and trial_state == TIMEOUT:
                 # Timeout in the last iteration.
                 pass
