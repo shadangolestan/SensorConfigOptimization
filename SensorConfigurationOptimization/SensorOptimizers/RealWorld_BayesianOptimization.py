@@ -242,6 +242,7 @@ class BayesianOptimization:
 
         data = data.replace('\t', ' ')
         converted_data = []
+        finalized_data = []
         # activity_map = {}
         
         current_activity = ''
@@ -264,16 +265,21 @@ class BayesianOptimization:
 
                 elif activity.endswith('end'):
                     converted_data.append((timestamp, sensor_name, current_activity))
-                    current_activity = 'Walking'
+                    current_activity = 'None'
 
                 else:
                     converted_data.append((timestamp, sensor_name, current_activity))
 
+        for row in converted_data:
+            if not 'None' in row:
+                finalized_data.append(row)
+
+
         with open('RealWorldDataset/aruba/data_2.txt', 'w') as file:
-            for item in converted_data:
+            for item in finalized_data:
                 file.write(str(item) + '\n')
 
-        return converted_data
+        return finalized_data
 
     def BuildConfigurationSearchSpace(self, initial_state, map_points_count = None):
         list_of_variables = []

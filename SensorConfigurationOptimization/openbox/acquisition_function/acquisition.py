@@ -265,27 +265,27 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
             
 
             
-            '''
-            M = dictionary_to_matrix(self.expected_contribution)
+            if cf.testbed != 'aruba' and False:
+                M = dictionary_to_matrix(self.expected_contribution)
 
-            import os.path
-            file_name = str(len(cf.config_advisor.history_container.configurations)) + '.png'
+                import os.path
+                file_name = str(len(cf.config_advisor.history_container.configurations)) + '.png'
 
-            if not os.path.isfile(file_name):
-                import numpy as np
-                import matplotlib.pyplot as plt
+                if not os.path.isfile(file_name):
+                    import numpy as np
+                    import matplotlib.pyplot as plt
 
-                plt.imshow(M, cmap='hot', interpolation='nearest')
-                M = np.array(M)
-                for i in range(M.shape[0]):
-                    for j in range(M.shape[1]):
-                        plt.text(j, i, '{:.2f}'.format(M[i, j]), ha='center', va='center', color='blue')
+                    plt.imshow(M, cmap='hot', interpolation='nearest')
+                    M = np.array(M)
+                    for i in range(M.shape[0]):
+                        for j in range(M.shape[1]):
+                            plt.text(j, i, '{:.2f}'.format(M[i, j]), ha='center', va='center', color='blue')
 
-                plt.colorbar()
-                plt.savefig(file_name)
-                plt.clf()  
-                
-            '''
+                    plt.colorbar()
+                    plt.savefig(file_name)
+                    plt.clf()  
+                    
+            
             
             
         if convert:
@@ -639,7 +639,7 @@ class DG(AbstractAcquisitionFunction):
             acq[idx, :] = -np.finfo(np.float).max
         return acq
 
-    def attention_function(self, time, cut_off = 100):        
+    def attention_function(self, time, cut_off = 400):        
         if time <= cut_off:
             return np.exp((time / cut_off) * np.log(2)) - 1  # Exponential growth phase
         else:
@@ -674,7 +674,7 @@ class DG(AbstractAcquisitionFunction):
             EI = calculate_distance_alpha(m, s, E_I_plus)
 
             self.guide = self.attention_function(cf.iteration_id)
-
+            self.guide = 0.0
             # third tab
             # alpha_c = self.guide * E_I_plus   +   (1 - self.guide) * EI
             
