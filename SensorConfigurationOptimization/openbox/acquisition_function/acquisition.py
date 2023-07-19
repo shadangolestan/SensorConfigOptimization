@@ -94,50 +94,6 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
         for key in kwargs:
             setattr(self, key, kwargs[key])
 
-    '''
-    def calculate_distance_matrix(self, pivots, sensors):
-        matrix = []
-        for sensor in sensors:
-            row = []
-            for pivot in pivots:
-                row.append(self.euclidean_distance(pivot, sensor))
-            matrix.append(row)
-        return matrix
-    '''
-    '''
-    def euclidean_distance(self, point1, point2):
-        x1, y1 = point1
-        x2, y2 = eval(point2)
-        x2 = x2 * cf.pivots_granularity
-        y2 = y2 * cf.pivots_granularity
-        
-        return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
-    
-    '''
-    '''
-    def solve_assignment(self, matrix):
-
-        min_distances = []
-        for row in matrix:
-            min_distances.append(min(row))
-
-        total_cost = sum(min_distances) / len(min_distances)
-            
-        #----- MORE GREEDY APPROACH:
-        # row_indices, col_indices = linear_sum_assignment(matrix)
-        # total_cost = 0
-        # for i in range(len(row_indices)):
-        #     # calculate weight based on column index
-        #     # weight = 1 / (col_indices[i] + 1)
-        #     weight = 1
-        #     total_cost += weight * matrix[row_indices[i]][col_indices[i]]
-            
-        # total_cost = total_cost / len(row_indices)
-        
-        
-        return total_cost
-    '''
-
     def __call__(self, configurations: Union[List[Configuration], np.ndarray], convert=True, **kwargs):
         """Computes the acquisition value for a given X
 
@@ -171,20 +127,15 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
                     matrix[int(row / cf.pivots_granularity) - 1][int(col / cf.pivots_granularity) - 1] = np.mean(value)
 
                 return matrix
-
-            def calculate_z_i(mu_plus, mu_minus, var_plus, var_minus):
-                d = (mu_plus - mu_minus)**2 + (var_minus - var_plus) * np.log(var_minus/var_plus)
-                z_plus = (mu_plus*var_minus + np.sqrt(var_plus)*np.sqrt(var_minus) * np.sqrt(d)) / (var_minus - var_plus)
-                return z_plus
                 
             def calculate_g_star():
                 Is = []
                 for location in cf.configuration_star:
-                    if c[key] in self.expected_contribution.keys():
-                        Is.append(self.expected_contribution[c[key]])
+                    if location in self.expected_contribution.keys():
+                        Is.append(self.expected_contribution[location])
                     else:
-                        Is.append(cf.info_matrix[c[key]])
-                        
+                        Is.append(cf.info_matrix[location])
+                
                 return Is
             
             
@@ -265,7 +216,7 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
             
 
             
-            if cf.testbed != 'aruba' and False:
+            if cf.testbed != 'aruba/':
                 M = dictionary_to_matrix(self.expected_contribution)
 
                 import os.path
@@ -639,7 +590,7 @@ class DG(AbstractAcquisitionFunction):
             acq[idx, :] = -np.finfo(np.float).max
         return acq
 
-    def attention_function(self, time, cut_off = 400):        
+    def attention_function(self, time, cut_off = 100):        
         if time <= cut_off:
             return np.exp((time / cut_off) * np.log(2)) - 1  # Exponential growth phase
         else:

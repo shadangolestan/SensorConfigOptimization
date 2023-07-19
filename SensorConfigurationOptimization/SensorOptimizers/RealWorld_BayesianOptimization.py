@@ -224,7 +224,7 @@ class BayesianOptimization:
         
         first_five = {k: day_data[k] for k in list(day_data)[:30]}
 
-        return first_five
+        return day_data
 
     def get_unique_activities(self, data):
         unique_activities = set()
