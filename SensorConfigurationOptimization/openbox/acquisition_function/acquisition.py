@@ -129,14 +129,26 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
                 return matrix
                 
             def calculate_g_star():
-                Is = []
-                for location in cf.configuration_star:
-                    if location in self.expected_contribution.keys():
-                        Is.append(self.expected_contribution[location])
+                
+
+                # LAST TAB:
+                Is = [] 
+                for loc in cf.configuration_star:
+                    if loc in self.expected_contribution.keys():
+                        Is.append(self.expected_contribution[loc])
                     else:
-                        Is.append(cf.info_matrix[location])
+                        Is.append(cf.info_matrix[loc])
                 
                 return Is
+                '''
+                Is = []    
+                if c[key] in self.expected_contribution.keys():
+                    Is.append(self.expected_contribution[c[key]])
+                else:
+                    Is.append(cf.info_matrix[c[key]])
+            
+                return Is
+                '''
             
             
             self.S = []
@@ -191,8 +203,10 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
                                 
                                 normalized_info = self.info_map_plus[sensor_location]
                                 
-                                mu_plus = np.mean(normalized_info)
-                                var_plus = np.var(normalized_info)      
+                                # mu_plus = np.mean(normalized_info)
+                                mu_plus = self.calculate_weighted_average(normalized_info)
+                                # var_plus = np.var(normalized_info)      
+                                var_plus = self.calculate_weighted_variance(normalized_info, mu_plus)
                                 std_plus = np.sqrt(var_plus)
                                 Is = calculate_g_star()
                                 G_star = np.mean(Is)
@@ -215,7 +229,7 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
             self.S = np.array(self.S).reshape(-1, 1)
             
 
-            
+            '''
             if cf.testbed != 'aruba/':
                 M = dictionary_to_matrix(self.expected_contribution)
 
@@ -235,7 +249,7 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
                     plt.colorbar()
                     plt.savefig(file_name)
                     plt.clf()  
-                    
+            '''       
             
             
             
@@ -252,6 +266,26 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
             idx = np.where(np.isnan(acq))[0]
             acq[idx, :] = -np.finfo(np.float).max
         return acq
+
+    def calculate_weighted_variance(self, numbers, avg):
+        if not numbers or len(numbers) == 0:
+            return None
+
+        weighted_average = avg
+        sum_of_weights = sum(range(len(numbers)))
+
+        weighted_variance_sum = sum(i * (num - weighted_average)**2 for i, num in enumerate(numbers))
+
+        return weighted_variance_sum / sum_of_weights
+
+    def calculate_weighted_average(self, numbers):
+        if not numbers or len(numbers) == 0:
+            return None
+
+        weighted_sum = sum(i * num for i, num in enumerate(numbers))
+        sum_of_indices = sum(range(len(numbers)))
+
+        return weighted_sum / sum_of_indices
 
     @abc.abstractmethod
     def _compute(self, X: np.ndarray, **kwargs):
@@ -622,53 +656,27 @@ class DG(AbstractAcquisitionFunction):
             s = np.sqrt(v)
             
             E_I_plus = self.S
+            self.guide = self.attention_function(cf.iteration_id)
+
+            self.guide = 0.5
+
             EI = calculate_distance_alpha(m, s, E_I_plus)
 
-            self.guide = self.attention_function(cf.iteration_id)
-            self.guide = 0.0
-            # third tab
-            # alpha_c = self.guide * E_I_plus   +   (1 - self.guide) * EI
-            
-            # four-th tab
-            # alpha_c = EI
-            
-            # fifth tab
             alpha_c = self.guide * E_I_plus   +   (1 - self.guide) * EI
 
-            return alpha_c
 
-        '''
-        def gradient_analysis(x, n, w):
-            m_ngbrs, v_ngbrs = self.model.predict_marginalized_over_instances(np.asarray(n))
-            s_ngbrs = np.sqrt(v_ngbrs)
-            neighbors_performance = w.reshape(-1, 1) * s_ngbrs
-
-            m_c, v_c = self.model.predict_marginalized_over_instances(np.asarray([x]))
-            s_c = np.sqrt(v_c)
-
-
-            neighbors_performance = np.std(neighbors_performance)
-            self.neighbors_info.append(neighbors_performance)
-
-
-            if cf.gradient_fantacy:
-                alpha_c = calculate_alpha(m_c, s_c) / self.total_costs
-
-            else:
-                alpha_c = calculate_alpha(m_c, s_c)
+            # alpha_c = self.guide * E_I_plus + EI 
 
             return alpha_c
-        '''
+
         
         def calculate_distance_alpha(MUs, STDs, E_I_plus):            
             m = MUs
             s = STDs
             z = (self.eta - m - self.par) / s
-            # third tab
-            # result = (self.eta - m - self.par)*norm.cdf(z) + s*norm.pdf(z)
-            
-            # four-th and fifth tab
-            result = (self.eta - m - self.par)*E_I_plus* norm.cdf(z) + s *E_I_plus* norm.pdf(z)
+            result = (self.eta - m - self.par)* norm.cdf(z) + s * norm.pdf(z)
+            # result = (self.eta - m - self.par)*E_I_plus* norm.cdf(z) + s *E_I_plus* norm.pdf(z)
+            # result = (self.eta - m - self.par)*(E_I_plus/((1-self.guide) * E_I_plus + self.guide))* norm.cdf(z) + s *(E_I_plus/((1-self.guide) * E_I_plus + self.guide))* norm.pdf(z)
             return result
         
         def calculate_alpha(MUs, STDs):
