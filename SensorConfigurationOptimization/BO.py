@@ -5,7 +5,7 @@ import Config as cf
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 5:
+    if len(sys.argv) != 6:
         print('Please provide:',
               '\n \t testbed name: testbed= (Testbed1, Testbed2, aruba (this is a realworld dataset))',
               '\n \t acquisition function name: acq_func= (ei, dg (our method))',
@@ -22,6 +22,7 @@ if __name__ == "__main__":
     cf.acquisition_function = sys.argv[2].split('=')[-1]
     cf.LSsensorsNum = int(sys.argv[3].split('=')[-1])
     cf.epsilon = float(sys.argv[4].split('=')[-1])
+    i=int(sys.argv[5].split('=')[-1])
 
     print('----- Running BO with: \n \t - epsilon (not effective for aruba): ', cf.epsilon, 
         '\n \t - testbed:', cf.testbed,
@@ -31,23 +32,23 @@ if __name__ == "__main__":
         '\n \t - gradient analysis: ', cf.gradient_fantacy,
         ' \n \t - AF: ', cf.acquisition_function)
 
-    for i in range(0, 5):
-        BO = bo.BayesianOptimization(testbed = cf.testbed,
-                                    iteration = cf.bo_iteration, 
-                                    epsilon = cf.epsilon, 
-                                    error = cf.error,
-                                    ROS = True, 
-                                    LSmaxSensorNum = cf.LSsensorsNum,
-                                    ISmaxSensorNum = cf.ISsensorsNum, 
-                                    initial_state = cf.initial_state,
-                                    input_sensor_types = cf.sensor_types,
-                                    acquisition_function = cf.acquisition_function,
-                                    surrogate_model = cf.surrogate_model,
-                                    acq_optimizer_type = cf.acq_optimizer_type)
+    # for i in range(0, 5):
+    BO = bo.BayesianOptimization(testbed = cf.testbed,
+                                iteration = cf.bo_iteration, 
+                                epsilon = cf.epsilon, 
+                                error = cf.error,
+                                ROS = True, 
+                                LSmaxSensorNum = cf.LSsensorsNum,
+                                ISmaxSensorNum = cf.ISsensorsNum, 
+                                initial_state = cf.initial_state,
+                                input_sensor_types = cf.sensor_types,
+                                acquisition_function = cf.acquisition_function,
+                                surrogate_model = cf.surrogate_model,
+                                acq_optimizer_type = cf.acq_optimizer_type)
 
-        history = BO.run()
+    history = BO.run()
 
-        with open('Results_BO/history(' + 'Method_' + cf.acquisition_function + '_LS' + str(cf.LSsensorsNum) + ')_' + str(i), 'wb') as handle:
-            pickle.dump(history, handle, protocol=pickle.HIGHEST_PROTOCOL)
-                
-        print(history)
+    with open('Results_BO/history(' + 'Method_' + cf.acquisition_function + '_LS' + str(cf.LSsensorsNum) + ')_' + str(i), 'wb') as handle:
+        pickle.dump(history, handle, protocol=pickle.HIGHEST_PROTOCOL)
+            
+    print(history)
