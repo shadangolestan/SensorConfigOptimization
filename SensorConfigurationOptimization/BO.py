@@ -5,8 +5,12 @@ import Config as cf
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
-        print('Please provide: \n \t testbed name: testbed= (Testbed1, Testbed2, aruba (this is a realworld dataset)) \n \t acquisition function name: acq_func= (ei, dg (our method)) \n \t number of sensors: sensor#=')
+    if len(sys.argv) != 5:
+        print('Please provide:',
+              '\n \t testbed name: testbed= (Testbed1, Testbed2, aruba (this is a realworld dataset))',
+              '\n \t acquisition function name: acq_func= (ei, dg (our method))',
+              '\n \t number of sensors: sensor#=',
+              '\n \t epsilon (0.25, 0.5, 1): epsilon=')
         sys.exit(1)
 
     if sys.argv[1].split('=')[-1] != 'aruba':
@@ -17,8 +21,7 @@ if __name__ == "__main__":
     cf.testbed = (sys.argv[1].split('=')[-1] + '/').replace(' ', '')
     cf.acquisition_function = sys.argv[2].split('=')[-1]
     cf.LSsensorsNum = int(sys.argv[3].split('=')[-1])
-    
-
+    cf.epsilon = float(sys.argv[4].split('=')[-1])
 
     print('----- Running BO with: \n \t - epsilon (not effective for aruba): ', cf.epsilon, 
         '\n \t - testbed:', cf.testbed,
@@ -28,7 +31,7 @@ if __name__ == "__main__":
         '\n \t - gradient analysis: ', cf.gradient_fantacy,
         ' \n \t - AF: ', cf.acquisition_function)
 
-    for i in range(0, 1):
+    for i in range(0, 5):
         BO = bo.BayesianOptimization(testbed = cf.testbed,
                                     iteration = cf.bo_iteration, 
                                     epsilon = cf.epsilon, 

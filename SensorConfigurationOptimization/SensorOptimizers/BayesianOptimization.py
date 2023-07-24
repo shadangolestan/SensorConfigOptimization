@@ -580,12 +580,71 @@ class BayesianOptimization:
 
         return matrix
 
+    def expand_matrix(self, matrix, n, step=1):
+        expanded_matrix = {}
+
+        for key, value in matrix.items():
+            x = key[1:-1].split(', ')[0]
+            y = key[1:-1].split(', ')[1]
+            if '.' in x:
+                x = float(x)
+            else:
+                x = float(x)
+            if '.' in y:
+                y = float(y)
+            else:
+                y = float(y)
+
+            expanded_matrix[str([x, y])] = value
+
+            if n > 0:
+                x_step = step / (n + 1)
+                y_step = step / (n + 1)
+
+                for i in np.arange(1, n + 1):
+                    x_offset = x_step * i
+                    y_offset = y_step * i
+
+                    # Calculate the x and y indices of the neighbors
+                    neighbors = [
+                        (x - x_offset, y), (x + x_offset, y),  # Horizontal neighbors
+                        (x, y - y_offset), (x, y + y_offset),  # Vertical neighbors
+                        (x - x_offset, y - y_offset), (x - x_offset, y + y_offset),  # Diagonal neighbors
+                        (x + x_offset, y - y_offset), (x + x_offset, y + y_offset)
+                    ]
+
+                    # Calculate the average of all neighbors
+                    total_average = sum(expanded_matrix.get(str([nx, ny]), value) for nx, ny in neighbors)
+                    average = total_average / len(neighbors)
+
+                    # Insert the new items into the expanded matrix
+                    for nx, ny in neighbors:
+                        inserted_key = str([nx, ny])
+                        expanded_matrix[inserted_key] = average
+
+        # Calculate the dimensions of the expanded matrix
+        all_x, all_y = zip(*[map(float, key[1:-1].split(', ')) for key in expanded_matrix])
+        max_x, max_y = max(all_x), max(all_y)
+        min_x, min_y = min(all_x), min(all_y)
+
+        # Convert the expanded matrix to a 2D list format
+        x_range = np.arange(min_x, max_x + x_step, x_step)
+        y_range = np.arange(min_y, max_y + y_step, y_step)
+
+        x_range = [int(x) if x.is_integer() else x for x in x_range]
+        y_range = [int(x) if x.is_integer() else x for x in y_range]
+
+        # expanded_matrix_2d = [[expanded_matrix[str([x, y])] for y in y_range] for x in x_range]
+
+        return expanded_matrix
+
+
     def create_pivots_matrix(self):
-        self.greedy_map = dict()
+        self.info_map = dict()
 
         Xs = self.frange(cf.pivots_granularity, np.ceil(self.BOV.space[0]) - cf.pivots_granularity, cf.pivots_granularity)
         Ys = self.frange(cf.pivots_granularity, np.ceil(self.BOV.space[1]) - cf.pivots_granularity, cf.pivots_granularity)
-        
+
         for x in Xs:
             for y in Ys:
                 if (x < 2 and y < 2) and cf.testbed == 'Testbed2/':
@@ -597,8 +656,8 @@ class BayesianOptimization:
                     sensorTypes.append(1)
                     sensorPosition.append([x, y])
                     data = Data(sensorPosition, sensorTypes, self.BOV.space, 1)
-                    self.greedy_map[str(sensorPosition[0])] = 0
-                    self.greedy_map[str(sensorPosition[0])] = self.black_box_function(
+                    self.info_map[str(sensorPosition[0])] = 0
+                    self.info_map[str(sensorPosition[0])] = self.black_box_function(
                         data, 
                         simulateMotionSensors=self.sensor_types['model_motion_sensor'], 
                         simulateEstimotes = self.sensor_types['model_beacon_sensor'], 
@@ -606,7 +665,14 @@ class BayesianOptimization:
                                       self.sensor_types['model_accelerometer'] and 
                                       self.sensor_types['model_electricity_sensor']))
 
-        return self.greedy_map
+        if cf.epsilon == 0.5:
+            self.info_map = self.expand_matrix(self.info_map, 1)
+
+        elif cf.epsilon == 0.25:
+            self.info_map = self.expand_matrix(self.info_map, 1, 0.5)
+
+
+        return self.info_map
 
     def is_valid(self, sensor_placeholder):
         # This is for checking locations where placing sensors are not allowed. 
@@ -661,7 +727,9 @@ class BayesianOptimization:
         self.RLBO = RLBO
 
         if cf.acquisition_function == 'dg':
+            cf.pivots_granularity = 1
             cf.info_matrix = self.create_pivots_matrix()
+            print(cf.info_matrix)
         
         else:
             cf.info_matrix = []

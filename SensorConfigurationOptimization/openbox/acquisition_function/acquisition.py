@@ -115,8 +115,8 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
             total_costs = []
             
             def dictionary_to_matrix(dictionary):
-                max_row = int(np.ceil(cf.space[2][0]) / cf.pivots_granularity)
-                max_col = int(np.ceil(cf.space[2][1]) / cf.pivots_granularity)
+                max_row = int(np.ceil(cf.space[2][0]) / cf.epsilon)
+                max_col = int(np.ceil(cf.space[2][1]) / cf.epsilon)
                 
                 
                 matrix = [[-1] * (max_row) for _ in range(max_col)]
@@ -124,7 +124,7 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
                 
                 for key, value in dictionary.items():
                     col, row = eval(key)
-                    matrix[int(row / cf.pivots_granularity) - 1][int(col / cf.pivots_granularity) - 1] = np.mean(value)
+                    matrix[int(row / cf.epsilon) - 1][int(col / cf.epsilon) - 1] = np.mean(value)
 
                 return matrix
                 
@@ -249,8 +249,8 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
                     plt.colorbar()
                     plt.savefig(file_name)
                     plt.clf()  
-            '''       
-            
+               
+            '''
             
             
         if convert:
