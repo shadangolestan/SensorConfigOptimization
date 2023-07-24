@@ -13,8 +13,8 @@ from openbox.utils.limit import time_limit, TimeoutException
 from openbox.utils.util_funcs import get_result
 from openbox.core.base import Observation
 
-import gym
-import numpy as np
+# import gym
+# import numpy as np
 import random
 import Config as cf
 # from Reinforcement_Learning.ENV import AF_ENV
@@ -24,10 +24,10 @@ import Config as cf
     The objective function returns a dictionary that has --- config, constraints, objs ---.
 """
 
-from gym import Env
-from gym.spaces import Discrete, Box
+# from gym import Env
+# from gym.spaces import Discrete, Box
 import numpy as np
-from gym import spaces
+# from gym import spaces
 
 
 class SMBO(BOBase):
@@ -222,7 +222,7 @@ class SMBO(BOBase):
         else:
             raise ValueError('Invalid advisor type!')
 
-
+        '''
         class AF_ENV(gym.Env):
             def __init__(self):
                 from Reinforcement_Learning.ManageCONST import readCONST
@@ -275,21 +275,21 @@ class SMBO(BOBase):
                 self.next_action = next_action * 1
                 self.buffer = min(max(self.state[0] + self.next_action, self.min_buffer), self.max_buffer)                
                 
-                '''
-                if len(self.recent_history) > 1:
-                    if not self.f_star == 100:
-                        # self.performance = (np.median(self.recent_history) - self.f_star)
-                        self.performance = (int(np.median(self.recent_history)), int(self.f_star))
+                
+                # if len(self.recent_history) > 1:
+                #     if not self.f_star == 100:
+                #         # self.performance = (np.median(self.recent_history) - self.f_star)
+                #         self.performance = (int(np.median(self.recent_history)), int(self.f_star))
                         
-                    else:
-                        # self.performance = (np.median(self.recent_history))
-                        self.performance = (int(np.median(self.recent_history)), int(self.f_star))
+                #     else:
+                #         # self.performance = (np.median(self.recent_history))
+                #         self.performance = (int(np.median(self.recent_history)), int(self.f_star))
                     
-                else:
-                    self.performance = (100, int(self.f_star))
+                # else:
+                #     self.performance = (100, int(self.f_star))
                                         
                                         
-                '''
+                
                 if len(self.recent_history) > 10:
                     # self.performance = self.f_star / np.median(self.recent_history) * 100
                     self.performance = (np.median(self.recent_history) - self.f_star) # * 100
@@ -312,18 +312,18 @@ class SMBO(BOBase):
                 # reward = -np.median(self.recent_history)
             
                 # BENCHMARK WITH THIS
-                '''
-                if self.f_minus <= self.f_star:
-                    reward = 1
-                    print('hit')
+                
+                # if self.f_minus <= self.f_star:
+                #     reward = 1
+                #     print('hit')
                     
-                elif self.f_minus > 2 * self.f_star:
-                    reward = -1
+                # elif self.f_minus > 2 * self.f_star:
+                #     reward = -1
                     
-                else:
-                    reward = 1 - self.f_minus
+                # else:
+                #     reward = 1 - self.f_minus
                    
-                '''
+                
                 reward = -self.f_minus
 
                 print('\t ----- reward: {} for f_star and f_minus: {} , {}'.format(reward, self.f_star, self.f_minus))
@@ -338,6 +338,8 @@ class SMBO(BOBase):
                 return self.state
 
         self.env = AF_ENV()
+
+        '''
 
     def run_RLBO(self, q_table = None, env = None, RLBO = False):
         from statistics import mean
