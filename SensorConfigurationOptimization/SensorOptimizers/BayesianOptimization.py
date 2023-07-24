@@ -665,14 +665,17 @@ class BayesianOptimization:
                                       self.sensor_types['model_accelerometer'] and 
                                       self.sensor_types['model_electricity_sensor']))
 
+        iteration_cost = len(self.info_map)
+
         if cf.epsilon == 0.5:
             self.info_map = self.expand_matrix(self.info_map, 1)
 
         elif cf.epsilon == 0.25:
+            self.info_map = self.expand_matrix(self.info_map, 1)
             self.info_map = self.expand_matrix(self.info_map, 1, 0.5)
 
 
-        return self.info_map
+        return self.info_map, iteration_cost
 
     def is_valid(self, sensor_placeholder):
         # This is for checking locations where placing sensors are not allowed. 
@@ -728,7 +731,7 @@ class BayesianOptimization:
 
         if cf.acquisition_function == 'dg':
             cf.pivots_granularity = 1
-            cf.info_matrix = self.create_pivots_matrix()
+            cf.info_matrix, iteration_cost = self.create_pivots_matrix()
             # print(cf.info_matrix)
         
         else:
@@ -743,7 +746,7 @@ class BayesianOptimization:
         opt = Optimizer(
             self.function_to_be_optimized,
             self.space,
-            max_runs = self.CONSTANTS['iterations'] - len(cf.info_matrix),
+            max_runs = self.CONSTANTS['iterations'] - iteration_cost,
             acq_optimizer_type = self.acq_optimizer_type,
             acq_type = self.acquisition_function,
             surrogate_type = self.surrogate_model,
