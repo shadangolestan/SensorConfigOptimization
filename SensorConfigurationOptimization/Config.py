@@ -23,7 +23,7 @@ domain = {
 
 testbed = ''
 radius = 1
-epsilon = 1
+epsilon = None
 
 
 sensor_types = {
@@ -55,7 +55,7 @@ crossover = 2
 survival_rate = 0.1
 reproduction_rate = 0.2
 
-#--------------------------------------------------------------------- BO Parameters:
+#--------------------------------------------------------------------- BO/DGBO Parameters:
 acquisition_function = 'kg'
 # acquisition_function = 'lcb'
 acq_optimizer_type = 'auto'
@@ -69,8 +69,7 @@ initial_state = 'random'
 bo_iteration = 1000
 RLBO = True
 info_matrix = None
-pivots_granularity = 1
-pivots_granularity = epsilon
+pivots_granularity = None
 cutoff_treshold = 70
 configuration_star = None
 config_advisor = None
