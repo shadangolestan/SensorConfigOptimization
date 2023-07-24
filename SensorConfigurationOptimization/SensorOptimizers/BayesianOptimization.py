@@ -729,7 +729,7 @@ class BayesianOptimization:
         if cf.acquisition_function == 'dg':
             cf.pivots_granularity = 1
             cf.info_matrix = self.create_pivots_matrix()
-            print(cf.info_matrix)
+            # print(cf.info_matrix)
         
         else:
             cf.info_matrix = []
