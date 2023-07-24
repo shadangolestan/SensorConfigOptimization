@@ -667,12 +667,12 @@ class BayesianOptimization:
 
         iteration_cost = len(self.info_map)
 
-        if cf.epsilon == 0.5:
-            self.info_map = self.expand_matrix(self.info_map, 1)
+        # if cf.epsilon == 0.5:
+        #     self.info_map = self.expand_matrix(self.info_map, 1)
 
-        elif cf.epsilon == 0.25:
-            self.info_map = self.expand_matrix(self.info_map, 1)
-            self.info_map = self.expand_matrix(self.info_map, 1, 0.5)
+        # elif cf.epsilon == 0.25:
+        #     self.info_map = self.expand_matrix(self.info_map, 1)
+        #     self.info_map = self.expand_matrix(self.info_map, 1, 0.5)
 
 
         return self.info_map, iteration_cost
@@ -735,6 +735,7 @@ class BayesianOptimization:
             # print(cf.info_matrix)
         
         else:
+            iteration_cost = 0
             cf.info_matrix = []
 
         list_of_variables = self.BuildConfigurationSearchSpace(self.initial_state, map_points_count = None, create_map = False)

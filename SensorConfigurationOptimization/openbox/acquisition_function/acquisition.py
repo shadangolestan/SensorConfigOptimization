@@ -58,8 +58,9 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
             self.info_map_plus = dict()
             for key in cf.info_matrix.keys():
                 if '[' in key:
+                    # key = self.round_location(key)
                     loc = eval(key)
-                    self.info_map_plus[str([loc[0] - 1, loc[1] - 1])] = [cf.info_matrix[key] / 100]       
+                    self.info_map_plus[str([int(loc[0] - 1), int(loc[1] - 1)])] = [cf.info_matrix[key] / 100]       
                 else:
                     self.info_map_plus[key] = [cf.info_matrix[key] / 100]
 
@@ -94,6 +95,40 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
         for key in kwargs:
             setattr(self, key, kwargs[key])
 
+    def round_location(self, loc):
+        max_row = np.ceil(cf.space[2][0]) 
+        max_row = max_row-1 if (round(max_row) == max_row) else round(max_row)
+        
+        max_col = np.ceil(cf.space[2][1])
+        max_col = max_row-1 if (round(max_col) == max_col) else round(max_col)
+        
+        min_row = 1
+        min_col = 1
+        new_loc = [0, 0]
+        loc = eval(loc)
+        for dim in range(2):
+            if dim == 0:
+                max_ = max_row
+                min_ = min_row
+            else:
+                max_ = max_col
+                min_ = min_col
+            ceil = np.ceil(loc[dim])
+            floor = np.floor(loc[dim])
+            if floor >= min_ and floor <= max_ and ceil >= min_ and ceil <= max_:
+                if (abs(ceil-loc[dim]) < abs(floor-loc[dim])):
+                    new_loc[dim] = ceil
+                else:
+                    new_loc[dim] = floor
+            elif ceil >= min_ and ceil <= max_ :
+                new_loc[dim] = ceil
+            else:
+                new_loc[dim] = floor
+            
+
+        return str([int(new_loc[0]), int(new_loc[1])])
+            
+
     def __call__(self, configurations: Union[List[Configuration], np.ndarray], convert=True, **kwargs):
         """Computes the acquisition value for a given X
 
@@ -115,8 +150,8 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
             total_costs = []
             
             def dictionary_to_matrix(dictionary):
-                max_row = int(np.ceil(cf.space[2][0]) / cf.epsilon)
-                max_col = int(np.ceil(cf.space[2][1]) / cf.epsilon)
+                max_row = int(np.ceil(cf.space[2][0])) # / cf.epsilon)
+                max_col = int(np.ceil(cf.space[2][1])) # / cf.epsilon)
                 
                 
                 matrix = [[-1] * (max_row) for _ in range(max_col)]
@@ -134,6 +169,8 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
                 # LAST TAB:
                 Is = [] 
                 for loc in cf.configuration_star:
+
+                    loc = self.round_location(loc)
                     if loc in self.expected_contribution.keys():
                         Is.append(self.expected_contribution[loc])
                     else:
@@ -159,9 +196,9 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
                 for key in c.keys():
                     if key.startswith('ls') and not key.startswith('ls_t'):
                         if c[key] in self.info_map_plus.keys():
-                            sensor_location = c[key]
+                            sensor_location = self.round_location(c[key])
                             sensor_initial = cf.info_matrix[sensor_location]
-                            others_locations = [value for other_key, value in c.items() if other_key != key and other_key.startswith('ls') and not other_key.startswith('ls_t')]
+                            others_locations = [self.round_location(value) for other_key, value in c.items() if other_key != key and other_key.startswith('ls') and not other_key.startswith('ls_t')]
                             others_initials = [cf.info_matrix[location] for location in others_locations]    
                             coeff = sensor_initial / (sum(others_initials) + sensor_initial)
                             inf = (100 - cf.config_advisor.history_container.perfs[index]) * coeff
@@ -172,15 +209,15 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
                             
 
                         else:
-                            sensor_location = c[key]
+                            sensor_location = self.round_location(c[key])
                             sensor_initial = cf.info_matrix[sensor_location]
-                            others_locations = [value for other_key, value in c.items() if other_key != key and other_key.startswith('ls') and not other_key.startswith('ls_t')]
+                            others_locations = [self.round_location(value) for other_key, value in c.items() if other_key != key and other_key.startswith('ls') and not other_key.startswith('ls_t')]
                             others_initials = [cf.info_matrix[location] for location in others_locations]    
                             coeff = sensor_initial / (sum(others_initials) + sensor_initial)
                             inf = (100 - cf.config_advisor.history_container.perfs[index]) * coeff
                             # 3rd 4th and 5th tabs
                             # inf = (100 - cf.config_advisor.history_container.perfs[index]) * (sensor_initial / 100)
-                            self.info_map_plus.update({c[key]: [inf]})
+                            self.info_map_plus.update({sensor_location: [inf]})
                             # self.present_configurations_map.update({c[key]: [c]})
                 
             for index, c in enumerate(configurations):
@@ -190,7 +227,7 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
 
                 for key in c.keys():
                     if key.startswith('ls') and not key.startswith('ls_t'):
-                        sensor_location = c[key]
+                        sensor_location = self.round_location(c[key])
                         
                         if sensor_location in seen_locations:
                             S_sensors.append(0)
@@ -229,7 +266,7 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
             self.S = np.array(self.S).reshape(-1, 1)
             
 
-            '''
+            
             if cf.testbed != 'aruba/':
                 M = dictionary_to_matrix(self.expected_contribution)
 
@@ -250,7 +287,7 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
                     plt.savefig(file_name)
                     plt.clf()  
                
-            '''
+            
             
             
         if convert:
