@@ -266,7 +266,7 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
             self.S = np.array(self.S).reshape(-1, 1)
             
 
-            
+            '''
             if cf.testbed != 'aruba/':
                 M = dictionary_to_matrix(self.expected_contribution)
 
@@ -286,7 +286,7 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
                     plt.colorbar()
                     plt.savefig(file_name)
                     plt.clf()  
-               
+            '''
             
             
             
