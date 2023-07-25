@@ -656,8 +656,8 @@ class BayesianOptimization:
                     sensorTypes.append(1)
                     sensorPosition.append([x, y])
                     data = Data(sensorPosition, sensorTypes, self.BOV.space, 1)
-                    self.info_map[str(sensorPosition[0])] = 0
-                    self.info_map[str(sensorPosition[0])] = self.black_box_function(
+                    self.info_map[tuple(sensorPosition[0])] = 0
+                    self.info_map[tuple(sensorPosition[0])] = self.black_box_function(
                         data, 
                         simulateMotionSensors=self.sensor_types['model_motion_sensor'], 
                         simulateEstimotes = self.sensor_types['model_beacon_sensor'], 

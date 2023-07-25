@@ -60,7 +60,8 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
                 if '[' in key:
                     # key = self.round_location(key)
                     loc = eval(key)
-                    self.info_map_plus[str([int(loc[0] - 1), int(loc[1] - 1)])] = [cf.info_matrix[key] / 100]       
+                    # self.info_map_plus[str([int(loc[0] - 1), int(loc[1] - 1)])] = [cf.info_matrix[key] / 100]       
+                    self.info_map_plus[(loc[0],loc[1])] = [cf.info_matrix[key] / 100]       
                 else:
                     self.info_map_plus[key] = [cf.info_matrix[key] / 100]
 
@@ -113,6 +114,7 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
             else:
                 max_ = max_col
                 min_ = min_col
+
             ceil = np.ceil(loc[dim])
             floor = np.floor(loc[dim])
             if floor >= min_ and floor <= max_ and ceil >= min_ and ceil <= max_:
@@ -126,7 +128,7 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
                 new_loc[dim] = floor
             
 
-        return str([int(new_loc[0]), int(new_loc[1])])
+        return (int(new_loc[0]), int(new_loc[1]))
             
 
     def __call__(self, configurations: Union[List[Configuration], np.ndarray], convert=True, **kwargs):
@@ -158,7 +160,7 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
                 
                 
                 for key, value in dictionary.items():
-                    col, row = eval(key)
+                    col, row = key[0], key[1]
                     matrix[int(row / cf.epsilon) - 1][int(col / cf.epsilon) - 1] = np.mean(value)
 
                 return matrix
@@ -195,8 +197,8 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
                     
                 for key in c.keys():
                     if key.startswith('ls') and not key.startswith('ls_t'):
-                        if c[key] in self.info_map_plus.keys():
-                            sensor_location = self.round_location(c[key])
+                        sensor_location = self.round_location(c[key])
+                        if sensor_location in self.info_map_plus.keys():
                             sensor_initial = cf.info_matrix[sensor_location]
                             others_locations = [self.round_location(value) for other_key, value in c.items() if other_key != key and other_key.startswith('ls') and not other_key.startswith('ls_t')]
                             others_initials = [cf.info_matrix[location] for location in others_locations]    
@@ -209,7 +211,6 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
                             
 
                         else:
-                            sensor_location = self.round_location(c[key])
                             sensor_initial = cf.info_matrix[sensor_location]
                             others_locations = [self.round_location(value) for other_key, value in c.items() if other_key != key and other_key.startswith('ls') and not other_key.startswith('ls_t')]
                             others_initials = [cf.info_matrix[location] for location in others_locations]    
@@ -235,9 +236,13 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
                             
                         seen_locations.append(sensor_location)
                         
+                        # print('------------')
+                        # print(self.info_map_plus.keys())
+                        # print('------------')
+                        # print('---', sensor_location)
+
                         if sensor_location in self.info_map_plus.keys():
                             if len(np.unique(self.info_map_plus[sensor_location])) > 1:
-                                
                                 normalized_info = self.info_map_plus[sensor_location]
                                 
                                 # mu_plus = np.mean(normalized_info)
@@ -252,7 +257,11 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
                                 W = (mu_plus - G_star) / std_plus
                                 sensor_contribution = (mu_plus - G_star) * norm.cdf(W) + std_plus * norm.pdf(W)
 
+
                                 self.expected_contribution[sensor_location] = sensor_contribution
+
+
+
                                 S_sensors.append(sensor_contribution)
 
                             else:
