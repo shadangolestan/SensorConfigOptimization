@@ -48,7 +48,7 @@ if __name__ == "__main__":
 
     history = BO.run()
 
-    with open('Results_BO/history(' + 'Method_' + cf.acquisition_function + '_LS' + str(cf.LSsensorsNum) + ')_' + str(i), 'wb') as handle:
+    with open('Results_BO/history(' + cf.acquisition_function + '_' + cf.testbed + '_' + str(cf.epsilon * 100) + '_' + 'LS' + str(cf.LSsensorsNum) + ')_' + str(i), 'wb') as handle:
         pickle.dump(history, handle, protocol=pickle.HIGHEST_PROTOCOL)
             
     print(history)
