@@ -836,6 +836,8 @@ class DG(AbstractAcquisitionFunction):
 
                 self.S = np.array(self.S).reshape(-1, 1)
                     
+
+                '''
                 if cf.testbed != 'aruba/':
                     M = dictionary_to_matrix(self.expected_contribution)
 
@@ -855,6 +857,8 @@ class DG(AbstractAcquisitionFunction):
                         plt.colorbar()
                         plt.savefig(file_name)
                         plt.clf()  
+
+                '''
 
             else:
                 for c in self.configurations:
