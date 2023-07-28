@@ -75,7 +75,9 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
             self.flag = dict()
             self.log = {}
             self.expected_contribution = {}
-            self.athar = {}
+            self.AVG = {}
+            self.LEN = {}
+            self.VAR = {}
 
     def update(self, **kwargs):
         """Update the acquisition functions values.
@@ -147,6 +149,9 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
             acquisition values for X
         """
 
+        self.configurations = configurations
+
+        '''
         import numpy as np
         if self.long_name == 'Distribution Guided':
             total_costs = []
@@ -179,15 +184,6 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
                         Is.append(cf.info_matrix[loc])
                 
                 return Is
-                '''
-                Is = []    
-                if c[key] in self.expected_contribution.keys():
-                    Is.append(self.expected_contribution[c[key]])
-                else:
-                    Is.append(cf.info_matrix[c[key]])
-            
-                return Is
-                '''
             
             
             self.S = []
@@ -221,7 +217,8 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
                             self.info_map_plus.update({sensor_location: [inf]})
                             # self.present_configurations_map.update({c[key]: [c]})
                 
-            for index, c in enumerate(configurations):
+            for c in configurations:
+                print('len(configurations)::::  ', len(configurations))
                 seen_locations = []
                 S_sensors = []
                 c = c.get_dictionary()
@@ -245,6 +242,7 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
                             if len(np.unique(self.info_map_plus[sensor_location])) > 1:
                                 normalized_info = self.info_map_plus[sensor_location]
                                 
+                                # print('len(normalized_info)::::', len(normalized_info))
                                 # mu_plus = np.mean(normalized_info)
                                 mu_plus = self.calculate_weighted_average(normalized_info)
                                 # var_plus = np.var(normalized_info)      
@@ -274,30 +272,26 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
                 
             self.S = np.array(self.S).reshape(-1, 1)
             
+            # if cf.testbed != 'aruba/':
+            #     M = dictionary_to_matrix(self.expected_contribution)
 
+            #     import os.path
+            #     file_name = str(len(cf.config_advisor.history_container.configurations)) + '.png'
+
+            #     if not os.path.isfile(file_name):
+            #         import numpy as np
+            #         import matplotlib.pyplot as plt
+
+            #         plt.imshow(M, cmap='hot', interpolation='nearest')
+            #         M = np.array(M)
+            #         for i in range(M.shape[0]):
+            #             for j in range(M.shape[1]):
+            #                 plt.text(j, i, '{:.2f}'.format(M[i, j]), ha='center', va='center', color='blue')
+
+            #         plt.colorbar()
+            #         plt.savefig(file_name)
+            #         plt.clf()  
             '''
-            if cf.testbed != 'aruba/':
-                M = dictionary_to_matrix(self.expected_contribution)
-
-                import os.path
-                file_name = str(len(cf.config_advisor.history_container.configurations)) + '.png'
-
-                if not os.path.isfile(file_name):
-                    import numpy as np
-                    import matplotlib.pyplot as plt
-
-                    plt.imshow(M, cmap='hot', interpolation='nearest')
-                    M = np.array(M)
-                    for i in range(M.shape[0]):
-                        for j in range(M.shape[1]):
-                            plt.text(j, i, '{:.2f}'.format(M[i, j]), ha='center', va='center', color='blue')
-
-                    plt.colorbar()
-                    plt.savefig(file_name)
-                    plt.clf()  
-            '''
-            
-            
             
         if convert:
             X = convert_configurations_to_array(configurations)
@@ -324,7 +318,28 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
 
         return weighted_variance_sum / sum_of_weights
 
-    def calculate_weighted_average(self, numbers):
+    def calculate_weighted_average(self, numbers, loc):
+        '''
+        gamma = 0.9
+        prev_values = self.AVG[loc]
+        p_avg, p_var, p_len, p_discountfactor = prev_values[0], prev_values[1], prev_values[2], prev_values[3]
+        
+
+        if len(numbers) == p_len:
+            return
+
+        for i in range(len(numbers) - p_len):
+            discountfactor = 1 + p_discountfactor * gamma
+            # p_avg = numbers[p_len + i] + gamma * p_avg
+            p_avg = (p_discountfactor * gamma * p_avg + numbers[p_len + i])/discountfactor
+            # p_var = numbers[p_len + i] + gamma * p_var
+            temp = (numbers[p_len + i] - p_avg)**2
+            p_var = (p_discountfactor * gamma * p_var + temp)/discountfactor
+            p_discountfactor = discountfactor
+
+        self.AVG[loc] = [p_avg, p_var, len(numbers), discountfactor]
+        '''
+
         if not numbers or len(numbers) == 0:
             return None
 
@@ -533,6 +548,10 @@ class DG(AbstractAcquisitionFunction):
         self.K = 1000
         self.n_features = 10
         self.guide = 1
+        self.iteration_id = -1
+        self.S = []
+        self.counter = 0
+        self.prev = 0
 
         # TODO:        
         # config = CS.Configuration(cf.config_space, values = cf.sorted_greedy_map.keys())
@@ -670,6 +689,190 @@ class DG(AbstractAcquisitionFunction):
             acq[idx, :] = -np.finfo(np.float).max
         return acq
 
+    def DG(self):
+        import numpy as np
+        if self.long_name == 'Distribution Guided':
+            total_costs = []
+            
+            def dictionary_to_matrix(dictionary):
+                max_row = int(np.ceil(cf.space[2][0])) # / cf.epsilon)
+                max_col = int(np.ceil(cf.space[2][1])) # / cf.epsilon)
+                
+                
+                matrix = [[-1] * (max_row) for _ in range(max_col)]
+                
+                
+                for key, value in dictionary.items():
+                    col, row = key[0], key[1]
+                    matrix[int(row) - 1][int(col) - 1] = np.mean(value)
+
+                return matrix
+                
+            def calculate_g_star():
+                
+
+                # LAST TAB:
+                Is = [] 
+                for loc in cf.configuration_star:
+
+                    loc = self.round_location(loc)
+                    if loc in self.expected_contribution.keys():
+                        Is.append(self.expected_contribution[loc])
+                    else:
+                        Is.append(cf.info_matrix[loc])
+                
+                return Is
+                '''
+                Is = []    
+                if c[key] in self.expected_contribution.keys():
+                    Is.append(self.expected_contribution[c[key]])
+                else:
+                    Is.append(cf.info_matrix[c[key]])
+            
+                return Is
+                '''
+            
+            
+            for index, c in enumerate(cf.config_advisor.history_container.configurations[len(self.all_configurations):], start=len(self.all_configurations)):
+                c = c.get_dictionary()
+                self.all_configurations.append(c)
+                    
+                for key in c.keys():
+                    if key.startswith('ls') and not key.startswith('ls_t'):
+                        sensor_location = self.round_location(c[key])
+                        if sensor_location in self.info_map_plus.keys():
+                            sensor_initial = cf.info_matrix[sensor_location]
+                            others_locations = [self.round_location(value) for other_key, value in c.items() if other_key != key and other_key.startswith('ls') and not other_key.startswith('ls_t')]
+                            others_initials = [cf.info_matrix[location] for location in others_locations]    
+                            coeff = sensor_initial / (sum(others_initials) + sensor_initial)
+                            inf = (100 - cf.config_advisor.history_container.perfs[index]) * coeff
+                            # 3rd 4th and 5th tabs
+                            # inf = (100 - cf.config_advisor.history_container.perfs[index]) * (sensor_initial / 100)
+                            self.info_map_plus[sensor_location].append(inf)
+                            # self.present_configurations_map[sensor_location].append(c)
+                            
+
+                        else:
+                            sensor_initial = cf.info_matrix[sensor_location]
+                            others_locations = [self.round_location(value) for other_key, value in c.items() if other_key != key and other_key.startswith('ls') and not other_key.startswith('ls_t')]
+                            others_initials = [cf.info_matrix[location] for location in others_locations]    
+                            coeff = sensor_initial / (sum(others_initials) + sensor_initial)
+                            inf = (100 - cf.config_advisor.history_container.perfs[index]) * coeff
+                            # 3rd 4th and 5th tabs
+                            # inf = (100 - cf.config_advisor.history_container.perfs[index]) * (sensor_initial / 100)
+                            self.info_map_plus.update({sensor_location: [inf]})
+                            # self.present_configurations_map.update({c[key]: [c]})
+
+            
+            
+            if cf.iteration_id != self.iteration_id:
+                self.prev = -1
+                self.iteration_id = cf.iteration_id 
+
+            if len(self.configurations) != self.prev:
+                self.prev = len(self.configurations)
+                self.counter = 0
+            else:
+                self.counter += 1
+                
+            if(self.counter %10 == 0):
+                self.S = []
+                for c in self.configurations:
+                    seen_locations = []
+                    S_sensors = []
+                    c = c.get_dictionary()
+
+                    for key in c.keys():
+                        if key.startswith('ls') and not key.startswith('ls_t'):
+                            sensor_location = self.round_location(c[key])
+
+                            if not sensor_location in self.AVG.keys():
+                                self.AVG[sensor_location] = [0, 0, 0, 0]
+                            
+                            if sensor_location in seen_locations:
+                                S_sensors.append(0)
+                                continue
+                                
+                            seen_locations.append(sensor_location)
+                            
+                            # print('------------')
+                            # print(self.info_map_plus.keys())
+                            # print('------------')
+                            # print('---', sensor_location)
+
+                            if sensor_location in self.info_map_plus.keys():
+                                if len(np.unique(self.info_map_plus[sensor_location])) > 1:
+                                    normalized_info = self.info_map_plus[sensor_location]
+                                    
+                                    # print('len(normalized_info)::::', len(normalized_info))
+                                    # mu_plus = np.mean(normalized_info)
+                                    mu_plus = self.calculate_weighted_average(normalized_info, sensor_location)
+                                    
+                                    # var_plus = np.var(normalized_info)      
+                                    var_plus = self.calculate_weighted_variance(normalized_info, mu_plus)
+
+                                    # self.calculate_weighted_average(normalized_info, sensor_location)
+                                    # mu_plus = self.AVG[sensor_location][0]
+                                    # std_plus = np.sqrt(self.AVG[sensor_location][1])
+
+                                    std_plus = np.sqrt(var_plus)
+
+                                    Is = calculate_g_star()
+                                    G_star = np.mean(Is)
+
+
+                                    W = (mu_plus - G_star) / std_plus
+                                    sensor_contribution = (mu_plus - G_star) * norm.cdf(W) + std_plus * norm.pdf(W)
+                                    self.expected_contribution[sensor_location] = sensor_contribution
+                                    S_sensors.append(sensor_contribution)
+
+                                else:
+                                    S_sensors.append(cf.info_matrix[sensor_location])
+
+                            else:
+                                S_sensors.append(cf.info_matrix[sensor_location])
+
+                    self.S.append(np.mean(S_sensors) / 100)
+
+                self.S = np.array(self.S).reshape(-1, 1)
+                    
+                if cf.testbed != 'aruba/':
+                    M = dictionary_to_matrix(self.expected_contribution)
+
+                    import os.path
+                    file_name = str(len(cf.config_advisor.history_container.configurations)) + '.png'
+
+                    if not os.path.isfile(file_name):
+                        import numpy as np
+                        import matplotlib.pyplot as plt
+
+                        plt.imshow(M, cmap='hot', interpolation='nearest')
+                        M = np.array(M)
+                        for i in range(M.shape[0]):
+                            for j in range(M.shape[1]):
+                                plt.text(j, i, '{:.2f}'.format(M[i, j]), ha='center', va='center', color='blue')
+
+                        plt.colorbar()
+                        plt.savefig(file_name)
+                        plt.clf()  
+
+            else:
+                for c in self.configurations:
+                    seen_locations = []
+                    S_sensors = []
+                    c = c.get_dictionary()
+
+                    for key in c.keys():
+                        if key.startswith('ls') and not key.startswith('ls_t'):
+                            sensor_location = self.round_location(c[key])
+
+                            if sensor_location in self.expected_contribution.keys():
+                                S_sensors.append(self.expected_contribution[sensor_location])
+                            else:
+                                S_sensors.append(cf.info_matrix[sensor_location])
+
+
+
     def attention_function(self, time, cut_off = 100):        
         if time <= cut_off:
             return np.exp((time / cut_off) * np.log(2)) - 1  # Exponential growth phase
@@ -701,15 +904,21 @@ class DG(AbstractAcquisitionFunction):
             m, v = self.model.predict_marginalized_over_instances(X)
             s = np.sqrt(v)
             
-            E_I_plus = self.S
-            self.guide = self.attention_function(cf.iteration_id)
+            if len(self.S) != 0:
+                E_I_plus = self.S
+                # E_I_plus = np.array(E_I_plus).reshape(-1, 1)
 
-            self.guide = 0.5
+                self.guide = self.attention_function(cf.iteration_id)
 
-            EI = calculate_distance_alpha(m, s, E_I_plus)
+                self.guide = 0.5
+                EI = calculate_distance_alpha(m, s, E_I_plus)
 
-            alpha_c = self.guide * E_I_plus   +   (1 - self.guide) * EI
+                alpha_c = self.guide * E_I_plus   +   (1 - self.guide) * EI
 
+            
+            else:
+                EI = calculate_distance_alpha(m, s, [])
+                alpha_c = EI
 
             # alpha_c = self.guide * E_I_plus + EI 
 
@@ -731,6 +940,8 @@ class DG(AbstractAcquisitionFunction):
             z = (self.eta - m - self.par) / s
             result = (self.eta - m - self.par) * norm.cdf(z) + s * norm.pdf(z)
             return result
+
+        self.DG()
 
         # neighbors = []
         # weights = []
