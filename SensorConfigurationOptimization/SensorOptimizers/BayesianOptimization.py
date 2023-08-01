@@ -480,6 +480,7 @@ class BayesianOptimization:
                 sensorPositions.append(sensor_xy)
                 sensorTypes.append(config['is_t' + str(i)])
 
+
         data = Data(sensorPositions, sensorTypes, self.BOV.space, self.CONSTANTS['epsilon'])
 
         return 100 - self.black_box_function(data, 

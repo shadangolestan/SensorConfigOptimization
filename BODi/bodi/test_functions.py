@@ -27,6 +27,95 @@ import plotly
 import pickle
 from datetime import datetime
 import CASAS.al as al
+import Config as cf
+import SIM_SIS_Libraries.SensorsClass
+import SIM_SIS_Libraries.SIM_SIS_Simulator as sim_sis
+import SIM_SIS_Libraries.ParseFunctions as pf
+import Config as cf
+
+
+class Data:
+    def __init__(self, sensorPositions, sensorTypes, space, epsilon):
+        self.radius = 1
+        self.placeHolders = sensorPositions
+
+        self.sensorTypes = sensorTypes
+        self.epsilon = epsilon
+        self.space = space
+        # self.SensorPlaceHolderSetup()
+        self.sensitivity = {'3': 'pressure',
+                            '4': 'accelerometer',
+                            '5': 'electricity'}
+        
+    def frange(self, start, stop, step):
+        steps = []
+        while start <= stop:
+            steps.append(start)
+            start +=step
+            
+        return steps
+
+    def GetSensorConfiguration(self):
+        from collections import Counter
+        sensorLocations = self.GetSensorLocations()
+        _, rooms, _ = pf.ParseWorld(simworldname = '')
+        summaryDict = Counter(self.sensorTypes)
+
+        # TODO: DIFFERENT SENSOR TYPE DEFINITIONS SHOULD BE ADDED HERE:
+        configurationSummary = []
+        
+        IS_handled = False
+        
+        for key in summaryDict.keys():
+            if (key == 1):
+                configurationSummary.append(['motion sensors', summaryDict[key]])
+
+            elif (key == 2):
+                configurationSummary.append(['beacon sensors', summaryDict[key]])
+                
+            elif (key >= 3):
+                if IS_handled == False:
+                    ISCount = sum([v for k,v in summaryDict.items() if k >= 3])
+                    configurationSummary.append(['IS', ISCount])           
+                    IS_handled = True
+                
+        
+        configurationDetails = []
+        for index, loc in enumerate(sensorLocations):
+            room = ""
+            for r in rooms:
+                if (loc[0] >= rooms[r][0][0] and loc[0] <= rooms[r][1][0] and loc[1] >= rooms[r][0][1] and loc[1] <= rooms[r][1][1]):
+                    room = r
+                    break
+
+            if (self.sensorTypes[index] == 1):
+                configurationDetails.append(tuple([loc, room, 'motion sensors']))
+
+            elif (self.sensorTypes[index] == 2):
+                configurationDetails.append(tuple([loc, room, 'beacon sensors']))
+                
+            elif (self.sensorTypes[index] == 3):
+                configurationDetails.append(tuple([loc, room, 'IS', self.sensitivity['3']]))
+                
+            elif (self.sensorTypes[index] == 4):
+                configurationDetails.append(tuple([loc, room, 'IS', self.sensitivity['4']]))
+                
+            elif (self.sensorTypes[index] == 5):
+                configurationDetails.append(tuple([loc, room, 'IS', self.sensitivity['5']]))
+
+            else:
+                configurationDetails.append(tuple([loc, room, 'motion sensors']))
+        
+        sensor_config = [[configurationSummary, [tuple(configurationDetails)]], self.radius]
+        return sensor_config
+
+    def GetSensorLocations(self):
+        sensorLocations = []
+        for index, sensorIndicator in enumerate(self.placeHolders):
+            sensorLocations.append(self.placeHolders[index])
+
+        return sensorLocations
+
 
 class TestFunction:
     """
@@ -130,6 +219,521 @@ class MaxSAT60(_MaxSAT):
         self.categorical_inds = []
         self.dim = n_binary
         self.bounds = torch.stack((torch.zeros(n_binary), torch.ones(n_binary))).to(**tkwargs)
+
+
+
+class BOVariables:
+    def __init__(self, base_path, testbed, epsilon, initSensorNum, maxLSSensorNum, maxISSensorNum, radius, sampleSize, ROS):
+        self.epsilon = epsilon
+        self.Data_path = base_path + testbed
+        self.initSensorNum = initSensorNum
+        self.maxLSSensorNum = maxLSSensorNum
+        self.maxISSensorNum = maxISSensorNum
+        self.radius = radius
+        self.sensor_distribution, self.types, self.space, self.rooms, self.objects, self.agentTraces = self.ModelsInitializations(ROS)
+        self.CreateGrid()
+
+    def CreateGrid(self):
+        x = self.space[0]
+        y = self.space[1]
+
+        W = []
+        start = self.epsilon
+
+        while start < x:
+            W.append(start)
+            start += self.epsilon
+
+        H = []
+        start = self.epsilon
+
+        while start < y:
+            H.append(start)
+            start += self.epsilon
+
+        self.grid = []
+
+        for w in W:
+            for h in H:
+                self.grid.append([w, h])
+
+    def ModelsInitializations(self, ROS):
+        #----- Space and agent models -----: 
+        simworldname = ''
+        agentTraces = []
+        
+        if ROS:
+            directory = os.fsencode(self.Data_path + 'Agent Trace Files ROS/')
+        else:
+            directory = os.fsencode(self.Data_path + 'Agent Trace Files/')
+            
+        for file in os.listdir(directory):
+            filename = os.fsdecode(file)
+            if filename.endswith(".csv"): 
+                if ROS:
+                    agentTraces.append(self.Data_path + 'Agent Trace Files ROS/' + filename)
+                else:
+                    agentTraces.append(self.Data_path + 'Agent Trace Files/' + filename)
+
+        # Parsing the space model: 
+        space, rooms, objects = pf.ParseWorld(simworldname)
+        sim_sis.AddRandomnessToDatasets(self.epsilon, self.Data_path, rooms)
+
+        space = [space[-1][0], space[1][1]]
+
+        # User parameters 
+        types, sensor_distribution = pf.GetUsersParameters()
+
+        roomsList = []
+        for room in sensor_distribution:
+            roomsList.append(room)
+              
+        return sensor_distribution, types, space, rooms, objects, agentTraces
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class SIM(TestFunction):
+    problem_type = "categorical"
+
+    # Taken and adapted from the the MVRSM codebase
+    def __init__(self, lamda=1e-6, normalize=False, **tkwargs):
+        # super(Ackley53, self).__init__(normalize)
+
+        # input_file = 'RealWorldDataset/aruba/data'
+        # D = self.convert_data(input_file)
+        # self.data = self.separate_by_day(D)
+
+        self.CONSTANTS = {
+            'iterations': cf.iteration,
+            'initial_samples': 10,
+            'epsilon': cf.epsilon,
+            'radius': cf.radius,
+            'max_LS_sensors': cf.maxSensorNum,
+            'max_IS_sensors': cf.maxSensorNum,
+            'error': cf.error
+        }
+
+        base_path = '../bodi/'
+        sys.path.append('..')
+
+        self.BOV =  BOVariables(base_path, 
+                                cf.testbed,
+                                self.CONSTANTS['epsilon'], 
+                                self.CONSTANTS['initial_samples'],
+                                self.CONSTANTS['max_LS_sensors'], 
+                                self.CONSTANTS['max_IS_sensors'], 
+                                self.CONSTANTS['radius'],
+                                self.CONSTANTS['initial_samples'],
+                                ROS = True)
+
+        if (cf.maxSensorNum > 0):
+            ls = []
+            for sensor_placeholder in self.BOV.grid:
+                ls.append(str(sensor_placeholder))
+
+
+        self.n_categorical = 0        
+        self.n_continuous = 0
+        self.continuous_inds = []
+        self.n_binary = len(ls)
+
+        self.binary_inds = list(range(self.n_binary))
+        self.categorical_inds = [i for i in range(len(ls))]
+        self.dim = self.n_binary + self.n_continuous + self.n_categorical
+        
+        
+        # specifies the range for the continuous variables
+        # self.lb, self.ub = np.array([-1, -1, -1]), np.array([+1, +1, +1])
+        self.feature_idxs = torch.arange(50)
+        self.bounds = torch.stack((torch.zeros(self.n_binary), torch.ones(self.n_binary))).to(**tkwargs)
+
+        self.paceholders = self.grid_maker(self.BOV.space[0], self.BOV.space[1])
+
+
+    def is_valid(self, sensor_placeholder):
+        # This is for checking locations where placing sensors are not allowed. 
+
+        if cf.testbed == 'Testbed2' and sensor_placeholder[0] <= 2 and sensor_placeholder[1] <= 2:
+            return False
+        else:
+            return True
+
+
+    def convert_data(self, file_path):
+        with open(file_path, 'r') as file:
+                data = file.read()
+
+        data = data.replace('\t', ' ')
+        converted_data = []
+        finalized_data = []
+        # activity_map = {}
+        
+        current_activity = ''
+        for line in data.split('\n'):
+            line = line.strip()
+            if line:
+                parts = line.split(' ')
+                date = parts[0]
+                timestamp = date + ' ' + parts[1]
+                sensor_name = parts[2] + ' ' + parts[2] + ' ' + parts[3]
+                activity = ' '.join(parts[4:])
+                
+                # if sensor_name.startswith('M'):
+                if activity.endswith('begin'):
+                    activity_name = activity[:-6]
+                    activity_name = activity_name.replace(' ', '')
+                    current_activity = activity_name
+                    # activity_map[sensor_name] = activity_name
+                    converted_data.append((timestamp, sensor_name, activity_name))
+
+                elif activity.endswith('end'):
+                    converted_data.append((timestamp, sensor_name, current_activity))
+                    current_activity = 'None'
+
+                else:
+                    converted_data.append((timestamp, sensor_name, current_activity))
+
+        for row in converted_data:
+            if not 'None' in row:
+                finalized_data.append(row)
+
+        return finalized_data
+
+
+    def convertTime(self, posix_timestamp):
+        tz = pytz.timezone('MST')
+        dt = datetime.fromtimestamp(posix_timestamp, tz)
+        time = dt.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
+        return time
+
+    def Name(self, number, typeSensor):
+        if number < 10:
+          return typeSensor + str(0) + str(number)
+        else:
+          return typeSensor + str(number)
+
+
+    def PreProcessor(self, df):
+        df['motion sensors'] = df['motion sensors'].apply(lambda s: list(map(int, s)))
+        try:
+            df['beacon sensors'] = df['beacon sensors'].apply(lambda s: list(map(int, s)))
+        except:
+            pass
+        try:
+            df['IS'] = df['IS'].apply(lambda s: list(map(int, s)))
+        except:
+            pass
+
+        pre_activity = ''
+        save_index = 0
+
+        for index, row in df.iterrows():
+            save_index = index
+            Activity = row['activity']
+
+            if Activity != pre_activity:
+                if pre_activity != '':
+                    df.at[index - 1, 'motion sensors'] += [0]
+
+                else:
+                    df.at[index, 'motion sensors'] += [1]
+
+                pre_activity = Activity
+            else:
+                df.at[index - 1, 'motion sensors'] += [1]
+
+        df.at[save_index, 'motion sensors'] += [0]
+
+        sensors = set([])
+
+        previous_M = None
+        previous_B = None
+        previous_I = None
+
+        output_file = []
+
+        for index, row in df.iterrows():
+          T = row['time']
+          M = row['motion sensors']
+          try:
+            B = row['beacon sensors']
+          except:
+            pass
+
+          try:
+            I = row['IS']
+          except:
+            pass
+          
+
+          
+
+          Activity = row['activity']
+          Activity = Activity.replace(' ', '_')
+          MotionSensor_Names = []
+          sensorNames = []
+          MotionSensor_Message = []
+          BeaconSensor_Names = []
+          BeaconSensor_Message = []
+          ISSensor_Names = []
+          ISSensor_Message = []
+
+
+          # time = convertTime(T)
+          time = "2020-06-16 " + T + ".00"
+
+
+
+          # Motion Sensor
+          try:
+              for i in range(len(M)):
+                    sensorNames.append(self.Name(i, 'M'))
+                    if M[i] == 1:
+                          if (previous_M != None):
+                            if (previous_M[i] == 0):
+                              MotionSensor_Names.append(self.Name(i,'M'))
+                              MotionSensor_Message.append('ON')
+
+                          else:
+                            MotionSensor_Names.append(self.Name(i,'M'))
+                            MotionSensor_Message.append('ON')
+
+                    if previous_M != None:
+                          if M[i] == 0 and previous_M[i] == 1:
+                            MotionSensor_Names.append(self.Name(i,'M'))
+                            MotionSensor_Message.append('OFF')
+
+              previous_M = M
+
+          except:
+            pass
+
+          try:
+              for i in range(len(I)):
+                sensorNames.append(self.Name(i, 'IS'))
+                if I[i] == 1:
+                      if (previous_I != None):
+                        if (previous_I[i] == 0):
+                          ISSensor_Names.append(self.Name(i,'IS'))
+                          ISSensor_Message.append('ON')
+
+                      else:
+                        ISSensor_Names.append(self.Name(i,'IS'))
+                        ISSensor_Message.append('ON')
+
+                if previous_I != None:
+                      if I[i] == 0 and previous_I[i] == 1:
+                        ISSensor_Names.append(self.Name(i,'IS'))
+                        ISSensor_Message.append('OFF')
+
+              previous_I = I
+
+          except:
+              pass 
+
+          
+
+          for m in range(len(MotionSensor_Names)):
+            output_file.append(time +' '+ MotionSensor_Names[m] + ' ' + MotionSensor_Names[m] + ' ' + MotionSensor_Message[m] + ' ' + Activity)
+
+
+          for i_s in range(len(ISSensor_Names)):
+            output_file.append(time +' '+ ISSensor_Names[i_s] + ' ' + ISSensor_Names[i_s] + ' ' + ISSensor_Message[i_s] + ' ' + Activity)
+
+          for s in sensorNames:
+              sensors.add(s)
+
+
+        return output_file, list(sensors)
+    
+
+    def filter_data_by_sensors(self, data, sensor_names):
+        filtered_data = {}
+    
+        for day, day_data in data.items():
+            filtered_day_data = []
+
+            preactivity = ''
+            for entry in day_data:
+                d = entry.split(' ')
+
+                if entry.split(' ')[-3] in sensor_names:
+                    filtered_day_data.append(entry)
+
+                
+                if d[5] != preactivity:
+                    if preactivity == '':
+                        null_data = d
+                        null_data[2] = 'M000'
+                        null_data[3] = 'M000'
+                        null_data[4] = 'ON'
+                        preactivity = d[5]
+
+                    else:
+                        null_data = d
+                        null_data[2] = 'M000'
+                        null_data[3] = 'M000'
+                        null_data[4] = 'OFF'
+                        null_data[5] = preactivity
+                        preactivity = ''
+
+                    filtered_day_data.append(' '.join(null_data))
+                # print(filtered_day_data)
+            
+            if filtered_day_data:
+                filtered_data[day] = filtered_day_data
+        
+        return filtered_data
+
+    def black_box_function(self, sample, simulateMotionSensors = True, simulateEstimotes = False, simulateIS = False, Plotting = False):       
+        files = []
+        all_sensors = set([])
+
+        for agentTrace in self.BOV.agentTraces:
+            df_ = sim_sis.RunSimulator(self.BOV.space, 
+                                       self.BOV.rooms, 
+                                       agentTrace,
+                                       sample.GetSensorConfiguration(), 
+                                       simulateMotionSensors, 
+                                       simulateEstimotes,
+                                       simulateIS,
+                                       Plotting, 
+                                       self.BOV.Data_path)
+
+            dataFile, sensors = self.PreProcessor(df_)
+            all_sensors.update(sensors)
+            files.append(dataFile)
+
+
+        all_sensors = list(all_sensors)
+        f1_score = (al.leave_one_out(files, all_sensors)[0]) * 100
+
+        try:
+            return f1_score[0]
+
+        except:
+            return f1_score
+
+    def split_train_test_data(self, data, train_percentage):
+        keys = list(data.keys())
+        split_index = int(len(keys) * train_percentage)
+        train_keys = keys[:split_index]
+        test_keys = keys[split_index:]
+
+        train_data = [item for key in train_keys for item in data[key]]
+        test_data = [item for key in test_keys for item in data[key]]
+        
+        return train_data, test_data
+
+    def grid_maker(self, X, Y):
+        x = X
+        y = Y
+
+        W = []
+        start = cf.epsilon
+
+        while start < x:
+            W.append(start)
+            start += cf.epsilon
+
+        H = []
+        start = cf.epsilon
+
+        while start < y:
+            H.append(start)
+            start += cf.epsilon
+
+        grid = []
+
+        for w in W:
+            for h in H:
+                if self.is_valid([w, h]):
+                    grid.append([w, h])
+
+        return grid
+
+    def _SIM(self, config):
+        sensorPositions = []
+        sensorTypes = []
+        sensor_xy = []
+
+        for i, c in enumerate(config[0]):
+            if c == 1:
+                sensorPositions.append(self.paceholders[i])
+                sensorTypes.append(1)
+    
+
+        data = Data(sensorPositions, sensorTypes, self.BOV.space, self.CONSTANTS['epsilon'])
+
+        res = self.black_box_function(data, 
+                                      simulateMotionSensors = True,
+                                      simulateEstimotes = False,
+                                      simulateIS = False)
+
+        print(res)
+        return res
+
+    def separate_by_day(self, converted_data):
+        day_data = {}
+        
+        day_number = 1
+        previous_hour = 0
+
+
+        for timestamp, sensor_name, activity in converted_data:
+            if '.' in timestamp:
+                time_format = '%Y-%m-%d %H:%M:%S.%f'
+            else:
+                time_format = '%Y-%m-%d %H:%M:%S'
+            
+            time = datetime.strptime(timestamp, time_format)
+
+            if previous_hour > time.hour:
+                day_number = day_number + 1
+            
+            if day_number not in day_data:
+                day_data[day_number] = []
+            
+            day_data[day_number].append(timestamp + ' ' + sensor_name + ' ' + activity)
+            previous_hour = time.hour
+        
+        first_five = {k: day_data[k] for k in list(day_data)[:30]}
+
+        return day_data
+
+    def compute(self, X, normalize=None):
+        if type(X) == torch.Tensor:
+            X = X.numpy()
+        if X.ndim == 1:
+            X = X.reshape(1, -1)
+        # To make sure there is no cheating, round the discrete variables before calling the function
+        # X[:, self.binary_inds] = np.round(X[:, self.binary_inds])
+        # X[:, self.continuous_inds] = -1 + 2 * X[:, self.continuous_inds]
+        result = self._SIM(X)
+        return result
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -304,7 +908,9 @@ class aruba(TestFunction):
         train_data, test_data = self.split_train_test_data(data, 0.7)
         # print(len(train_data))
         # print(len(test_data))
-        return self.black_box_function(train_data, test_data, sensors)
+        res = self.black_box_function(train_data, test_data, sensors)
+
+        return res
 
     def separate_by_day(self, converted_data):
         day_data = {}

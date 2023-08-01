@@ -29,7 +29,7 @@ from gpytorch.utils.warnings import NumericalWarning
 
 from dictionary_kernel import DictionaryKernel
 from optimize import optimize_acq_function_mixed_alternating, optimize_acqf_binary_local_search
-from test_functions import LABS, SVM, Ackley53, MaxSAT60, aruba
+from test_functions import LABS, SVM, Ackley53, MaxSAT60, aruba, SIM
 
 
 def run_experiment(
@@ -125,6 +125,12 @@ def _run_single_trial(
         assert n_categorical == 0, "SVM has no categorical parameters"
     elif evalfn == "aruba":
         f = aruba(**tkwargs)
+
+    elif evalfn == "Testbed1":
+        f = SIM(**tkwargs)
+
+    elif evalfn == "Testbed2":
+        f = SIM(**tkwargs)
 
     else:
         raise ValueError(f"Unknown evalfn {evalfn}")
