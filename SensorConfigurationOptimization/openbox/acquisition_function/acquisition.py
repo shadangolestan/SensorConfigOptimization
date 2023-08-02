@@ -99,38 +99,41 @@ class AbstractAcquisitionFunction(object, metaclass=abc.ABCMeta):
             setattr(self, key, kwargs[key])
 
     def round_location(self, loc):
-        max_row = np.ceil(cf.space[2][0]) 
-        max_row = max_row-1 if (round(max_row) == max_row) else round(max_row)
-        
-        max_col = np.ceil(cf.space[2][1])
-        max_col = max_row-1 if (round(max_col) == max_col) else round(max_col)
-        
-        min_row = 1
-        min_col = 1
-        new_loc = [0, 0]
-        loc = eval(loc)
-        for dim in range(2):
-            if dim == 0:
-                max_ = max_row
-                min_ = min_row
-            else:
-                max_ = max_col
-                min_ = min_col
+        if cf.testbed != 'aruba/':
+            max_row = np.ceil(cf.space[2][0]) 
+            max_row = max_row-1 if (round(max_row) == max_row) else round(max_row)
+            
+            max_col = np.ceil(cf.space[2][1])
+            max_col = max_row-1 if (round(max_col) == max_col) else round(max_col)
+            
+            min_row = 1
+            min_col = 1
+            new_loc = [0, 0]
+            loc = eval(loc)
+            for dim in range(2):
+                if dim == 0:
+                    max_ = max_row
+                    min_ = min_row
+                else:
+                    max_ = max_col
+                    min_ = min_col
 
-            ceil = np.ceil(loc[dim])
-            floor = np.floor(loc[dim])
-            if floor >= min_ and floor <= max_ and ceil >= min_ and ceil <= max_:
-                if (abs(ceil-loc[dim]) < abs(floor-loc[dim])):
+                ceil = np.ceil(loc[dim])
+                floor = np.floor(loc[dim])
+                if floor >= min_ and floor <= max_ and ceil >= min_ and ceil <= max_:
+                    if (abs(ceil-loc[dim]) < abs(floor-loc[dim])):
+                        new_loc[dim] = ceil
+                    else:
+                        new_loc[dim] = floor
+                elif ceil >= min_ and ceil <= max_ :
                     new_loc[dim] = ceil
                 else:
                     new_loc[dim] = floor
-            elif ceil >= min_ and ceil <= max_ :
-                new_loc[dim] = ceil
-            else:
-                new_loc[dim] = floor
-            
+                
 
-        return (int(new_loc[0]), int(new_loc[1]))
+            return (int(new_loc[0]), int(new_loc[1]))
+        else:
+            return loc
             
 
     def __call__(self, configurations: Union[List[Configuration], np.ndarray], convert=True, **kwargs):
