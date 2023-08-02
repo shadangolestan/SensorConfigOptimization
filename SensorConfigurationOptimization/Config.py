@@ -23,7 +23,7 @@ domain = {
 
 testbed = ''
 radius = 1
-epsilon = None
+epsilon = 1
 
 
 sensor_types = {
@@ -69,7 +69,7 @@ initial_state = 'random'
 bo_iteration = 1000
 RLBO = True
 info_matrix = None
-pivots_granularity = None
+pivots_granularity = epsilon
 cutoff_treshold = 70
 configuration_star = None
 config_advisor = None
