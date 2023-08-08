@@ -715,7 +715,7 @@ class SIM(TestFunction):
 
     def compute(self, X, normalize=None):
         if type(X) == torch.Tensor:
-            X = X.numpy()
+            X = X.detach().cpu().numpy()
         if X.ndim == 1:
             X = X.reshape(1, -1)
         # To make sure there is no cheating, round the discrete variables before calling the function
