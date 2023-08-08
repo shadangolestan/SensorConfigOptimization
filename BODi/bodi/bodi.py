@@ -2,6 +2,7 @@ import run_experiment as bodi
 import sys
 import Config as cf
 import numpy as np
+import torch
 
 if __name__ == "__main__":
     if len(sys.argv) == 2 and sys.argv[1].split('=')[-1] != 'aruba':
@@ -51,6 +52,8 @@ if __name__ == "__main__":
     if evalfn == 'aruba':
         sensors = ['M00' + str(i) if i < 10 else 'M0' + str(i) for i in range(1,32)]
         num_items = len(sensors)
+        feature_costs = feature_costs = tensor_of_ones = torch.ones(num_items)
+        
     else:
         if evalfn == 'Testbed1':
             epsilon = float(sys.argv[2].split('=')[-1])
@@ -58,13 +61,21 @@ if __name__ == "__main__":
 
             sensors = frange(8, 8)
             num_items = len(sensors)
+            feature_costs = feature_costs = tensor_of_ones = torch.ones(num_items)
 
         elif evalfn == 'Testbed2':
             epsilon = float(sys.argv[2].split('=')[-1])
             cf.epsilon = epsilon
 
             sensors = frange(8, 5.3)
-            num_items = len(sensors)    
+            num_items = len(sensors)  
+            feature_costs = feature_costs = tensor_of_ones = torch.ones(num_items)
+
+        else:
+            
+            num_items = 10
+            feature_costs = tensor_of_ones = torch.ones(num_items)
+
 
     Xs, Ys, meta_data = bodi.run_experiment(n_replications = 5,
                         save_to_pickle = True,
@@ -72,7 +83,8 @@ if __name__ == "__main__":
                         n_initial_points = 3,
                         max_evals = 1000,
                         batch_size = 10,
-                        n_binary = num_items)
+                        n_binary = num_items,
+                        feature_costs = feature_costs)
 
     print('--------------')
     print(Xs)

@@ -124,13 +124,14 @@ def _run_single_trial(
         assert n_continuous == 3, "SVM defined for 3 continuous variables"
         assert n_categorical == 0, "SVM has no categorical parameters"
     elif evalfn == "aruba":
-        f = aruba(**tkwargs)
+        f = aruba(n_features=n_binary, feature_costs=feature_costs, **tkwargs)
+        reference_point = torch.tensor([1.0, 1.1 * feature_costs.sum()], **tkwargs)
 
     elif evalfn == "Testbed1":
-        f = SIM(**tkwargs)
+        f = SIM(n_features=n_binary, feature_costs=feature_costs,**tkwargs)
 
     elif evalfn == "Testbed2":
-        f = SIM(**tkwargs)
+        f = SIM(n_features=n_binary, feature_costs=feature_costs,**tkwargs)
 
     else:
         raise ValueError(f"Unknown evalfn {evalfn}")
@@ -151,7 +152,7 @@ def _run_single_trial(
     X[:, f.binary_inds] = X[:, f.binary_inds].round()  # Round binary variables
     assert f.n_categorical == 0, "TODO"
     Y = torch.tensor([f(x) for x in X]).to(**tkwargs)
-    assert Y.ndim == 2 if evalfn == "SVM" else Y.ndim == 1
+    assert Y.ndim == 2 if evalfn == "SVM" or evalfn=="aruba" or "Testbed" in evalfn else Y.ndim == 1
 
     afo_config = {
         "n_initial_candts": 2000,
@@ -183,7 +184,7 @@ def _run_single_trial(
             outputscale_prior=GammaPrior(torch.tensor(2.0, **tkwargs), torch.tensor(0.15, **tkwargs)),
             outputscale_constraint=GreaterThan(1e-6)
         )
-        train_Y = (Y - Y.mean()) / Y.std() if evalfn != "SVM" else (Y[:, 0] - Y[:, 0].mean()) / Y[:, 0].std()
+        train_Y = (Y - Y.mean()) / Y.std() if evalfn != "SVM" and evalfn != "aruba" and not "Testbed" in evalfn else (Y[:, 0] - Y[:, 0].mean()) / Y[:, 0].std()
         gp_model = SingleTaskGP(
             train_X=X,
             train_Y=train_Y.unsqueeze(-1),
@@ -194,8 +195,7 @@ def _run_single_trial(
         mll = ExactMarginalLogLikelihood(model=gp_model, likelihood=gp_model.likelihood)
         fit_gpytorch_model(mll)
 
-        if evalfn == "SVM":
-
+        if evalfn == "SVM" or evalfn == "aruba" or "Testbed" in evalfn:
             def compute_feature_costs(x):
                 return (x[..., f.binary_inds] * feature_costs).sum(dim=-1, keepdims=True)
 
@@ -235,7 +235,7 @@ def _run_single_trial(
         X = torch.cat([X, next_x])
         Y = torch.cat([Y, torch.tensor([f(x) for x in next_x], **tkwargs)])
         if verbose:
-            if evalfn == "SVM":
+            if evalfn == "SVM" or evalfn == "aruba" or "Testbed" in evalfn:
                 Y_pareto_old = Y[:-1].clone()
                 Y_pareto_old = Y_pareto_old[is_non_dominated(Y_pareto_old * weights)]
                 Y_pareto_old = Y_pareto_old[Y_pareto_old[:, 1].argsort(), :]

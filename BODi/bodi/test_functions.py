@@ -305,9 +305,8 @@ class BOVariables:
 
 class SIM(TestFunction):
     problem_type = "categorical"
-
     # Taken and adapted from the the MVRSM codebase
-    def __init__(self, lamda=1e-6, normalize=False, **tkwargs):
+    def __init__(self, n_features: int, feature_costs: Tensor, lamda=1e-6, normalize=False, **tkwargs):
         # super(Ackley53, self).__init__(normalize)
 
         # input_file = 'RealWorldDataset/aruba/data'
@@ -359,6 +358,7 @@ class SIM(TestFunction):
         self.bounds = torch.stack((torch.zeros(self.n_binary), torch.ones(self.n_binary))).to(**tkwargs)
 
         self.paceholders = self.grid_maker(self.BOV.space[0], self.BOV.space[1])
+        self.feature_costs = feature_costs
 
 
     def is_valid(self, sensor_placeholder):
@@ -664,7 +664,6 @@ class SIM(TestFunction):
         return grid
 
     def _SIM(self, config):
-    
         sensorPositions = []
         sensorTypes = []
         sensor_xy = []
@@ -675,6 +674,7 @@ class SIM(TestFunction):
                 sensorTypes.append(1)
     
 
+        print('number of sensors placed: ', len(sensorPositions))
         data = Data(sensorPositions, sensorTypes, self.BOV.space, self.CONSTANTS['epsilon'])
 
         res = 100 - self.black_box_function(data, 
@@ -682,7 +682,8 @@ class SIM(TestFunction):
                                     simulateEstimotes = False,
                                     simulateIS = False)
 
-        return res
+        feature_cost = self.feature_costs[inds_selected].sum().item()
+        return [res, feature_cost]
 
     def separate_by_day(self, converted_data):
         day_data = {}
@@ -765,16 +766,12 @@ class aruba(TestFunction):
     problem_type = "categorical"
 
     # Taken and adapted from the the MVRSM codebase
-    def __init__(self, lamda=1e-6, normalize=False, **tkwargs):
+    def __init__(self, n_features: int, feature_costs: Tensor, lamda=1e-6, normalize=False, **tkwargs):
         # super(Ackley53, self).__init__(normalize)
 
         input_file = 'RealWorldDataset/aruba/data'
         D = self.convert_data(input_file)
         self.data = self.separate_by_day(D)
-
-
-
-
 
         self.n_categorical = 0
         
@@ -796,6 +793,7 @@ class aruba(TestFunction):
         # self.lb, self.ub = np.array([-1, -1, -1]), np.array([+1, +1, +1])
         self.feature_idxs = torch.arange(50)
         self.bounds = torch.stack((torch.zeros(self.n_binary), torch.ones(self.n_binary))).to(**tkwargs)
+        self.feature_costs = feature_costs
 
     def convert_data(self, file_path):
         with open(file_path, 'r') as file:
@@ -877,8 +875,6 @@ class aruba(TestFunction):
 
     def black_box_function(self, train_data, test_data, sensors):   
         f1_score = (al.one_occupant_model(train_data, test_data, sensors)) * 100
-
-
         try:
             return f1_score
 
@@ -898,13 +894,11 @@ class aruba(TestFunction):
 
     def _aruba(self, config):
         sensors = ['M000']
-
-        
-
-        
-        for sensor_index in config[0]:
+        inds_selected = []
+        for index, sensor_index in enumerate(config[0]):
             if sensor_index == 1:
                 sensors.append(self.motion_places[int(sensor_index)])
+                inds_selected.append(index)
 
         data = self.filter_data_by_sensors(self.data, sensors)
         
@@ -912,8 +906,8 @@ class aruba(TestFunction):
         # print(len(train_data))
         # print(len(test_data))
         res = 100 - self.black_box_function(train_data, test_data, sensors)
-
-        return res
+        feature_cost = self.feature_costs[inds_selected].sum().item()
+        return [res, feature_cost]
 
     def separate_by_day(self, converted_data):
         day_data = {}
