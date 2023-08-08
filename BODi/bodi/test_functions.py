@@ -233,6 +233,14 @@ class BOVariables:
         self.sensor_distribution, self.types, self.space, self.rooms, self.objects, self.agentTraces = self.ModelsInitializations(ROS)
         self.CreateGrid()
 
+    def is_valid(self, sensor_placeholder):
+        # This is for checking locations where placing sensors are not allowed. 
+
+        if cf.testbed == 'Testbed2/' and sensor_placeholder[0] <= 2 and sensor_placeholder[1] <= 2:
+            return False
+        else:
+            return True
+
     def CreateGrid(self):
         x = self.space[0]
         y = self.space[1]
@@ -255,7 +263,8 @@ class BOVariables:
 
         for w in W:
             for h in H:
-                self.grid.append([w, h])
+                if self.is_valid([w, h]):
+                    self.grid.append([w, h])
 
     def ModelsInitializations(self, ROS):
         #----- Space and agent models -----: 

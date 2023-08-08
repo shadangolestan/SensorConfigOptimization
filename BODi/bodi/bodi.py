@@ -53,7 +53,7 @@ if __name__ == "__main__":
         sensors = ['M00' + str(i) if i < 10 else 'M0' + str(i) for i in range(1,32)]
         num_items = len(sensors)
         feature_costs = feature_costs = tensor_of_ones = torch.ones(num_items)
-        
+
     else:
         if evalfn == 'Testbed1':
             epsilon = float(sys.argv[2].split('=')[-1])
