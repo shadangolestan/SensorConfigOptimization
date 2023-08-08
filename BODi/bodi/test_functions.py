@@ -668,10 +668,13 @@ class SIM(TestFunction):
         sensorTypes = []
         sensor_xy = []
 
+        inds_selected = []
         for i, c in enumerate(config[0]):
             if c == 1:
                 sensorPositions.append(self.paceholders[i])
                 sensorTypes.append(1)
+                inds_selected.append(i)
+                
     
 
         print('number of sensors placed: ', len(sensorPositions))
