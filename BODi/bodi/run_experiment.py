@@ -129,9 +129,11 @@ def _run_single_trial(
 
     elif evalfn == "Testbed1":
         f = SIM(n_features=n_binary, feature_costs=feature_costs,**tkwargs)
+        reference_point = torch.tensor([1.0, 1.1 * feature_costs.sum()], **tkwargs)
 
     elif evalfn == "Testbed2":
         f = SIM(n_features=n_binary, feature_costs=feature_costs,**tkwargs)
+        reference_point = torch.tensor([1.0, 1.1 * feature_costs.sum()], **tkwargs)
 
     else:
         raise ValueError(f"Unknown evalfn {evalfn}")
