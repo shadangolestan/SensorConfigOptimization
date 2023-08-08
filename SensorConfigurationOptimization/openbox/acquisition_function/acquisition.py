@@ -702,7 +702,7 @@ class DG(AbstractAcquisitionFunction):
                 max_col = int(np.ceil(cf.space[2][1])) # / cf.epsilon)
                 
                 
-                matrix = [[-1] * (max_row) for _ in range(max_col)]
+                matrix = [[-1] * (max_row - 1) for _ in range(max_col - 1)]
                 
                 
                 for key, value in dictionary.items():
@@ -840,9 +840,16 @@ class DG(AbstractAcquisitionFunction):
                 self.S = np.array(self.S).reshape(-1, 1)
                     
 
+                def min_max_normalize(matrix):
+                    min_val = np.min(matrix)
+                    max_val = np.max(matrix)
+                    normalized_matrix = (matrix - min_val) / (max_val - min_val)
+                    return normalized_matrix
+                
                 '''
                 if cf.testbed != 'aruba/':
-                    M = dictionary_to_matrix(self.expected_contribution)
+                    M1 = dictionary_to_matrix(self.expected_contribution)
+                    M = min_max_normalize(M1)
 
                     import os.path
                     file_name = str(len(cf.config_advisor.history_container.configurations)) + '.png'
@@ -851,17 +858,19 @@ class DG(AbstractAcquisitionFunction):
                         import numpy as np
                         import matplotlib.pyplot as plt
 
-                        plt.imshow(M, cmap='hot', interpolation='nearest')
+                        im = plt.imshow(M, cmap='hot', interpolation='nearest')
                         M = np.array(M)
-                        for i in range(M.shape[0]):
-                            for j in range(M.shape[1]):
-                                plt.text(j, i, '{:.2f}'.format(M[i, j]), ha='center', va='center', color='blue')
+                        # for i in range(M.shape[0]):
+                        #     for j in range(M.shape[1]):
+                        #         plt.text(j, i, '{:.2f}'.format(M[i, j]), ha='center', va='center', color='blue')
 
                         plt.colorbar()
+                        im.figure.axes[1].tick_params(axis="x", labelsize=12)
                         plt.savefig(file_name)
                         plt.clf()  
-
                 '''
+
+                
 
             else:
                 for c in self.configurations:

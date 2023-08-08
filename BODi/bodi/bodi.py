@@ -10,12 +10,6 @@ if __name__ == "__main__":
               '\n \t (only for Testbed1 and Testbed2) ---> epsilon value: epsilon= (0.25, 0.5, 1)')
         sys.exit(1)
 
-    if len(sys.argv) == 2 and sys.argv[1].split('=')[-1] != 'aruba':
-        print('Please provide:',
-              '\n \t testbed name: testbed= (Testbed1, Testbed2, aruba (this is a realworld dataset))',
-              '\n \t (only for Testbed1 and Testbed2) ---> epsilon value: epsilon= (0.25, 0.5, 1)')
-        sys.exit(1)
-
 
     evalfn = sys.argv[1].split('=')[-1]
 

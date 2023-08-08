@@ -167,6 +167,7 @@ def _run_single_trial(
         "n_cont": n_continuous,
     }
     while len(X) < max_evals:
+        print(len(X))
         likelihood = GaussianLikelihood(
             noise_prior=GammaPrior(torch.tensor(0.9, **tkwargs), torch.tensor(10.0, **tkwargs)),
             noise_constraint=GreaterThan(MIN_INFERRED_NOISE_LEVEL),

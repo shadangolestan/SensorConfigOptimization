@@ -566,6 +566,20 @@ class BayesianOptimization:
 
         return selected
         
+    def dictionary_to_matrix_for_visualization(self, dictionary):
+        max_row = int(np.ceil(cf.space[2][0])) # / cf.epsilon)
+        max_col = int(np.ceil(cf.space[2][1])) # / cf.epsilon)
+        
+        
+        matrix = [[-1] * (max_row) for _ in range(max_col)]
+        
+        
+        for key, value in dictionary.items():
+            col, row = key[0], key[1]
+            matrix[int(row / cf.epsilon) - 1][int(col / cf.epsilon) - 1] = np.mean(value)
+
+        return matrix
+
     def dictionary_to_matrix(self, dictionary):
         # Find the dimensions of the matrix
         max_row = int(max(eval(col)[0] for col in dictionary.keys()) / cf.pivots_granularity)
@@ -733,6 +747,31 @@ class BayesianOptimization:
         if cf.acquisition_function == 'dg':
             cf.pivots_granularity = 1
             cf.info_matrix, iteration_cost = self.create_pivots_matrix()
+
+            '''
+            M = self.dictionary_to_matrix_for_visualization(cf.info_matrix)
+            
+            import os.path
+            file_name = 'initials'
+
+            if not os.path.isfile(file_name):
+                import numpy as np
+                import matplotlib.pyplot as plt
+
+                im = plt.imshow(M, cmap='hot', interpolation='nearest')
+                M = np.array(M)
+                # for i in range(M.shape[0]):
+                #     for j in range(M.shape[1]):
+                #         plt.text(j, i, '{:.2f}'.format(M[i, j]), ha='center', va='center', color='blue')
+
+                plt.colorbar(location='left')
+                im.figure.axes[1].tick_params(axis="x", labelsize=12)
+                plt.savefig(file_name)
+                plt.clf()  
+
+                '''
+
+
             # print(cf.info_matrix)
         
         else:

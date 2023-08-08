@@ -664,6 +664,7 @@ class SIM(TestFunction):
         return grid
 
     def _SIM(self, config):
+    
         sensorPositions = []
         sensorTypes = []
         sensor_xy = []
@@ -676,12 +677,11 @@ class SIM(TestFunction):
 
         data = Data(sensorPositions, sensorTypes, self.BOV.space, self.CONSTANTS['epsilon'])
 
-        res = self.black_box_function(data, 
-                                      simulateMotionSensors = True,
-                                      simulateEstimotes = False,
-                                      simulateIS = False)
+        res = 100 - self.black_box_function(data, 
+                                    simulateMotionSensors = True,
+                                    simulateEstimotes = False,
+                                    simulateIS = False)
 
-        print(res)
         return res
 
     def separate_by_day(self, converted_data):
@@ -898,8 +898,11 @@ class aruba(TestFunction):
 
     def _aruba(self, config):
         sensors = ['M000']
+
+        
+
+        
         for sensor_index in config[0]:
-            
             if sensor_index == 1:
                 sensors.append(self.motion_places[int(sensor_index)])
 
@@ -908,7 +911,7 @@ class aruba(TestFunction):
         train_data, test_data = self.split_train_test_data(data, 0.7)
         # print(len(train_data))
         # print(len(test_data))
-        res = self.black_box_function(train_data, test_data, sensors)
+        res = 100 - self.black_box_function(train_data, test_data, sensors)
 
         return res
 
