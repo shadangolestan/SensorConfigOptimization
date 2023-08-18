@@ -160,8 +160,13 @@ class BayesianOptimization:
         for sensor in config.keys():
             sensors.append(config[sensor])
 
+        sensors = ['M00' + str(i) if i < 10 else 'M0' + str(i) for i in range(1,32)]
+        sensors.append('M000')
+        print(sensors)
         data = self.filter_data_by_sensors(self.data, sensors)
         
+        print('len data: ', len(data))
+
         train_data, test_data = self.split_train_test_data(data, 0.7)
         # print(len(train_data))
         # print(len(test_data))

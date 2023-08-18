@@ -846,7 +846,7 @@ class DG(AbstractAcquisitionFunction):
                     normalized_matrix = (matrix - min_val) / (max_val - min_val)
                     return normalized_matrix
                 
-                '''
+                
                 if cf.testbed != 'aruba/':
                     M1 = dictionary_to_matrix(self.expected_contribution)
                     M = min_max_normalize(M1)
@@ -868,7 +868,7 @@ class DG(AbstractAcquisitionFunction):
                         im.figure.axes[1].tick_params(axis="x", labelsize=12)
                         plt.savefig(file_name)
                         plt.clf()  
-                '''
+                
 
                 
 
@@ -926,7 +926,7 @@ class DG(AbstractAcquisitionFunction):
 
                 self.guide = self.attention_function(cf.iteration_id)
 
-                self.guide = 0.5
+                self.guide = 0.75
                 EI = calculate_distance_alpha(m, s, E_I_plus)
 
                 alpha_c = self.guide * E_I_plus   +   (1 - self.guide) * EI
