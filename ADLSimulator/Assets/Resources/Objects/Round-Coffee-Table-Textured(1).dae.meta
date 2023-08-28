@@ -1,0 +1,345 @@
+fileFormatVersion: 2
+guid: 6dd3d3a777912b745b8611172ffc89de
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Bottom
+    100002: Group_1
+    100004: Group_2
+    100006: ID118
+    100008: ID137
+    100010: ID15
+    100012: ID15 1
+    100014: ID44
+    100016: ID44 1
+    100018: ID44 2
+    100020: ID44 3
+    100022: ID50
+    100024: ID50 1
+    100026: ID50 2
+    100028: ID50 3
+    100030: ID56
+    100032: ID56 1
+    100034: ID56 2
+    100036: ID56 3
+    100038: ID62
+    100040: ID62 1
+    100042: ID62 2
+    100044: ID62 3
+    100046: ID68
+    100048: ID68 1
+    100050: ID68 2
+    100052: ID68 3
+    100054: ID74
+    100056: ID74 1
+    100058: ID74 2
+    100060: ID74 3
+    100062: ID80
+    100064: ID80 1
+    100066: ID80 2
+    100068: ID80 3
+    100070: ID86
+    100072: ID86 1
+    100074: ID86 2
+    100076: ID86 3
+    100078: ID92
+    100080: ID92 1
+    100082: ID92 2
+    100084: ID92 3
+    100086: instance_0
+    100088: instance_1
+    100090: instance_10
+    100092: instance_11
+    100094: instance_12
+    100096: instance_13
+    100098: instance_2
+    100100: instance_3
+    100102: instance_4
+    100104: instance_5
+    100106: instance_6
+    100108: instance_7
+    100110: instance_8
+    100112: instance_9
+    100114: Leg
+    100116: Leg 1
+    100118: Leg 2
+    100120: Leg 3
+    100122: Ring
+    100124: Ring 1
+    100126: //RootNode
+    100128: skp_camera_Last_Saved_SketchUp_View
+    100130: Top
+    100132: Wheel
+    100134: Wheel 1
+    100136: Wheel 2
+    100138: Wheel 3
+    400000: Bottom
+    400002: Group_1
+    400004: Group_2
+    400006: ID118
+    400008: ID137
+    400010: ID15
+    400012: ID15 1
+    400014: ID44
+    400016: ID44 1
+    400018: ID44 2
+    400020: ID44 3
+    400022: ID50
+    400024: ID50 1
+    400026: ID50 2
+    400028: ID50 3
+    400030: ID56
+    400032: ID56 1
+    400034: ID56 2
+    400036: ID56 3
+    400038: ID62
+    400040: ID62 1
+    400042: ID62 2
+    400044: ID62 3
+    400046: ID68
+    400048: ID68 1
+    400050: ID68 2
+    400052: ID68 3
+    400054: ID74
+    400056: ID74 1
+    400058: ID74 2
+    400060: ID74 3
+    400062: ID80
+    400064: ID80 1
+    400066: ID80 2
+    400068: ID80 3
+    400070: ID86
+    400072: ID86 1
+    400074: ID86 2
+    400076: ID86 3
+    400078: ID92
+    400080: ID92 1
+    400082: ID92 2
+    400084: ID92 3
+    400086: instance_0
+    400088: instance_1
+    400090: instance_10
+    400092: instance_11
+    400094: instance_12
+    400096: instance_13
+    400098: instance_2
+    400100: instance_3
+    400102: instance_4
+    400104: instance_5
+    400106: instance_6
+    400108: instance_7
+    400110: instance_8
+    400112: instance_9
+    400114: Leg
+    400116: Leg 1
+    400118: Leg 2
+    400120: Leg 3
+    400122: Ring
+    400124: Ring 1
+    400126: //RootNode
+    400128: skp_camera_Last_Saved_SketchUp_View
+    400130: Top
+    400132: Wheel
+    400134: Wheel 1
+    400136: Wheel 2
+    400138: Wheel 3
+    2000000: skp_camera_Last_Saved_SketchUp_View
+    2100000: Component_1
+    2100002: Wood_Veneer_01
+    2300000: Bottom
+    2300002: ID15
+    2300004: ID15 1
+    2300006: ID44
+    2300008: ID44 1
+    2300010: ID44 2
+    2300012: ID44 3
+    2300014: ID50
+    2300016: ID50 1
+    2300018: ID50 2
+    2300020: ID50 3
+    2300022: ID56
+    2300024: ID56 1
+    2300026: ID56 2
+    2300028: ID56 3
+    2300030: ID62
+    2300032: ID62 1
+    2300034: ID62 2
+    2300036: ID62 3
+    2300038: ID68
+    2300040: ID68 1
+    2300042: ID68 2
+    2300044: ID68 3
+    2300046: ID74
+    2300048: ID74 1
+    2300050: ID74 2
+    2300052: ID74 3
+    2300054: ID80
+    2300056: ID80 1
+    2300058: ID80 2
+    2300060: ID80 3
+    2300062: ID86
+    2300064: ID86 1
+    2300066: ID86 2
+    2300068: ID86 3
+    2300070: ID92
+    2300072: ID92 1
+    2300074: ID92 2
+    2300076: ID92 3
+    2300078: Leg
+    2300080: Leg 1
+    2300082: Leg 2
+    2300084: Leg 3
+    2300086: Ring
+    2300088: Ring 1
+    2300090: Top
+    2300092: Wheel
+    2300094: Wheel 1
+    2300096: Wheel 2
+    2300098: Wheel 3
+    3300000: Bottom
+    3300002: ID15
+    3300004: ID15 1
+    3300006: ID44
+    3300008: ID44 1
+    3300010: ID44 2
+    3300012: ID44 3
+    3300014: ID50
+    3300016: ID50 1
+    3300018: ID50 2
+    3300020: ID50 3
+    3300022: ID56
+    3300024: ID56 1
+    3300026: ID56 2
+    3300028: ID56 3
+    3300030: ID62
+    3300032: ID62 1
+    3300034: ID62 2
+    3300036: ID62 3
+    3300038: ID68
+    3300040: ID68 1
+    3300042: ID68 2
+    3300044: ID68 3
+    3300046: ID74
+    3300048: ID74 1
+    3300050: ID74 2
+    3300052: ID74 3
+    3300054: ID80
+    3300056: ID80 1
+    3300058: ID80 2
+    3300060: ID80 3
+    3300062: ID86
+    3300064: ID86 1
+    3300066: ID86 2
+    3300068: ID86 3
+    3300070: ID92
+    3300072: ID92 1
+    3300074: ID92 2
+    3300076: ID92 3
+    3300078: Leg
+    3300080: Leg 1
+    3300082: Leg 2
+    3300084: Leg 3
+    3300086: Ring
+    3300088: Ring 1
+    3300090: Top
+    3300092: Wheel
+    3300094: Wheel 1
+    3300096: Wheel 2
+    3300098: Wheel 3
+    4300000: Ring
+    4300002: ID15
+    4300004: Top
+    4300006: Wheel
+    4300008: ID44
+    4300010: ID50
+    4300012: ID56
+    4300014: ID62
+    4300016: ID68
+    4300018: ID74
+    4300020: ID80
+    4300022: ID86
+    4300024: ID92
+    4300026: Leg
+    4300028: Bottom
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

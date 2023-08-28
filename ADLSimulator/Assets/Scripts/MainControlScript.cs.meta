@@ -1,0 +1,30 @@
+fileFormatVersion: 2
+guid: 74da2e5f87ebbeb44a19ef357b78e719
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - defaultMat1: {fileID: 2100000, guid: 45dd338b6c68c774dbd92e127226200d, type: 2}
+  - defaultMat2: {fileID: 2100000, guid: a62fb46fe06fe1348b38a0dc3e4ed202, type: 2}
+  - defaultMat3: {fileID: 2100000, guid: 47c73d2e23db9314c8c618b46fb93564, type: 2}
+  - defaultMat4: {fileID: 2100000, guid: 616797e2f6459b74da6beefd944b4438, type: 2}
+  - highlightMatYellow: {fileID: 2100000, guid: a03a6e78f62fd264fafec118096cf95d,
+      type: 2}
+  - highlightMatRed: {fileID: 2100000, guid: 75b9d9be4558e01469a9d972e7e85960, type: 2}
+  - ToggleObjects: {instanceID: 0}
+  - DeleteObjects: {instanceID: 0}
+  - TopSlider: {instanceID: 0}
+  - BottomSlider: {instanceID: 0}
+  - ZoomSlider: {instanceID: 0}
+  - ObjectInfo: {instanceID: 0}
+  - ExportFileName: {instanceID: 0}
+  - ObjectSelectionContent: {instanceID: 0}
+  - AddParamCanvas: {instanceID: 0}
+  - ParamNameText: {instanceID: 0}
+  - ParamValueText: {instanceID: 0}
+  - mainCamera: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

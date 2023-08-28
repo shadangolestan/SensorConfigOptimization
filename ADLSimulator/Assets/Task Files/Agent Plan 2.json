@@ -1,0 +1,282 @@
+{
+    "Actions": {
+        "Toilet": {
+            "name": "Toilet",
+            "duration": 3,
+            "probability": 100,
+            "occurrence": 1,
+            "requires": [],
+            "post": [ "Wash_Hands" ],
+            "times": [],
+            "aliases": []
+        },
+
+        "Wash_Hands": {
+            "name": "Wash_Hands",
+            "duration": 3,
+            "probability": 100,
+            "occurrence": 1,
+            "requires": [ "Toilet" ],
+            "post": [],
+            "times": [],
+            "aliases": []
+        },
+
+        "Exercise": {
+            "name": "Exercise",
+            "duration": 30,
+            "probability": 100,
+            "occurrence": 1,
+            "requires": [ ],
+            "post": [ ],
+            "times": [ ],
+            "aliases": [ ]
+        },
+
+        "Sit": {
+            "name": "Sit",
+            "duration": 30,
+            "probability": 100,
+            "occurrence": 1,
+            "requires": [],
+            "post": [],
+            "times": [],
+            "aliases": [ "Talking on the phone" ]
+        },
+
+        "Undressing": {
+            "name": "Undressing",
+            "duration": 5,
+            "probability": 100,
+            "occurrence": 1,
+            "requires": [],
+            "post": [ "Bath" ],
+            "times": [],
+            "aliases": []
+        },
+
+
+        "Bath": {
+            "name": "Bath",
+            "duration": 15,
+            "probability": 100,
+            "occurrence": 1,
+            "requires": [ "Undressing" ],
+            "post": [ "Dressing" ],
+            "times": [],
+            "aliases": []
+        },
+
+        "Dressing": {
+            "name": "Dressing",
+            "duration": 6,
+            "probability": 100,
+            "occurrence": 1,
+            "requires": [ "Bath" ],
+            "post": [],
+            "times": [],
+            "aliases": []
+        },
+
+        "Sleep": {
+            "name": "Sleep",
+            "duration": 20,
+            "probability": 100,
+            "occurrence": 1,
+            "requires": [],
+            "post": [],
+            "times": [],
+            "aliases": []
+        },
+
+        "Sit": {
+            "name": "Sit",
+            "duration": 30,
+            "probability": 100,
+            "occurrence": 1,
+            "requires": [],
+            "post": [],
+            "times": [],
+            "aliases": [ "Working_with_tablet" ]
+        },
+
+        "Grab_Ingredients": {
+            "name": "Grab_Ingredients",
+            "duration": 2,
+            "probability": 100,
+            "occurrence": 1,
+            "requires": [],
+            "post": [],
+            "times": [],
+            "aliases": []
+        },
+
+        "Make_Tea": {
+            "name": "Make_Tea",
+            "duration": 10,
+            "probability": 100,
+            "occurrence": 1,
+            "requires": [],
+            "post": [],
+            "times": [],
+            "aliases": []
+        },
+
+        "Toast_Bread": {
+            "name": "Toast_Bread",
+            "duration": 5,
+            "probability": 100,
+            "occurrence": 1,
+            "requires": [],
+            "post": [],
+            "times": [],
+            "aliases": [ "Toast Bread In Owen" ]
+        },
+
+        "Fry_Eggs": {
+            "name": "Fry_Eggs",
+            "duration": 10,
+            "probability": 100,
+            "occurrence": 1,
+            "requires": [],
+            "post": [],
+            "times": [],
+            "aliases": []
+        },
+
+        "Grab_Utensils": {
+            "name": "Grab_Utensils",
+            "duration": 1,
+            "probability": 100,
+            "occurrence": 1,
+            "requires": [],
+            "post": [],
+            "times": [],
+            "aliases": []
+        },
+
+        "Eat": {
+            "name": "Eat",
+            "duration": 10,
+            "probability": 100,
+            "occurrence": 1,
+            "requires": [],
+            "post": [],
+            "times": [],
+            "aliases": []
+        },
+
+        "Take_Medicine": {
+            "name": "Take_Medicine",
+            "duration": 2,
+            "probability": 100,
+            "occurrence": 1,
+            "requires": [],
+            "post": [],
+            "times": [],
+            "aliases": []
+        },
+
+        
+        "Sit": {
+            "name": "Sit",
+            "duration": 30,
+            "probability": 100,
+            "occurrence": 1,
+            "requires": [],
+            "post": [],
+            "times": [],
+            "aliases": [ "Read" ]
+        },
+
+        "Wash_Dishes": {
+            "name": "Wash_Dishes",
+            "duration": 3,
+            "probability": 100,
+            "occurrence": 1,
+            "requires": [],
+            "post": [],
+            "times": [],
+            "aliases": []
+        },
+
+        "Clean_table": {
+            "name": "Clean_table",
+            "duration": 5,
+            "probability": 100,
+            "occurrence": 1,
+            "requires": [],
+            "post": [],
+            "times": [],
+            "aliases": [ "Cleaning Up Table" ]
+        },
+
+        "Grab_Groom": {
+            "name": "Grab_Groom",
+            "duration": 2,
+            "probability": 100,
+            "occurrence": 1,
+            "requires": [],
+            "post": [],
+            "times": [],
+            "aliases": []
+        },
+
+        "Clean": {
+            "name": "Clean",
+            "duration": 7,
+            "probability": 100,
+            "occurrence": 1,
+            "requires": [],
+            "post": [],
+            "times": [],
+            "aliases": [ "General Cleaning Up" ]
+        },
+        
+        "Leave_Groom": {
+            "name": "Leave_Groom",
+            "duration": 2,
+            "probability": 100,
+            "occurrence": 1,
+            "requires": [],
+            "post": [],
+            "times": [],
+            "aliases": []
+        },
+
+        "Clean_Kitchen": {
+            "name": "Clean_Kitchen",
+            "duration": 5,
+            "probability": 100,
+            "occurrence": 1,
+            "requires": [],
+            "post": [],
+            "times": [],
+            "aliases": [ "Cleaning Up Kitchen" ]
+        },
+
+        "Entertainment": {
+            "name": "Entertainment",
+            "duration": 15,
+            "probability": 100,
+            "occurrence": 1,
+            "requires": [],
+            "post": [],
+            "times": [],
+            "aliases": [ "Watching_TV" ]
+        },
+
+        "Iron": {
+            "name": "Iron",
+            "duration": 5,
+            "probability": 100,
+            "occurrence": 1,
+            "requires": [],
+            "post": [],
+            "times": [],
+            "aliases": []
+        }
+
+
+    }
+}

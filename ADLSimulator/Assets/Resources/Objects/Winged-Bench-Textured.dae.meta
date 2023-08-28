@@ -1,0 +1,509 @@
+fileFormatVersion: 2
+guid: 2b217e60336f84e47af2f75c1d871586
+timeCreated: 1534366255
+licenseType: Free
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: group_0
+    100002: group_1
+    100004: group_10
+    100006: group_11
+    100008: group_12
+    100010: group_13
+    100012: group_14
+    100014: group_15
+    100016: group_16
+    100018: group_17
+    100020: group_18
+    100022: group_19
+    100024: group_2
+    100026: group_20
+    100028: group_21
+    100030: group_22
+    100032: group_23
+    100034: group_24
+    100036: group_25
+    100038: group_26
+    100040: group_27
+    100042: group_28
+    100044: group_29
+    100046: group_3
+    100048: group_30
+    100050: group_31
+    100052: group_32
+    100054: group_33
+    100056: group_34
+    100058: group_35
+    100060: group_36
+    100062: group_37
+    100064: group_38
+    100066: group_39
+    100068: Group_4
+    100070: group_4
+    100072: group_40
+    100074: group_41
+    100076: group_42
+    100078: group_43
+    100080: group_44
+    100082: group_45
+    100084: group_46
+    100086: group_47
+    100088: group_48
+    100090: group_49
+    100092: group_5
+    100094: group_50
+    100096: group_51
+    100098: group_52
+    100100: group_53
+    100102: group_54
+    100104: group_55
+    100106: group_56
+    100108: group_57
+    100110: group_58
+    100112: group_59
+    100114: group_6
+    100116: group_60
+    100118: group_61
+    100120: group_62
+    100122: group_63
+    100124: group_64
+    100126: group_65
+    100128: group_66
+    100130: group_66 1
+    100132: group_66 2
+    100134: group_66 3
+    100136: group_7
+    100138: group_8
+    100140: group_9
+    100142: ID610
+    100144: ID614
+    100146: ID618
+    100148: ID646
+    100150: ID646 1
+    100152: ID673
+    100154: ID673 1
+    100156: ID691
+    100158: ID704
+    100160: instance_0
+    100162: instance_1
+    100164: instance_2
+    100166: instance_3
+    100168: instance_4
+    100170: Leg
+    100172: Leg 1
+    100174: Leg 2
+    100176: Leg 3
+    100178: skp_camera_Last_Saved_SketchUp_View
+    100180: //RootNode
+    400000: group_0
+    400002: group_1
+    400004: group_10
+    400006: group_11
+    400008: group_12
+    400010: group_13
+    400012: group_14
+    400014: group_15
+    400016: group_16
+    400018: group_17
+    400020: group_18
+    400022: group_19
+    400024: group_2
+    400026: group_20
+    400028: group_21
+    400030: group_22
+    400032: group_23
+    400034: group_24
+    400036: group_25
+    400038: group_26
+    400040: group_27
+    400042: group_28
+    400044: group_29
+    400046: group_3
+    400048: group_30
+    400050: group_31
+    400052: group_32
+    400054: group_33
+    400056: group_34
+    400058: group_35
+    400060: group_36
+    400062: group_37
+    400064: group_38
+    400066: group_39
+    400068: Group_4
+    400070: group_4
+    400072: group_40
+    400074: group_41
+    400076: group_42
+    400078: group_43
+    400080: group_44
+    400082: group_45
+    400084: group_46
+    400086: group_47
+    400088: group_48
+    400090: group_49
+    400092: group_5
+    400094: group_50
+    400096: group_51
+    400098: group_52
+    400100: group_53
+    400102: group_54
+    400104: group_55
+    400106: group_56
+    400108: group_57
+    400110: group_58
+    400112: group_59
+    400114: group_6
+    400116: group_60
+    400118: group_61
+    400120: group_62
+    400122: group_63
+    400124: group_64
+    400126: group_65
+    400128: group_66
+    400130: group_66 1
+    400132: group_66 2
+    400134: group_66 3
+    400136: group_7
+    400138: group_8
+    400140: group_9
+    400142: ID610
+    400144: ID614
+    400146: ID618
+    400148: ID646
+    400150: ID646 1
+    400152: ID673
+    400154: ID673 1
+    400156: ID691
+    400158: ID704
+    400160: instance_0
+    400162: instance_1
+    400164: instance_2
+    400166: instance_3
+    400168: instance_4
+    400170: Leg
+    400172: Leg 1
+    400174: Leg 2
+    400176: Leg 3
+    400178: skp_camera_Last_Saved_SketchUp_View
+    400180: //RootNode
+    2000000: skp_camera_Last_Saved_SketchUp_View
+    2100000: material
+    2100002: Formica_Speckled_Grey_0
+    2100004: Formica_Speckled_Grey
+    2100006: Wood_Veneer_01
+    2300000: group_0
+    2300002: group_1
+    2300004: group_10
+    2300006: group_11
+    2300008: group_12
+    2300010: group_13
+    2300012: group_14
+    2300014: group_15
+    2300016: group_16
+    2300018: group_17
+    2300020: group_18
+    2300022: group_19
+    2300024: group_2
+    2300026: group_20
+    2300028: group_21
+    2300030: group_22
+    2300032: group_23
+    2300034: group_24
+    2300036: group_25
+    2300038: group_26
+    2300040: group_27
+    2300042: group_28
+    2300044: group_29
+    2300046: group_3
+    2300048: group_30
+    2300050: group_31
+    2300052: group_32
+    2300054: group_33
+    2300056: group_34
+    2300058: group_35
+    2300060: group_36
+    2300062: group_37
+    2300064: group_38
+    2300066: group_39
+    2300068: group_4
+    2300070: group_40
+    2300072: group_41
+    2300074: group_42
+    2300076: group_43
+    2300078: group_44
+    2300080: group_45
+    2300082: group_46
+    2300084: group_47
+    2300086: group_48
+    2300088: group_49
+    2300090: group_5
+    2300092: group_50
+    2300094: group_51
+    2300096: group_52
+    2300098: group_53
+    2300100: group_54
+    2300102: group_55
+    2300104: group_56
+    2300106: group_57
+    2300108: group_58
+    2300110: group_59
+    2300112: group_6
+    2300114: group_60
+    2300116: group_61
+    2300118: group_62
+    2300120: group_63
+    2300122: group_64
+    2300124: group_65
+    2300126: group_66
+    2300128: group_66 1
+    2300130: group_66 2
+    2300132: group_66 3
+    2300134: group_7
+    2300136: group_8
+    2300138: group_9
+    2300140: ID646
+    2300142: ID646 1
+    2300144: ID673
+    2300146: ID673 1
+    2300148: ID691
+    2300150: Leg
+    2300152: Leg 1
+    2300154: Leg 2
+    2300156: Leg 3
+    2300158: //RootNode
+    3300000: group_0
+    3300002: group_1
+    3300004: group_10
+    3300006: group_11
+    3300008: group_12
+    3300010: group_13
+    3300012: group_14
+    3300014: group_15
+    3300016: group_16
+    3300018: group_17
+    3300020: group_18
+    3300022: group_19
+    3300024: group_2
+    3300026: group_20
+    3300028: group_21
+    3300030: group_22
+    3300032: group_23
+    3300034: group_24
+    3300036: group_25
+    3300038: group_26
+    3300040: group_27
+    3300042: group_28
+    3300044: group_29
+    3300046: group_3
+    3300048: group_30
+    3300050: group_31
+    3300052: group_32
+    3300054: group_33
+    3300056: group_34
+    3300058: group_35
+    3300060: group_36
+    3300062: group_37
+    3300064: group_38
+    3300066: group_39
+    3300068: group_4
+    3300070: group_40
+    3300072: group_41
+    3300074: group_42
+    3300076: group_43
+    3300078: group_44
+    3300080: group_45
+    3300082: group_46
+    3300084: group_47
+    3300086: group_48
+    3300088: group_49
+    3300090: group_5
+    3300092: group_50
+    3300094: group_51
+    3300096: group_52
+    3300098: group_53
+    3300100: group_54
+    3300102: group_55
+    3300104: group_56
+    3300106: group_57
+    3300108: group_58
+    3300110: group_59
+    3300112: group_6
+    3300114: group_60
+    3300116: group_61
+    3300118: group_62
+    3300120: group_63
+    3300122: group_64
+    3300124: group_65
+    3300126: group_66
+    3300128: group_66 1
+    3300130: group_66 2
+    3300132: group_66 3
+    3300134: group_7
+    3300136: group_8
+    3300138: group_9
+    3300140: ID646
+    3300142: ID646 1
+    3300144: ID673
+    3300146: ID673 1
+    3300148: ID691
+    3300150: Leg
+    3300152: Leg 1
+    3300154: Leg 2
+    3300156: Leg 3
+    3300158: //RootNode
+    4300000: SketchUp
+    4300002: ID691
+    4300004: group_0
+    4300006: group_1
+    4300008: group_2
+    4300010: group_3
+    4300012: group_4
+    4300014: group_5
+    4300016: group_6
+    4300018: group_7
+    4300020: group_8
+    4300022: group_9
+    4300024: group_10
+    4300026: group_11
+    4300028: group_12
+    4300030: group_13
+    4300032: group_14
+    4300034: group_15
+    4300036: group_16
+    4300038: group_17
+    4300040: group_18
+    4300042: group_19
+    4300044: group_20
+    4300046: group_21
+    4300048: group_22
+    4300050: group_23
+    4300052: group_24
+    4300054: group_25
+    4300056: group_26
+    4300058: group_27
+    4300060: group_28
+    4300062: group_29
+    4300064: group_30
+    4300066: group_31
+    4300068: group_32
+    4300070: group_33
+    4300072: group_34
+    4300074: group_35
+    4300076: group_36
+    4300078: group_37
+    4300080: group_38
+    4300082: group_39
+    4300084: group_40
+    4300086: group_41
+    4300088: group_42
+    4300090: group_43
+    4300092: group_44
+    4300094: group_45
+    4300096: group_46
+    4300098: group_47
+    4300100: group_48
+    4300102: group_49
+    4300104: group_50
+    4300106: group_51
+    4300108: group_52
+    4300110: group_53
+    4300112: group_54
+    4300114: group_55
+    4300116: group_56
+    4300118: group_57
+    4300120: group_58
+    4300122: group_59
+    4300124: group_60
+    4300126: group_61
+    4300128: group_62
+    4300130: group_63
+    4300132: group_64
+    4300134: group_65
+    4300136: Leg
+    4300138: ID646
+    4300140: group_66
+    4300142: Leg
+    4300144: ID673
+    4300146: group_66
+    9500000: //RootNode
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
