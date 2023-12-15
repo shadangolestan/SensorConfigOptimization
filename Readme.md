@@ -3,11 +3,9 @@ This repository is the implementation of our paper published at AAAI 2024 titled
 
 Preprint version of the paper can be found at Arxiv: https://arxiv.org/abs/2309.05784
 
-This repository is the implementation of our grey-box Bayesian optimization algorithm. Our algorithm, Distribution-Guided Bayesian Optimization (DGBO), is a sample-efficient algorithm that learns domain-specific knowledge about the objective function and integrates it into the iterative selection of query points in Bayesian optimization.
+Our algorithm, Distribution-Guided Bayesian Optimization (DGBO), is a sample-efficient algorithm that learns domain-specific knowledge about the objective function and integrates it into the iterative selection of query points in Bayesian optimization.
 
-
-
-This repository uses DGBO for sensor placement in two simulation and one real-world testbed environments. The sensor placement is optimized in terms of maximizing the F1-score of an activity recognition. The code uses the package SensorOptimizers.BayesianOptimization which uses OpenBox.
+DGBO is applied for sensor placement in two simulation and one real-world testbed environments. The sensor placement is optimized in terms of maximizing the F1-score of an activity recognition. The code uses the package SensorOptimizers.BayesianOptimization which uses OpenBox.
 
 Please note that, for more convenient reproducibility, we executed the SIM_SIS simulator and acquired and stored the results within this repository. In this context, we employ its sensor simulator in the optimization process to automatically produce synthetic sensor readings for simulation testbeds, given a candidate sensor placement. Therefore, there is no need to execute SIM_SIS.
 
